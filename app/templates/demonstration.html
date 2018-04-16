@@ -1,0 +1,103 @@
+<p> a value from a dictionary: {{ mydict['key'] }}. </p>
+<p> a value from a list: {{ mylist[2] }}. </p>
+<p> a value from a list, with a variable index: {{ mydict['key'] }}. </p>
+<p> a value from an object's method: {{ myobj.somemethod() }}. </p>
+
+<br><br> <!-- умеет работать с услвиями -->
+
+{% if user %}
+	hello, {{ user }}
+{% else %}
+	hello, guest
+{% endif %}
+
+<br><br> <!-- умеет работать с последовательностями -->
+
+<ul>
+	{% for comment in comments %}
+		<li>{{ comment }}</li>
+	{% endfor %}
+</ul>
+
+<br><br> <!-- поддерживает макросы (типа ф. в python) -->
+{% macro render_comment(comment) %}
+	<li>{{ comment }}</li>
+{% endmacro %}
+
+<ul>
+{% for comment in comments %}
+	{{ render_comment(comment) }}
+{% endfor %}
+</ul>
+
+<!-- пример импортирования сохранненого шаблона -->
+{% import 'macros.html' as macros %}
+<ul>
+	{% for comment in comments %}
+		{{ macros.render_comment(comment) }}
+	{% endfor %}
+</ul>
+
+<!-- пример подключения шаблона -->
+{% include 'common.html' %}
+
+<!-- наследование шаблонов -->
+<html>
+<head>
+	{% block head %}
+	<title>{% block title %}{% endblock %}</title>
+	{% endblock %}
+</head>
+<body>
+	{% block body %}
+	{% endblock %}
+</body>
+</html>
+
+	<!-- а теперь шаблон, наследующий предыдущий -->
+
+{% extends "base.html" %}
+{% block title %}Index{% endblock %}
+{% block head %}
+	{{ super() }}
+	<style>
+	</style>
+{% endblock %}
+{% block body %}
+<h1>hello, everyone</h1>
+{% endblock %}
+
+	<!-- внутри блока heads используется ф. super(), чтобы получить оригинальное содержимое -->
+
+
+<!-- переменный можно изменять с помощью фильтров, которые 
+добавляются после имени переменной через символ вертикальной черты
+
+hello, {{ name|capitalize }}
+
+часто употребляемые фильтры:
+safe - отображает содержимое без экранирования спец. символов
+capitalize - преобр. первый символ в верх. регистр, осталь - в ниж
+lower - все символы в ниж
+upper
+title - первые символы в каждом слове в верхний
+trim - удаляет начал и заверш. пробельные символы
+striptags - удаляет html-тэги из содерж. перед отображением
+
+(!) не применяй фильтр safe к значениям, полученным от ненадежных источников
+
+больше на http://jinja.pocoo.org/
+
+=====
+
+jinja2 умеет также:
+
+работать с условиями, с последовательностями, 
+
+поддерживает макросы (аналог функций), которые можно
+сохранить в отдельный файл и импортировать их оттуда,
+
+фрагменты шаблонов можно также сохранить в отедельный файл и подключать их потом в любом шаблоне,
+
+можно наследовать шаблоны (типа наследование классов в python)
+ -->

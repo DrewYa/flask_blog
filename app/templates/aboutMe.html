@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}{{ super() }}about me{% endblock %}
+
+{% block content %}
+	<h3 style="text-align: center">step by step</h3>
+	<p>
+		{{ moment.lang('ru') }}
+		Time: {{ moment(current_time).format('LLL') }} <br>
+		that was {{ moment(current_time).fromNow(refresh=True) }} <br>
+		последний перезапуск сервера:
+		 {{ moment(current_time).fromNow(refresh=True) }}
+	</p>
+
+	{% for message in get_flashed_messages() %}
+	<div class="alert alert-info">
+		<button type="button" class="close" data-dismiss="alert">X</button>
+		{{ message }}
+	</div>
+	{% endfor %}
+
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+<p>Drew</p>
+{% endblock %}

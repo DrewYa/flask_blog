@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<form method="post" ecntype="multipart/form-data" action="/">
+	{{ form.csrf_token() }} 
+	{{ form.label }}
+	{{ form.photo }}
+	<!--{# {{ form.file }} #}-->
+	<input type="submit" name="">
+	<!--{# {{ request.files }} #}-->
+</form>
+{% endblock %}
+
+<!-- {#
+((otherwise - в противном случае))
+encrypt формы html для multipart/form-data 
+в протисвном случае request.files будет пустым
+
+
+для автоматического создания формы можно сделать так:
+{{ wtf.quick_form(form) }}
+
+#} -->

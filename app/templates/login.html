@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}{{ super() }}{{ title }}{% endblock %}
+
+{% block content %}
+	<hi style="text-align: center;">вход</hi>
+	<form action="" method="post">
+		{{ form.hidden_tag() }}
+		<p>
+			{{ form.username.label }}<br>
+			{{ form.username(size=32, placeholder=errors) }}
+			{{ form.username.description }}
+			
+
+			<!-- {# {{ form.username(placeholder='here')}} #} -->
+			<!-- Добавим подсветку формы, если поле невалидно -->
+			<br>
+			{% for error in form.username.errors %}
+			<span style="color: red;">[{{ error }}]</span>
+			{% endfor %}
+			<!--  -->
+		</p>
+		<p>
+			{{ form.password.label }}<br>
+			{{ form.password(size=23) }}
+			<!-- и сюда добавим подсветку -->
+			<br>
+			{% for error in form.password.errors %}
+			<span style="color: red;">[{{ error }}]</span>
+			{% endfor %}
+			<!--  -->
+		</p>
+		<p>
+			{{ form.confirm.label }}<br>
+			{{ form.confirm(size=23) }}
+			{% for error in form.confirm.errors %}
+			<span style="color: #999900;">[{{ error }}]</span>
+			{% endfor %}
+		</p>
+		<p>	{{ form.submit() }}	</p>
+	</form>
+
+	{% if data %}
+		<p>ты ввел: {{ data }}</p>
+	{% else %} 
+		<p>ты еще ничего не ввел</p>
+	{% endif %}
+
+
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+	    <div class="alert alert-info">
+		<button type="button" class="close" data-dismiss="alert">X</button>
+	    <ul>
+	    {% for message in messages %}
+	    	<li>{{ message }}</li>
+	    {% endfor %}
+	    </ul>
+	    </div>
+        {% endif %}
+    {% endwith %}
+    
+
+{% endblock %}
+
+<!-- {#
+Элемент HTML <form> используется в качестве контейнера для веб-формы. Атрибут action формы используется для того, чтобы сообщить обозревателю URL-адрес, который должен использоваться при отправке информации, введенной пользователем в форму. Если для действия задана пустая строка, форма передается URL-адресу, находящемуся в данный момент в адресной строке, то есть URL-адресу, который визуализирует форму на странице. Атрибут method указывает метод HTTP-запроса, который должен использоваться при отправке формы на сервер. По умолчанию он отправляется с запросом GET, но почти во всех случаях использование POST запрос, улучшающий взаимодействие с пользователем, поскольку запросы этого типа могут отправлять данные формы в тело запроса, в то время как запросы GET добавляют поля формы к URL-адресу, загромождая адресную строку обозревателя.
+Аргумент шаблона form.hidden_tag() создает скрытое поле, включающее токен, который используется для защиты формы от CSRF атак. 
+Для этого нужен ключ SECRET_KEY в основном приложении, либо
+отдельный ключ конфигурации секретного ключа wtforms
+
+для полей, которым требуются доп. атрибуты html, они могут быть переданы в качестве аргументов. Как поля username, password
+принимают size - размер поля, который будет добавлен в 
+html-элемент <input> в качестве атрибута. Таким же образом
+можно присоединить классы CSS или идентификаторы к полям формы
+ 
+
+сообщения об ошибках генерируются при проверки формы валидаторами
+остается их только добавить.
+form.<field_name>.errors
+это будет список (т.к. поля могут иметь несколько валидаторов)
+
+
+
+
+#} -->

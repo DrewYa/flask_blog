@@ -1,0 +1,94 @@
+{% extends "bootstrap/base.html" %}
+
+{% block title %}RedYax - {% endblock %}
+
+{% block navbar %} 
+<!-- navbar-default = light   navbar-inverse = dark -->
+<!-- navbar-fixed-top = закрепить навбар при пролистывании страницы
+но тогда нужно будет в самом начале страницы отступить на высоту навбара,
+а то контент окажется спрятанным за него -->
+<nav class="navbar navbar-inverse" role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" 
+						data-target=".navbar-collapse">
+				<span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
+			</button>
+			<a href="#" class="navbar-brand">RedYax</a>
+		</div>
+		<div class="collapse navbar-collapse" id="navbarCollapse">
+			<ul class="navbar-nav nav">
+				<li class=navbar-item>
+					<a href="#" class="nav-link">homepage</a>
+				</li>
+				<li class=navbar-item>
+					<a href="#" class="nav-link">blog</a>
+				</li>
+				<li>
+					<a href="#">contact</a>
+				</li>
+				<li class=navbar-item>
+					<a href="#" class="nav-link">about me</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>
+{% endblock %} <!-- navbar -->
+
+{% block content %}
+<div class="container">
+	<div class="row row-">
+		<div class="col-6">
+			column1
+		</div>
+		<div class="col-6">
+			column2
+		</div>
+	</div>
+</div>
+{% endblock %}	<!-- content -->
+
+
+<!-- другие блоки шаблона base.html в bootstrap:
+
+doc 			html-документ целиком
+html_attribs 	атрибуты внутри тэга <html>
+head 
+title
+metas 			список тэга <meta>
+styles 			определение каскадных таблиц стилей
+body_attribs 	атрибуты внутри тэга <body>
+body 
+navbar 			строка навигации, определяемая пользователем
+content  		содержимое страницы, определяемое пользователем
+scripts 		объявления JS внизу документа
+
+(!) тэги styles, scripts используются расширенияем flask-bootstrap, их переопределение может вызвать затруднения, чтобы такого не произошло используй ф. super()
+для наследования изменений, внесенных flask-bootstrap'ом
+
+ -->
+
+
+
+
+ <!-- 
+Статические файлы (фотки, js-скрипты, css)
+по-умолчанию фласк ищет такие файлы в папкe static, прим:
+url_for('static', filename='css/styles.css', _external=True) 
+вернет http://localhost:5000/static/css/styles.css
+
+Как включить ярлык favicon.ico в базовом шаблоне для отображения в адресной строке браузера:
+
+{% block head %}
+{{ super() }}
+<link rel="shortcut icon" href="{{ url_for('static', filename = 'favicon.ico') }}" type="image/x-icon">
+<link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+{% endblock %}
+
+  -->
+
+ <!-- 
+для работы со временем есть flask-moment (модуль на js) для работу нужна jquery (она идет вместе с bootstrap)
+
+  -->
