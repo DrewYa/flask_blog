@@ -55,6 +55,11 @@ def index():
 def map():
 	return render_template('list_map.html', lst_map=app.url_map)
 
+@app.route('/favicon.ico')
+def favicon():
+	return send_from_directory(os.path.join(app.root_path, 'static'),
+		'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route('/user/')
 @app.route('/user/<name>')
 def user(name=None):
