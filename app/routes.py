@@ -41,6 +41,48 @@ fix_time = datetime.utcnow()
 # import _models_bd as models
 
 # --------------------------------
+from flask import send_from_directory
+import subprocess
+from time import sleep
+
+def make_photo():
+    p = subprocess.Popen(["./rec_photo_v4.sh"], stdout=subprocess.PIPE)
+    sleep(7)
+    return 'done'
+ 
+@app.route('/cam')
+def cam():
+    p = subprocess.Popen(["./rec_photo_v4.sh"], stdout=subprocess.PIPE)
+    #if make_photo() == 'done':
+    sleep(7)
+    return redirect(url_for('cam_photo'))
+
+import threading
+
+def del_photo():
+    import os
+    from time import sleep
+    import subprocess
+    sleep(5)
+    subprocess.Popen(["./rec_photo_v4.sh"], stdout=subprocess.PIPE)
+    os.remove('/home/pi/server/flask_blog/app/static/cam/'+
+              os.listdir(path='/home/pi/server/flask_blog/app/static/cam')[0])
+
+@app.route('/cam_photo')
+def cam_photo():
+    t1 = threading.Thread(target=del_photo)
+    t1.start()
+    #threading.start(Thread(target=del_photo))
+    #os.remove('/home/pi/server/flask_blog/app/static/cam/'+os.listdir(path='/home/pi/server/flask_blog/app/static/cam')[0])
+    #return url_for('static/cam/'+file)
+    return send_from_directory(os.path.join(app.root_path, 'static/cam'),
+                os.listdir(path='/home/pi/server/flask_blog/app/static/cam')[-1] )
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+            'favicon.ico', mimetype='image/vnd.mircosoft.icon')
 
 @app.route('/')
 def index():

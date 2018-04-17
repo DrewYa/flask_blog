@@ -18,6 +18,9 @@ migrate = Migrate(app, db)
 # (пакет определяется каталогом и скриптом __init__.py)
 from app import routes, _models_bd
 
+app.run(host='0.0.0.0', port=9077, debug=True)
+# , debug=None, **options)
+
 
 
 # ====================================================
