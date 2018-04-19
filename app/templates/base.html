@@ -2,6 +2,9 @@
 
 {% block head %}
 {{ super() }}
+<!-- блокируем возможность масштабирования  -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
 <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 {% endblock %}
@@ -20,7 +23,7 @@
 <!-- navbar-fixed-top = закрепить навбар при пролистывании страницы
 но тогда нужно будет в самом начале страницы отступить на высоту навбара,
 а то контент окажется спрятанным за него -->
-<nav class="navbar navbar-inverse" role="navigation">
+<nav class="navbar-fixed-top navbar-inverse" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" 
