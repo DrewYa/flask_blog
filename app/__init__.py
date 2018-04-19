@@ -19,7 +19,7 @@ migrate = Migrate(app, db)
 from app import routes, _models_bd
 
 # чтобы приложение запустилось с желаемыми параметрами:
-# app.run(host='0.0.0.0', port=9075, debug=False)
+# app.run(host='0.0.0.0', port=9079, debug=False)
 
 
 # ====================================================

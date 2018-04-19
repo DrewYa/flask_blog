@@ -1,0 +1,754 @@
+{% extends 'bootstrap/base.html' %}
+
+{# в заголовке сайта (head) в непарных тэгах <meta> мы указываем шрифт страницы сайта,
+адаптивность, и возможность\невозможность увиличивать его со смартфона:
+<meta charset="utf-8>
+<title>some name</title>
+<meta name="viewport"
+    content="width=device-width, initial-scale=1>
+
+viewport - для того, чтобы кнопки, шрифты и пр. увеличивались, когда мы открываем
+сайт на мобильнике и можно было удобно читать и пользоваться контентом
+    в след. тэге мета мы сделали чтобы сайт растягивался на ширину экрана и
+    чтобы можно было увеличивать сайт на мобильнике
+чтобы ограничить (блокировать) возможность увеличивать сайт напиши в контент еще
+maximum-scale=1, user-scalable=no
+будет ощущение, что это нативное приложение
+
+#}
+
+{#когда мы пишем class=" " то мы можем в кавычках через пробел
+ указывать сразу несколько классов
+
+разрешение экрана:
+xs      < 576 px
+sm      >= 576 px
+md      >= 768 px
+lg      >= 992 px
+xl      >= 1200 px
+экран делится на 12 столбцов
+#}
+
+ {# -------------------------------------------------- #} 
+{# изначально нужно создать div с классом контейнер, в котором уже будет содержимое сайта
+<div class="container"></div>       контейнер фиксир. ширины
+<div class="container-fluid></div>  контейнер, растягивающийся на всю ширину экрана
+fluid - жидкий, текучий
+
+учти, что ни один контейнер не является вкладываемым
+#} 
+
+
+{% block content %}
+{{ super() }}
+<p class="container">
+
+<div class="jumbotron">
+    <h3>ДОБРО ПОЖАЛОВАТЬ НА САЙТ DREW</h3>
+    <p>этот сайт - мой небольшой проект, я сделал его когда
+    учился фреймворку Flask и Bootstrap от Twitter. Благодаря
+    последнему дизайн получился такой миловидный.
+    Если есть вопросы - пиши в форму ниже. Не забудь зарегаться,
+    хотя для того, чтобы что-то сообщить мне это не требуется.</p>
+</div>
+
+
+
+<a href="#toForm" class="btn btn-primary btn-xs" type="button">к формам</a>
+
+
+{#    --------------------------------------------------------------------#}
+
+<div class="page-header"><h2>А теперь рассмотрим кнопочки:</h2></div>
+
+    <p>
+    <button type="button" class="btn btn-lg btn-default">color_default large</button>
+    <button type="button" class="btn btn btn-primary">color_primary standard_size</button>
+    <button type="button" class="btn btn-sm btn-success">color_success small_size</button>
+    <button type="button" class="btn btn-xs btn-info">color_info verysmall_size</button>
+    </p>
+
+    <!-- или другой вариант -->
+    {# ссылка откроется в новок окне благодаря target="_blank" #}
+    <a class="btn btn-primary btn-lg" href="#" target="_blank" role="button">
+    другой вариант создания кнопки
+    </a>
+
+    <input type="submit" class="btn btn-success" value="подтвердить">
+    <input type="button" class="btn btn-default" value="кнопка">
+
+    <!-- кнопка во всю ширину --> <br>
+            <button class="btn btn-success btn-block">button</button>
+
+    <!-- также можно определить состояние - активна или отключена --> <br>
+    <button class="btn btn-info btn active">нажатая</button>
+    <button class="btn btn-info btn disabled">отключенная</button>
+
+    <!-- группа кнопок --> <br>
+    {# если нужно чтобы кнопки были растянуты на всю ширину, то добавляем
+    в строку ниже еще класс btn-group-justified#}
+    <div class="btn-group">
+        <label class="btn btn-info">
+            <input type="checkbox"> параметр1
+        </label>
+        <label class="btn btn-default">
+            <input type="radio"> параметр2
+        </label>
+        <label class="btn btn-info">
+            параметр3
+        </label>
+        <label class="btn btn-primary">
+            параметр4
+        </label>
+        <label class="btn btn-warning">
+            параметр5
+        </label>
+    </div>
+<br><br>
+    <div class="btn-group" data-toggle="buttons">
+        <label class="btn btn-success">
+            <input type="checkbox"> параметр1
+        </label>
+        <label class="btn btn-warning">
+            <input type="checkbox"> параметр2
+        </label>
+        <label class="btn btn-primary">
+            парам3
+        </label>
+    </div>
+<br><br>
+    {# если группу кнопок или группы нужно объединить в одну группу, но
+чтобы было видно границу между ними, то вписываем их в это:
+<div class="btn-toolbar" role="toolbar">
+...
+</div>
+атрибут role не обязателен
+или также сделать div c классот btn-group без атрибута role
+
+а так можно расположить кнопки по вертикали: #}
+    <div class="btn-group btn-group-vertical">
+        <label class="btn btn-info">
+            <input type="checkbox"> параметр1
+        </label>
+        <label class="btn btn-default">
+            <input type="radio"> параметр2
+        </label>
+        <input type="button" class="btn btn-info" value="параметр3">
+    </div>
+
+
+
+{# кнопки:
+<button type="button" class=" 1 2 3">текст кнопки</botton>
+1 - пишем везде
+2 - размер кнопки
+3 - цвет кнопки
+
+цвета кнопок могут быть только 6 видов:
+btn-default     белая
+btn-primary     синяя
+btn-success     зеленая
+btn-info        голубая
+btn-warning     ораньжевая
+btn-danger      красная кнопка
+btn-link        тупо ссылка
+
+рамер книпки:
+btn-lg
+btn или совсем не пишем
+btn-sm
+btn-xs
+
+#}
+
+<div class="page-header"><h1>Теперь рассмотрим таблицы</h1></div>
+
+<div class="row">
+    <div class="col">
+        <table class="table">       {# тип табл. менять здесь #}
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Имя</th>
+                    <th>Фамилия</th>
+                    <th class="text-info">Ник</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="success">
+                    <td>1</td>
+                    <td>Drew</td>
+                    <td>K</td>
+                    <td>@Dr</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td colspan="2">Вика</td>
+                    <td>@kissenger</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+    {#
+таблицы:
+<div class="col-md-6">
+    <table class="  1  ">
+        <thead>
+            <tr>       <-   этими тегами отделяются строки таблицы (table row)
+                <th> название столбца1 </th>              (table head)
+                <th> название столбца2 </th>
+                ...
+            </tr>
+        </thead>
+        <tbody>                                         (table body)
+            <tr>
+                <td rowspan="  2  "> содержимое 1 столбца 1 строки </td>      (table description)
+                <td>содерж. 2 столб 2 строки</td>
+                ...
+            </tr>
+            <tr>
+                <td colspan="  3  ">содерж 1 столбца 2 строки</td>
+                ...
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+
+1) Таблицы бывают нескольких видов:
+table           с разделением по строкам (типа тетр. в линейку)
+table-striped   с разд. по стр. и чередование цвета: строка серая, строка белая
+table-bordered  с разд. по стр. и колонкам, возможно объединять строки или столбцы
+table-condensed     тоже, что и table, только более компактная (чуток)
+
+дополнительно в те же кавычки можно дописать:
+table-hover     при наведении на строку, она будет подсвечиваться
+можно писать по несколько видов
+
+2)в тэг <td> можно дописать rowspan="кол-во_строк" сколько нужно объединить строк
+3)в тэг <td> можно дописать colspan="кол-во_столбцов" сколько стобцов объединить
+
+в тэги (2) и (3) можно дописать еще класс со значением success, info, warning, ...
+
+для того, чтобы сделать таблицу более адаптивно, добавив вожножность прокручивания ее
+можно обернуть вот так:
+
+<div class="table-responsive">
+    <table class=" ... ">
+        ...
+    </table>
+</div>
+
+#}
+
+<div class="page-header"><h1>А теперь по картинкам:</h1></div>
+
+<img class="img-thumbnail" alt="this image will occupy 20%x20%"
+     style="width: 30%; height: auto; min-width: 300px" src="static/stark.jpg"
+     data-holder-rendered="false">
+
+{#
+class=
+    img-thumbnail   обычная форма изображения
+    img-circle      изображение скруглено по углам (очень сильно)
+    img-rounded     слабо скруглено по углам
+
+data-src    понятия не имею что это
+alt         если картинка не загрузится, то выведется текст из этого параметра
+style       стиль (дата и размер картинки в px или % или auto)
+        здесь есть такие параметры:
+        width и height - ширина и высота
+        min-width и min-height - минимал. шир. и выс. ниже них картинка сужаться не будет
+        max-width и max-height - макс. шир и выс. больше них картинка расширяться не будет
+
+src         откуда будет загружаться картинка
+data-holder-rendered    по моему ничего не дает хоть true хоть false
+
+#}
+<div class="page-header"><h1>Давай рассмотрим метки (lables)</h1></div>
+
+<p>
+<h1><span class="label label-info">самая большая</span></h1>
+    <br>
+<h6><span class="label label-success">самая маленькая</span></h6>
+</p>
+
+{#
+
+<h..><span class="label  1  ">текст метки</span></h..>
+
+приколько то, что размер меток регулируется тэгами h:
+<h1></h1>   самая большая
+h2
+...
+h6          самая маленькая
+можно заключить и в тэг <p></p>
+
+1)цвет метки:
+label-default   серая
+label-info      голубая
+label-warning   ораньжевая
+label-primary   синяя
+label-success   зеленая
+label-danger    красная
+
+#}
+
+{# -----------------------------------#}
+<div class="header-page">
+    <h1>Элементы, которые появляются при просмотре страницы на экране опр. размера</h1>
+</div>
+
+    <h3 class="visible-xs">Этот текст видим только на очень маленьких экранах (576рх даже меньше до 768)</h3>
+
+    <h3 class="visible-sm">Этот текст видим на маленьких экранах (от 768рх до 992)</h3>
+
+    <h3 class="visible-md">Этот текст видим на средних экранах (от 992рх до 1200)</h3>
+
+    <h3 class="visible-lg">Этот текст видим только на больших экранах (от 1200рх и больше)</h3>
+
+
+{#
+любому элементу, которому можно присваивать классы, можно присвоить такой
+класс, благодаря которому эл. будет появляться только если разрешение экрана
+будет опр. размера:
+
+class="  1  "
+
+1) итак:
+visible-xs
+visible-sm
+visible-md
+visible-lg
+#}
+
+<hr>
+
+<div class="page-header"><h1>а теперь поговорим о блоках</h1></div>
+{#
+экран делится на 12 столбцов
+чтобы сделать блоки, им сначала нужен родительский объект класса row (горизонтальный
+блок, который можно разделить на вертикальные):
+
+блоки можно красить с помощью style
+#}
+
+<div class="row">
+    <div class="col-xs-4  col-sm-3" style="background-color: #aaa">один из 3</div>
+    <div class="col-xs-4  col-sm-6" style="background-color: #ddd">один из 3</div>
+    <div class="col-xs-4  col-sm-3" style="background-color: #aaa">один из 3</div>
+</div>
+
+<hr>
+{# все очень просто
+<div class="1-2-3"></div>
+
+1) указываем col (от слова column)
+
+2) указываем меньше какого разрешение призойдем перестраивание блоков друг под друга если:
+xs  - не произойдет пересвтаивание
+sm      разрешение меньше 768 рх
+md      разрешение меньше 992 рх
+lg      разрешение меньше 1200 рх
+
+если указывать несколько параметров, то при опр. размере экрана, колонки будут
+перестраиваться соответствующе.     в этом примере при разрешении экрана ниже
+768 рх блоки встанут друг под друга, при 768 - 992 они встанут в строку и будут
+занимать одинаковую ширину, а выше 768 средний блок будет шире других
+
+еще пример
+в этом примере когда экран маленький, то один блок расширяется на всю ширину, а
+другой сползает под него и занимает половину ширины экрана
+А если экран средний и больше, то оба блока умещаются на 1 экране и делят его
+в соотношении 2:1
+#}
+<div class="row">
+    <div class="col-xs-12 col-md-8" style="background-color: #4e4">блок1</div>
+    <div class="col-xs-6 col-md-4" style="background-color: #49e">блок2</div>
+</div>
+
+{# в этом примере строка с классоа clearfix и visible-xs нужна чтобы
+блоки на маленьки устройствах отображались корректно, даже если один
+блок будет сильно больше другого. Попробуй его убрать и посмотри что получится#}
+<hr>
+<div class="row">
+    <div class="col-xs-6 col-md-3" style="background-color: #49e">block1 kjdljslkjflsjflsjfljslfjsljjlj</div>
+    <div class="col-xs-6 col-md-3" style="background-color: #27d">block1</div>
+    <div class="clearfix visible-xs"></div>
+    <div class="col-xs-6 col-md-3 label-info">block1</div>
+    <div class="col-xs-6 col-md-3 label-info">block1</div>
+</div>
+
+{# по умолчанию блоки прижимаются к правому края, если же нужно сделать, чтобы
+один блок прижимался к правому краю, а другой к левому, то нужно воспользоваться
+классом с offset (компенсация) в этом случае пространство, которое не занимает блок
+будет подставляться перед блоком, отталкивая его к левому краю.    Но если исп.
+несколько размеров, то для остальных тоже придется указывать какой-нибудь offset
+хотябы нулевой#}
+<hr>
+<div class="row">
+    <div class="col-xs-4                 col-md-6                 label-info">block</div>
+    <div class="col-xs-4 col-xs-offset-4 col-md-6 col-md-offset-0 label-success">block</div>
+</div>
+{# а можно сделать и наоборот, чтобы на маленьких экранах блоки стояли рядом, а на
+больших с промежутком#}
+<hr>
+<div class="row">
+    <div class="col-xs-8                 col-md-7                 label-info">block</div>
+    <div class="col-xs-4 col-xs-offset-0 col-md-3 col-md-offset-2 label-success">block</div>
+</div>
+
+<hr>
+{# а вто как можно сделать, чтобы блок рекламы на мобильных устройствах уезжал вниз
+под контент сайта, а на больших экранах был слева в колонке (тапа как на хабре)#}
+<div class="row">
+    <div class="col-md-8 label-success"> title of content
+        <div class="row">
+            <div class="col-md-6 label-primary">block content1</div>
+            <div class="col-md-6 label-info">block content2</div>
+        </div>
+    </div>
+    <div class="col-md-4 label-warning">block advertising(реклама)</div>
+</div>
+
+    <hr>
+<div class="page-header"><h3>рассмотрим как можно ставить блоки на нужные места</h3></div>
+{# но более удобно менять положение блоков с помощью push и pull (возвысить и стянуть)
+pull-x  сдвинуть к левому краю на х блоков
+push-x  сдвинуть к правому краю на х блоков
+это немного сложно сначала
+#}
+<div class="row">
+    <div class="col-md-4 col-md-push-8" style="background-color: #e77"> first </div>
+    <div class="col-md-8 col-md-pull-4" style="background-color: #7c7"> second </div>
+</div>
+    <hr>
+<div class="row">
+    <div class="col-md-5 col-md-push-2" style="background-color: #e77"> first </div>
+</div>
+    <hr>
+<div class="row">
+    <div class="col-md-4 col-md-push-8" style="background-color: #e77"> first </div> {# 3 #}
+    <div class="col-md-2 col-md-pull-4" style="background-color: #77e"> second </div>{# 1 #}
+    <div class="col-md-6 col-md-pull-4" style="background-color: #7c7"> third </div> {# 2 #}
+</div>
+    <hr>
+<div class="row">
+    <div class="col-md-4 col-md-push-8 col-xs-4" style="background-color: #e77"> first </div> {# 3 #}
+    <div class="col-md-2 col-md-pull-4 col-xs-2" style="background-color: #77e"> second </div>{# 1 #}
+    <div class="col-md-6 col-md-pull-4 col-xs-6" style="background-color: #7c7"> third </div> {# 2 #}
+</div>
+    <hr>
+
+{#    ---------------------------------------------------------#}
+
+<div class="page-header"><h1>теперь рассмотрим метки</h1></div>
+    <p>
+<span class="badge">text</span>
+<span class="badge">46</span>
+
+<ul class="nav nav-pills" role="tablist">
+    <li role="presentation" class="active">  {# делает кнопку синей, подсвеченной #}
+        <a href="#">
+            link
+            <span class="badge">12</span>
+        </a>
+    </li>
+</ul>
+    </p>
+
+<hr>
+
+
+{# ------------------------------------------------------- #}
+
+<div class="page-header"><h1>навигационная панель (nav)</h1></div>
+{# бывает 2 видов - в качестве навигационной строки и в качестве отдельных
+кнопок:
+классы nav-tabs и nav-pills соответственно
+навиганционная панель заключена в тэг <ul></ul> а ее элементы в <li></li>
+
+#}
+<ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#">btn1</a></li>
+    <li role="presentation"><a href="#">btn2</a></li>
+    <li role="presentation"><a href="#">btn3</a></li>
+    <li role="presentation" class="active"><a href="#">btn4</a></li>
+</ul>
+    <hr>
+<ul class="nav nav-pills" role="tablist">
+    <li role="presentation" class="active"><a href="#">btn1</a></li>
+    <li role="presentation"><a href="#">btn2</a></li>
+    <li role="presentation"><a href="#">btn3</a></li>
+</ul>
+    <hr>
+<ul class="nav navbar-right" role="tablist">
+    <li role="presentation" class="active"><a href="#">btn1</a></li>
+    <li role="presentation"><a href="#">btn2</a></li>
+    <li role="presentation"><a href="#">btn3</a></li>
+</ul>
+    <hr>
+
+    {# ------------------------------------------ #}
+<div class="page-header"><h1>навигационный бар (navbar)</h1></div>
+
+
+<div class="navbar navbar-default" {#style="background-color: #33e"#}>    {# navbar-default или navbar-inverse #}
+    <div class="container">
+
+        <div class="navbar-header" {#style="background-color: #e33"#}>
+
+            <a class="navbar-brand" href="#">Project name</a>
+
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse"
+                    data-target=".navbar-collapse">
+                <span class="sr-only">toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+        </div>
+
+        <div class="navbar-collapse collapse" aria-extanded="false" style="height: 1px;">
+            <ul class="nav navbar-nav"> {# допиши еще navbar-right - вырав. по прав. краю #}
+                <li class="active"><a href="#">home</a></li>
+                <li class="active"><a href="#">about</a></li>
+                <li><a href="#">contact</a></li>
+
+                <li class="dropdown"> {# допиши open - откр. сост. по умолчанию #}
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                       role="button" aria-haspopup="true" aria-expanded="true">
+                        dropdown
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">p one</a></li>
+                        <li><a href="#">p two</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li class="dropdown-header">заголовок подменю</li>
+                        <li><a href="#">p three</a></li>
+                        <li><a href="#">p four</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+
+
+    </div>
+</div>
+
+{# т.е. в тэге navbar-header создается статичное элементы нав. панели
+а в тэге <ul> уже само меню
+
+#}
+
+{# ------------------------------------------- #}
+<div class="page-header"><h1>сигналы (всплывающие подсказки)</h1></div>
+{#
+сама форма сообщения может быть 4 цветов (видов) и в общем случае выглядит так:
+<div class="alert   1   " role="alert"> элементы формы </div>
+
+1)цвета:
+alert-info      голубой
+alert-warning   ораньжевый
+alert-danger    красный
+alert-success   зеленый
+alert-dismissible без окантовки
+#}
+<div class="alert alert-success" role="alert">
+    <strong>сообщение об успешном действии</strong>
+    ты успешно прочитал это сообщение
+</div>
+<div class="alert alert-dismissible" role="alert">
+    <strong>сообщение об успешном действии</strong>
+    ты успешно прочитал это сообщение
+</div>
+<div class="alert alert-success" role="alert">
+    <strong>сообщение об успешном действии</strong>
+    ты успешно прочитал это сообщение
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+</div>
+
+
+
+{#    -------------------------------------------------------#}
+
+
+<div class="page-header"><h1>Тексты</h1></div>
+
+<p class="text-left">выравнивание по левому краю</p>
+<p class="text-right">выравнивание по правому краю</p>
+<p class="text-center">выравнивание по центру</p>
+<p class="text-justify">равнение по обоим краям</p>
+<p class="text-nowrap">текстр без переноса</p>
+<h1>текст и <small>85% высоты от него</small></h1>
+<h1>текст и <mark>маркированный текст</mark></h1>
+
+<blockquote>некая цитата</blockquote>
+<blockquote>
+    некая цитата
+    <footer>Drew</footer>
+</blockquote>
+<blockquote class="blockquote-reverse">
+    некая цитата
+    <footer>Drew</footer>
+</blockquote>
+
+<p class="text-uppercase">верний регистр </p>
+<p class="text-lowercase">НИЖний регистр </p>
+<p class="text-capitalize">слова начинаются с прописной буквы</p>
+
+<code>while, do begin elif
+etc ('string')</code>
+
+    <br><br>
+
+<pre>
+for i in range(95):
+    print('it been {0} second ago' % i )
+</pre>
+
+<div class="container">
+<pre>
+for i in range(95):
+    print('it been {0} second ago' % i )
+</pre>
+</div>
+
+<p class="text-muted"> шепотом </p>
+<p class="text-primary"> что-то необычное </p>
+<p class="text-success"> все получилось </p>
+<p class="text-info"> информация </p>
+<p class="text-warning"> предупреждение </p>
+<p class="text-danger"> опасность или что-то громкое </p>
+
+<p class="bg-primary"> что-то необычное </p>
+<p class="bg-success"> все получилось </p>
+<p class="bg-info"> информация </p>
+<p class="bg-warning"> предупреждение </p>
+<p class="bg-danger"> опасность или что-то громкое </p>
+
+
+{# ------------------------------------------------   #}
+    <div id="toForm"></div>
+{#--------------------------------------------------#}
+
+{# все поля какой-либо формы должны создаваться в блоке с классом form-group
+каждый input, text-area, text-select должны иметь класс form-control
+все это должно находиться в тэге form
+
+Если в тэг form добавить класс form-inline, то вся форма будет
+выстроена в одну лниию
+#}
+
+<div class="page-header"><h1>Формы</h1></div>
+
+<form role="form">
+<div class="form-group">
+    <label for="email">Email</label>
+    <input type="email" class="form-control" id="email"
+           placeholder="введите email">
+    <p class="help-block">некая подсказка</p>
+</div>
+
+<div class="form-group">
+    <label for="password">Пароль</label>
+    <input type="password" class="form-control" id="password"
+           placeholder="введите пароль">
+    <p class="help-block">пароль от аккаунта</p>
+</div>
+
+<div class="checkbox">
+    <label for="password">
+        <input type="checkbox">
+        сохранить пароль
+    </label>
+</div>
+
+<button class="btn btn-success" type="button">потвердить</button>
+
+</form>
+
+    <br>
+
+{# теперь покажу как можно разбивать элементы формы по столбцам,
+для этого нужно добовить в тэг форм класс form-horizontal, а в
+каждому тэгу label класс control-label
+тэперь в тэг label можно добавлять ширину,
+и для самого поля дл воода тоже, если обернуть его в
+div с классом, в котором укажем ширину
+кроме того нужно создать для всей формы родительский контейнер
+    можно изменять размер input-полей добавляя класс input-xs\lg\...
+еще если в какой-нибудь эл. вставить класс has-error, то форма
+подсветится красным цвето (как будто ошибка) или has-warning has-success:
+#}
+<div class="container">
+<form role="form" class="form-horizontal">
+<div class="form-group">
+    <label for="email" class="control-label col-sm-2">Email</label>
+    <div class="col-sm-3">
+        <input type="email" class="form-control input-lg" id="email"
+           placeholder="введите email">
+        <p class="help-block">некая подсказка</p>
+    </div>
+</div>
+<div class="form-group">
+    <label for="password" class="control-label col-sm-2">Пароль</label>
+    <div class="col-sm-4">
+        <input type="password" class="form-control" id="password"
+           placeholder="введите пароль">
+        <p class="help-block">пароль от аккаунта</p>
+    </div>
+</div>
+<div class="checkbox">
+    <label for="password">
+        <input type="checkbox">
+        сохранить пароль
+    </label>
+</div>
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" id="radio1"
+               value="option1" checked>
+        первый элемент
+    </label>
+</div>
+<div class="radio">
+    <label>
+        <input type="radio" name="optionsRadios" id="radio2"
+               value="option2" disabled="disabled">
+        второй элемент
+    </label>
+</div>
+
+<button class="btn btn-success" type="button">потвердить</button>
+
+<div>
+<select class="form-conrol">
+    <option>1</option>
+    <option>2</option>
+    <option>3</option>
+</select>
+</div>
+</form>
+</div>
+
+
+
+
+
+
+
+
+{# ------------------------------------------------ #}
+{#    <div class="page-header"><h1>выпадающее меню</h1></div>#}
+
+<hr>
+{#</div>#}
+{% endblock %}

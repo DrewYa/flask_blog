@@ -1,23 +1,14 @@
 {% extends 'base.html' %}
 {% block title %}{{ super() }}{{ title }}{% endblock %}
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{url_for('static', filename='mystyles.css')}}">
-{% endblock %}
-
 {% block content %}
-	<h1 style="text-align: center;">вход</h1>
+	<h1 style="text-align: center;">регистрация</h1>
 	<form action="" method="post">
 		{{ form.hidden_tag() }}
 		<p>
 			{{ form.username.label }}<br>
 			{{ form.username(size=32, placeholder="придумай псевдоним", style="width: auto; display: initial;", class="form-control") }}
-			{{ form.username.description }}	
-			<!-- style="width 100%; display: block;" -->
-			<!-- display - то, как отобразится поле -->
-			<!-- в классе form-control по умолчанию block, есть еще inline, initial, inherit (наследовать), inline, contents и др -->
-			<!-- width бутстрап по умолчанию делает 100% сделай auto для задания ширины в соотв. с атрибутом size (в данном случае size=32) -->
+			{{ form.username.description }}
 			
 
 			<!-- {# {{ form.username(placeholder='here')}} #} -->
@@ -29,8 +20,22 @@
 			<!--  -->
 		</p>
 		<p>
+			{{ form.email.label }}<br>
+			{{ form.email(size=32, placeholder="введи email", style="width: auto; display: initial;", class="form-control") }}
+			{{ form.email.description }}
+			
+
+			<!-- {# {{ form.username(placeholder='here')}} #} -->
+			<!-- Добавим подсветку формы, если поле невалидно -->
+			<br>
+			{% for error in form.email.errors %}
+			<span style="color: red;">[{{ error }}]</span>
+			{% endfor %}
+			<!--  -->
+		</p>
+		<p>
 			{{ form.password.label }}<br>
-			{{ form.password(size=23, style="width: auto;", class="form-control") }}
+			{{ form.password(size=23, style="width: auto; display: initial;", class="form-control") }}
 			<!-- и сюда добавим подсветку -->
 			<br>
 			{% for error in form.password.errors %}
@@ -40,7 +45,7 @@
 		</p>
 		<p>
 			{{ form.confirm.label }}<br>
-			{{ form.confirm(size=23, style="width: auto;", class="form-control") }}
+			{{ form.confirm(size=23, style="width: auto; display: initial;", class="form-control") }}
 			{% for error in form.confirm.errors %}
 			<span style="color: #999900;">[{{ error }}]</span>
 			{% endfor %}
@@ -48,10 +53,10 @@
 		<p>	{{ form.submit(class="btn btn-primary") }}	</p>			<!--{# #}-->
 	</form>
 
-	{% if data %}
-		<p>ты ввел: {{ data }}</p>
+	{% if msg %}
+		<p>{{ msg }}</p>
 	{% else %} 
-		<p>ты еще ничего не ввел</p>
+		<p>зарегистрируйся, чтобы отсылать сообщения</p>
 	{% endif %}
 
 
