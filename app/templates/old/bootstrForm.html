@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+{% block title %}Drew - get and post methods{% endblock %}
+
+{% block page_content %}
+
+<div class="container">
+<form role="form" class="form-horizontal" method="post">
+
+    {# в wtform вот здесь, в начале тела формы есть такая строка, которая
+    позволяет защищать форму от злоумышленников:        #}
+    <input id="csrf_token" name="csrf_token"
+           value="sdfjqpthxkvjshfshpwhqufiqlvvvVobshemTotSamiyTokensjdf.sdf.j_lsf"
+           type="hidden">
+
+
+
+
+
+
+<div class="form-group">
+    <label for="email" class="control-label col-sm-2">Email</label>
+    <div class="col-sm-3">
+        <input type="email" class="form-control input-lg" id="email"
+           placeholder="введите email" name="email">
+        <p class="help-block">некая подсказка</p>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="name" class="control-label col-sm-2">Имя</label>
+    <div class="col-sm-3">
+        <input type="text" class="form-control input-lg" id="name"
+           placeholder="введите имя" name="name" value="">
+        <p class="help-block">некая подсказка</p> {# подсказку можно также вынести #}
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="password" class="control-label col-sm-2">Пароль</label>
+    <div class="col-sm-4">
+        <input type="password" class="form-control" id="password"
+           placeholder="введите пароль" name="password">
+        <p class="help-block">пароль от аккаунта</p>
+    </div>
+</div>
+
+{#<div class="form-group col-sm-2">#}
+
+<div class="form-group">
+    <button class="btn btn-success col-sm-offset-2 col-sm-3 col-xs-12" type="submit"><h3>потвердить</h3></button>
+</div>
+
+<div class="form-group">
+    <button class="btn btn-lg btn-success col-sm-offset-2 col-sm-3 col-xs-12" type="submit">потвердить</button>
+</div>
+
+<div class="form-group">
+    <input class="btn btn-lg btn-success col-sm-offset-2 col-sm-3 col-xs-12" type="submit" value="подтвердить">
+</div>
+
+    {#</div>#}
+
+</form>
+</div>
+
+
+
+
+
+
+<div class="hidden-sm"><hr></div>
+<div class="visible-lg"><hr></div>
+
+
+
+
+
+{#<div class="container">#}
+<form class="form" action="" method="post" role="form">
+    <input id="csrf_token" name="csrf_token"
+           value="sdfjqpthxkvjshfshpwhqufiqlvvvVobshemTotSamiyTokensjdf.sdf.j_lsf"
+           type="hidden">
+
+    <div class="form-group required">
+        <label class="control-label" for="email">email</label>
+        <input id="email" class="form-control" name="email" value="" type="email"
+                required="" value="" >
+    </div>
+
+    <div class="form-group has-feedback">
+        <label class="control-label" for="name">имя</label>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <span class="glyphicon form-control-feedback"></span>
+
+            <input id="name" required="" class="form-control"
+                   name="name" value="" type="text" pattern="[a-zA-Z]{4,}">
+
+        </div>
+    </div>
+
+    <div class="form-group required">
+        <label class="control-label" for="password">пароль</label>
+        <input id="password" required="" class="form-control" name="password" value="" type="password">
+    </div>
+
+
+    <div class="form-group">
+        <label class="control-label" for="pasConfirm">подтверди пароль</label>
+        <input id="pasConfirm" class="form-control" name="pasConfirm" value="" type="password">
+    </div>
+
+    <div class="checkbox">
+        <label>
+             {# если есть атрибут checked даже с нулевым значением, то галка будет выбранной по умолч
+                также лучше что-нибудь вписать в поле value, если нужно чтобы по умолч. галка стояла#}
+            <input id="somecheckbox" checked="" name="somecheckbox" value="" type="checkbox">
+            я согласен с ...
+        </label>
+    </div>
+
+    <input id="submit" class="btn btn-pimary" name="submit" value="создать" type="submit">
+</form>
+{#</div>#}
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+{# осталось понять, как здесь использовать валидаторы !!! #}

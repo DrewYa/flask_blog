@@ -20,7 +20,7 @@ import os
 
 # ---------------------
 
-from app._wtForms import MyForm, LoginForm
+from app._wtForms import MyForm, LoginForm, LogoutForm, SigninForm
 # можно просто писать from ._wtForms import MyForm
 # т.е. без указания названия пакета
 from ._wtForms import PhotoForm
@@ -51,7 +51,7 @@ def index():
 	# return (<htmlШаблон>, <кодОтвета>, <словарьЗаголовков>)
 	# или return <объект Response>
 
-@app.route('/lst_map')
+@app.route('/lst_map') 
 def map():
 	return render_template('list_map.html', lst_map=app.url_map)
 
@@ -59,12 +59,20 @@ def map():
 def favicon():
 	return send_from_directory(os.path.join(app.root_path, 'static'),
 		'favicon.ico', mimetype='image/vnd.microsoft.icon')
+ 
+ # ------------------------------------
 
 @app.route('/user/')
 @app.route('/user/<name>')
 def user(name=None):
-	if not name:
-		return abort(403)
+	if name == None:
+		if session.get('username'):
+			return 'in session'	+ session.get('username')		
+		else:
+			return redirect(url_for('login'))
+	if name != session.get('username'):
+		# return redirect(url_for('login'))
+		abort(404)
 	return render_template('user.html', name=name)
 
 @app.route('/aboutme')
@@ -104,13 +112,15 @@ def redir2():
 
 # ф. abort исп для обработки ошибок
 # ф. не передает управление вызвавшей ее ф., а передает его веб-серверу, возбуждая исключение
-@app.route('/abort/<id>')
+@app.route('/abort/<id>') 
 def abrt(id):
 	if id == '2':
-		abort(404)
+		abort(404) # страница не найдена
 	if id == '3':
-		abort(500)
-	return '<h1>ты ввел %s, попробуй ввести abort/2 и 3 </h1>' % id
+		abort(500) # внутренняя серверная ошибка
+	if id == '4':
+		abort(403) # нет доступа
+	return '<h1>ты ввел %s, попробуй ввести abort/2 и 3 и больше </h1>' % id
 
 # как и ф. представления, обработчики ошибок возвращают ответ с 
 # числовым кодом состояния
@@ -122,19 +132,68 @@ def page_not_found(e):
 def internal_server_error(e):
 	return render_template('500.html'), 500
 
+@app.errorhandler(403)
+def not_permission(e):
+	return render_template('403.html'), 403
+
+from app import db
+from app._models_bd import User, Post
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		session['name'] = form.username.data
+		session['username'] = form.username.data
 		session['pas'] = form.password.data
 
-		data = session['name']
+		# usr = User(username=form.username.data, password_hash=form.password.data)
+		# db.session.add(usr)
+		# db.session.commit()
+
+		# u = User.query.all()
+		# u = User.query.get(<id>)
+		# u = User.query.filter(User.username == form.username.data).first()
+		# if u:
+		# 	flash('в БД есть твое имя {}'.format(u))
+		# else:
+		# 	flash('в БД такого имени нет')
+		# if User.query.fiter dddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+
+		data = session.get('username', None)
 		flash('твои данные: имя {} и пароль {}'.format(
-			session['name'], session['pas']))
+			session['username'], session['pas']))
 		return render_template('login.html', 
-			form=form, data=session['name'])
-	return render_template('login.html', form=form, data=None) 
+			form=form, data=session['username'])
+	return render_template('login.html', form=form, data=None) # (2471)
+	# (2471) пока форма не пройдет валидацию, значение переменной будет None
+
+@app.route('/signin', methods=('GET', 'POST'))
+def signin():
+	form = SigninForm()
+	if form.validate_on_submit():
+		session['username'] = form.username.data
+		session['pas'] = form.password.data 
+		if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first():
+			flash("пользователь с таким именем или email уже существует")
+			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
+		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
+		db.session.add(usr)
+		db.session.commit()
+		return redirect(url_for('login')) 
+	return render_template('signin.html', form=form, msg=None)
+
+
+@app.route('/logout', methods=('GET', 'POST'))
+def logout():
+	form = LogoutForm()
+	if form.validate_on_submit():
+		session['username'] = None
+		session['pas'] = None
+		session['email'] = None
+		return redirect(url_for('about_me'))
+	return render_template('logout.html', form=form, title='выход из аккаунта')
+
+# total chat
 
 
 @app.route('/submit_form', methods=('GET', 'POST'))
@@ -150,11 +209,11 @@ def submit_redir():
 	return redirect('<h2>you write: %s</h2>' % form.name)
 
 @app.route('/upload_photo', methods=['GET', 'POST'])
-def upload_photo():
-	form = PhotoForm()
+def upload_photo(): 
+	form = PhotoForm() 
 	if form.validate_on_submit():
 		f = form.photo.data		
-		filename = secure_filename(f.filename) #
+		filename = secure_filename(f.filename) 
 		filename = f.filename
 		f.save(os.path.join(app.instance_path, 'photo', filename))
 		return redirect(url_for('upload_photo'))
@@ -162,13 +221,20 @@ def upload_photo():
 
 # ----------------------------------
 @app.route('/my_example')
-@app.route('/example')
+@app.route('/example') 
 def example():
 	di = {'user':'drew', 'user2':'ven'}
-	return render_template('example.html', dictionary=di)
+	return render_template('example.html', dictionary=di) 
 # как видно, можно навешивать несколько декораторов на одну ф. представления
 
 # ---------------------------------
+
+@app.route('/bootstrapfaq')
+def bootstrapfaq():
+	return render_template('old/faq.html')
+
+# ---------------------------------------------
+
 from flask import send_from_directory
 @app.route('/download')
 def send_file():
@@ -176,6 +242,10 @@ def send_file():
 	# return send_from_directory(os.path.join(app.root_path, 'static'),
 		# 'drew.jpg')
 
+@app.route('/403_error') 
+def img403():
+	return send_from_directory(
+		os.path.join(app.root_path, 'static'), '403.png')
 # ------------------------------------
 
 

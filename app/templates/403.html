@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ super() }}page not found{% endblock %}
+
+{% block body_attribs %}
+{{ super() }}
+style="background-color: black; padding-top: 70px;"
+{% endblock %}
+
+{% block content %}
+	<p style="font-size: x-large; text-align: center; color: #AAA; margin-bottom: 12mm; margin-top: 17mm">
+	Ты заглянул на запрещенную страничку, возможно она принадлежит другому пользователю</p>
+
+	<!-- <center> -->
+		<img class="center-block" src="{{ url_for('img403') }}" alt="forbidden" style="color: black; border-top: 30px; ">
+	<!-- </center> -->
+	<p style="font-size: xx-large; text-align: center; color: #CCC; margin-top: 7mm;">
+	Доступ закрыт</p>
+	 
+{% endblock %}
+<!-- min-width: 300px; max-width:128px; -->

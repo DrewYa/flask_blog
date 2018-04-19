@@ -14,22 +14,28 @@
 	{% endif %}
 {% endblock %}
 
+{% block body_attribs %}
+{{ super() }}
+style="background-color: #f4f1f4; padding-top: 57px;"
+{% endblock %}
 
 {% block navbar %} 
 <!-- navbar-default = light   navbar-inverse = dark -->
 <!-- navbar-fixed-top = закрепить навбар при пролистывании страницы
 но тогда нужно будет в самом начале страницы отступить на высоту навбара,
 а то контент окажется спрятанным за него -->
-<nav class="navbar navbar-inverse" role="navigation">
+<!-- navbar = обычная (незакрепленная навигационная панель) -->
+<!-- если делать закрепленный, то смещать первый эл. на странице на 70px -->
+<nav class="navbar-fixed-top navbar-inverse " role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" 
 						data-target=".navbar-collapse">
 				<span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
 			</button>
-			<a href="#" class="navbar-brand">RedYax</a>
+			<a href="{{ url_for('user') }}" class="navbar-brand" style="font-size: x-large;">RedYax</a>
 		</div>
-		<div class="collapse navbar-collapse" id="navbarCollapse">
+		<div class="collapse navbar-collapse " id="navbarCollapse">
 			<ul class="navbar-nav nav">
 				<li class=navbar-item>
 					<a href="{{ url_for('login') }}" class="nav-link">sign in</a>

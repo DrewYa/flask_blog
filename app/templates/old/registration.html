@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block title %}Drew - регистрация{% endblock %}
+
+{% block page_content %}
+<div class="jumbotron">
+    <h1 style="text-align: center">Приветствуем на сайте!</h1>
+    <h3 style="text-align: center">Войди или зарегистрируйся, чтобы продолжить</h3>
+    <h4 style="text-align: center">{{ moment(current_time).format('LLL', refresh=True) }}</h4>
+    <h5 style="text-align: center">Это было {{ moment(current_time).fromNow(refresh=True) }}</h5>
+    <br>
+
+    {#moment().format()  'L' - 'LLLL' или YYYY MM DD или  YY MM DD или HH mm ss#}
+    {#<center></center>#}
+
+
+</div>
+
+
+<div class="row">
+
+{#    <div class="visible-xs"><hr></div>#}
+{#    <div class="hidden-sm"><hr></div>#}
+
+    <div class="col-xs-12 col-xs-offset-0 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">      {# Register #}
+        <div class="jumbotron">
+            <h2 style="text-align: center"><span class="label well-sm label-primary">Зарегистрироваться</span></h2>
+            <hr>
+
+{#            {{ wtf.quick_form(formReg) }}#}
+
+
+
+<form class="form" action="" method="post" role="form">
+    <input id="csrf_token" name="csrf_token"
+           value="sdfjqpthxkvjshfshpwhqufiqlvvvVobshemTotSamiyTokensjdf.sdf.j_lsf"
+           type="hidden">
+
+    <div class="form-group has-feedback">
+{#        <label class="control-label" for="name">имя</label>#}
+        <div class="input-group">
+            <span class="input-group-addon" style="background-color: #b1dadd">
+                <i class="glyphicon glyphicon-user"></i>
+            </span>
+            <span class="glyphicon form-control-feedback"></span>   {# для сообщений, если форма не правильно заполнилась #}
+
+            <input id="name" required="" class="form-control input-lg" placeholder="введите имя"
+                   name="name" value="" type="text" pattern="[a-zA-Z]{4,}"
+                    title="имя не менее 4 букв">
+        </div>
+    </div>
+
+    <br>
+
+    <div class="form-group required">
+{#        <label class="control-label" for="email">email</label>#}
+        <div class="input-group">
+            <span class="input-group-addon" style="background-color: #b1dadd">
+                <i class="glyphicon glyphicon-log-in"></i>
+            </span>
+            <input id="email" class="form-control input-lg" name="email" value="" type="email"
+                required="" value="" title="этот email будет привязан к твоему аккаунту"
+                placeholder="введите email">
+        </div>
+    </div>
+
+    <div class="form-group required">
+{#        <label class="control-label" for="password">пароль</label>#}
+        <div class="input-group">
+            <span class="input-group-addon" style="background-color: #b1dadd">
+                <i class="glyphicon glyphicon-lock"></i>
+            </span>
+            <input id="password" required="" class="form-control input-lg" name="password" value=""
+                   type="password" placeholder="пароль" title="надежный пароль - залог безопасности">
+
+        </div>
+    </div>
+
+
+    <div class="form-group">
+{#        <label class="control-label" for="pasConfirm">подтверди пароль</label>#}
+        <div class="input-group">
+            <span class="input-group-addon" style="background-color: #b1dadd">
+                <i class="glyphicon glyphicon-lock"></i>
+            </span>
+        <input id="pasConfirm" class="form-control input-lg" name="pasConfirm" value="" type="password"
+               placeholder="пароль еще раз" >
+        </div>
+    </div>
+
+    <div class="checkbox">
+        <label class="control-label" for="agree">
+             {# если есть атрибут checked даже с нулевым значением, то галка будет выбранной по умолч
+                также лучше что-нибудь вписать в поле value, если нужно чтобы по умолч. галка стояла#}
+            <input id="agree" checked="" name="agree" value="y" type="checkbox">
+            я согласен с <a href="{{ url_for('rules') }}">правилами сайта</a>
+        </label>
+    </div>
+
+    <br>
+{#    <input id="submit" class="btn btn-lg btn-primary btn-block" name="submit" value="создать" type="submit">#}
+    <button id="submit" class="btn btn-primary btn-block" name="submit" type="submit">
+        <h3>СОЗДАТЬ</h3>
+    </button>
+
+</form>
+
+
+
+
+
+        </div>  {# jumbotron #}
+    </div>  {# col-md-6 Register #}
+</div>  {# row #}
+
+{% endblock %}
+
+
+{#про защиту формы:#}
+{#в wtforms есть такая штука: при создании какой либо формы помимо видимых полей#}
+{#создается еще и скрытое поле, где в качестве значения выступает токен.#}
+{#Благодаря этому токену форма защищается.#}
+{##}
+{#Я думаю, что токен генерируется перед запросом пользователя, потом в ответе вместе с полями#}
+{#формы передается пользователю, после чего заполненная пользователем форма передается на#}
+{#сервер. Сервер сверяет токен с тем, что был отослан, если совпадает, до данные обрабатываются#}
+{#иначе - не обрабатываеются.#}
+{##}
+{#правильно?#}
+{#как можно самостоятельно (без wtforms) сделать такой механизм?#}
+
+
+
+
+{#        <form action="" method="post">#}
+{#            {{ formEntr.name.label }}#}
+{#            {{ formEntr.name(size=12, id="name", placeholder="haha", style='background-color: #3e3' ) }}#}
+{#                {{ formEntr.submit() }}#}
+{#    </form>#}
+
+{#<legend>drew - разработчик</legend>#}
+
+
+

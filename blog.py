@@ -1,6 +1,37 @@
 # экземпляр приложения импортируется из нашего пакета app
 from app import app
 
+from app import db
+from app._models_bd import User, Post
+
+# создадим контекст оболочки, который добавит экземпляр 
+# приложения и модели БД (и вообще любые модули, функции, атрибуты)
+# в сеанс оболочки (если запускать из-под командной строки ):
+# Этот декоратор зарегает ф. как ф. контекста оболочки
+# когда будем выполнять 	flask shell 	она выполнит эту ф.
+# ф. возвращает именно словарь, потому что нужно зарегать имя для
+# возвращаемой сущность, через которое она будет доступна в оболочке
+@app.shell_context_processor
+def make_shell_context():
+	return {'db': db, 'User': User, 'Post': Post}
+
+# результат:
+
+# (venv_flask_b) c:\Python\virtual_envs\flask_blog>flask shell
+# Python 3.6.2 (v3.6.2:5fd33b5, Jul  8 2017, 04:57:36) [MSC v.1900 64 bit (AMD64)] on win32
+# App: app
+# Instance: c:\Python\virtual_envs\flask_blog\instance
+# >>>
+# >>> db
+# <SQLAlchemy engine=sqlite:///c:\Python\virtual_envs\flask_blog\app\app.db>
+# >>> User
+# <class 'app._models_bd.User'>
+# >>> Post
+# <class 'app._models_bd.Post'>
+# >>>
+
+# --------------------------------------
+
 # должна получиться такая структура:
 # _blog_pachage_eigth/
 #   venv/
@@ -31,6 +62,8 @@ from app import app
 
 # теперь можно запускать:
 # (venv) $ flask run
+# или для доступа к серву со всхе Ip:
+# flask run --host=0.0.0.0
 
 # flask команды полагаются на переменную среды FLASK_APP,
 # чтобы знать где расположено приложение Flask 

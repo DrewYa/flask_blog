@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import (StringField, PasswordField, BooleanField,
 	SubmitField)
-from wtforms.validators import DataRequired,  Length, EqualTo
+from wtforms.validators import (DataRequired,  Length, 
+	EqualTo, Email)
+
 # from wtforms.validators import FileRequired
 from flask_wtf.file import FileField # , FileRequired
 
@@ -17,7 +19,7 @@ class PhotoForm(FlaskForm):
 # создается как переменная класса в классе LoginForm
 # валидаторы:
 # DataRequired - проверяет, что поле не отправлено пустым
-
+ 
 class LoginForm(FlaskForm):
 	username = StringField('Имя пользователя', 
 		validators=[DataRequired(message='неправильно')],
@@ -32,6 +34,21 @@ class LoginForm(FlaskForm):
 # подробнее help(StringField) или help(PasswordField), ...
 # также можно проверить какие опции можно задавать самим валидаторам
 # например, сообщения об ошибке и др
+
+class LogoutForm(FlaskForm):
+	submit = SubmitField('выйти')
+
+class SigninForm(FlaskForm):
+	username = StringField('Имя пользователя', 
+		validators=[DataRequired(message='неправильно')],
+		description='придумай имя',) #_translations=True)
+	email = StringField('email', 
+		validators=[Email(message='некорректный email')])
+	password = PasswordField('Пароль', validators=[
+		Length(min=4, message='не короче 4 символов')])
+	confirm = PasswordField('подтверди пароль', validators=[
+		EqualTo('password', message='пороли не совпадают')])
+	submit = SubmitField('войти')
 
 # например для строкового поля (лишь часть документации):
 # __init__(self, label=None, validators=None, filters=(), description='', id=None, default=None, widget=None, render_kw=None, _form=None, _name=None, _prefix='', _translations=None, _meta=None)

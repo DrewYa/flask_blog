@@ -10,7 +10,7 @@ class User(db.Model):
 	post = db.relationship('Post', backref='author', lazy='dynamic') # (1)
 
 	def __repr__(self): 
-		return '<User {}> |id: {} |email: {}'.format(
+		return '<User {} |id: {} |email: {}>'.format(
 			self.username, self.id, self.email)
 
 class Post(db.Model):
@@ -221,14 +221,36 @@ class Post(db.Model):
 
 # https://habrahabr.ru/post/346344/
 # =============================================
+# **********************************************
+# =============================================
 
 # интерактивная сессия:
+
+
+# С САМОГО НАЧАЛА НУЖНО СОЗДАТЬ БД, ЕСЛИ ЭТОГО НЕ БЫЛО СДЕЛАНО
+# АВТОМАТИЧЕСКИ С ПОМОЩЬЮ Flask-Migrate
+
+# эта команда создасть БД (если е не было) и таблицы в ней
+# если БД уже есть, то ничего не выполнится
+
+# db.create_all()
+
+# удалить таблицы можно так:
+# db.drop_all()
+
+# а чтобы обновить таблицы, придется сначала удалить старые
+# и потом создать новые:
+
+# db.drop_all()
+# db.create_all()
+
+
 
 # from app import db
 # from app._models_bd import User, Post
 
 # u1 = User(username='Drew', email='drew@site.org')
-# db.session.add(u1)
+# db.session.add(u1)		# или add_all([...])
 # db.session.commit() - записать изменения в БД из сеанса
 
 # db.session.rollback() - отменяет весь сеанс и удаляет все 
@@ -285,3 +307,30 @@ class Post(db.Model):
 # ...     db.session.delete(p)
 # ...
 # >>> db.session.commit()
+
+# --------------------------
+
+# session.add()
+# может также служить для обновления записи
+
+# сначала нужно запись из БД присвоить переменной
+# затем изменить переменную и затем добавить в бД
+
+# ---
+# допустим мы хотим проверить, если в БД пользователь
+# с именем 'Drew'
+
+# u = User.query.filter(User.username == 'Drew').first() 
+
+# v. get(23) возращает запись под указанным первичным ключом
+# в данном случае с id 23 (записи в БД нумеруются с 1)
+
+#  SELECT user.id AS user_id, 
+#  user.username AS  user_username,
+#   user.email AS  user_email, 
+#   user.password_hash  AS user_password_hash 
+#   FROM user WHERE user.username = ?
+
+# если пользователь такой есть, то она вернет запись из БД
+
+# ----
