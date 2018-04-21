@@ -1,21 +1,28 @@
 {% extends 'base.html' %}
 {% block title %}{{ super() }}{{ title }}{% endblock %}
 
-{% block content %}
-	<h1 style="text-align: center;">регистрация</h1>
-	<form action="" method="post">
+{% block ccontent %}
+<div class="row">
+	<h1 style="text-align: center;">регистрация</h1><br>
+
+	<!-- <div class="col col-xs-2 col-sm-3 col-md-4"></div> -->
+
+<!-- 	<div class="col col-xs-8 col-sm-6 col-md-4"> -->
+	<div class="col col-xs-8 col-xs-push-2 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+	<form action="" method="post" style="width:270px">
 		{{ form.hidden_tag() }}
 		<p>
 			{{ form.username.label }}<br>
-			{{ form.username(size=32, placeholder="придумай псевдоним", style="width: auto; display: initial;", class="form-control") }}
-			{{ form.username.description }}
+			{{ form.username.description }} <br>
+			{{ form.username(size=32, placeholder="или придумай псевдоним", style="width: auto; display: initial;", class="form-control") }}
+			
 			
 
 			<!-- {# {{ form.username(placeholder='here')}} #} -->
 			<!-- Добавим подсветку формы, если поле невалидно -->
 			<br>
 			{% for error in form.username.errors %}
-			<span style="color: red;">[{{ error }}]</span>
+			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
 			<!--  -->
 		</p>
@@ -29,7 +36,7 @@
 			<!-- Добавим подсветку формы, если поле невалидно -->
 			<br>
 			{% for error in form.email.errors %}
-			<span style="color: red;">[{{ error }}]</span>
+			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
 			<!--  -->
 		</p>
@@ -39,42 +46,54 @@
 			<!-- и сюда добавим подсветку -->
 			<br>
 			{% for error in form.password.errors %}
-			<span style="color: red;">[{{ error }}]</span>
+			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
 			<!--  -->
 		</p>
 		<p>
 			{{ form.confirm.label }}<br>
-			{{ form.confirm(size=23, style="width: auto; display: initial;", class="form-control") }}
+			{{ form.confirm(size=23, style="width: auto; display: initial;", class="form-control") }}<br>
 			{% for error in form.confirm.errors %}
-			<span style="color: #999900;">[{{ error }}]</span>
+			<span style="color: #990055;">{{ error }}</span>
 			{% endfor %}
 		</p>									
-		<p>	{{ form.submit(class="btn btn-primary") }}	</p>			<!--{# #}-->
+		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	<!--{# btn-block будте броать ширину родител. html-тэга #}-->
 	</form>
+	
 
 	{% if msg %}
 		<p>{{ msg }}</p>
 	{% else %} 
 		<p>зарегистрируйся, чтобы отсылать сообщения</p>
 	{% endif %}
+    
+	</div> <!-- end col -->
+	<!-- <div class="col col-xs-2 col-sm-3 col-md-4 "></div> -->
+</div> <!-- end row -->
 
-
+<div class="row">
+	<div class="col-md-8 col-md-push-2  col-sm-10 col-sm-push-1">
 	{% with messages = get_flashed_messages() %}
         {% if messages %}
 	    <div class="alert alert-info">
-		<button type="button" class="close" data-dismiss="alert">X</button>
-	    <ul>
-	    {% for message in messages %}
-	    	<li>{{ message }}</li>
-	    {% endfor %}
-	    </ul>
+			<button type="button" class="close" data-dismiss="alert">X</button>
+	    	<ul>
+	    	{% for message in messages %}
+	    		<li>{{ message }}</li>
+	    	{% endfor %}
+	    	</ul>
 	    </div>
         {% endif %}
     {% endwith %}
-    
+    </div>
 
-{% endblock %}
+
+</div> <!-- end row -->
+
+<!-- <div class="row"><div class="col-md-1 col-md-push-11">hdg</div></div> -->
+
+
+{% endblock %} {# <!-- end block ccontent --> #}
 
 <!-- {#
 Элемент HTML <form> используется в качестве контейнера для веб-формы. Атрибут action формы используется для того, чтобы сообщить обозревателю URL-адрес, который должен использоваться при отправке информации, введенной пользователем в форму. Если для действия задана пустая строка, форма передается URL-адресу, находящемуся в данный момент в адресной строке, то есть URL-адресу, который визуализирует форму на странице. Атрибут method указывает метод HTTP-запроса, который должен использоваться при отправке формы на сервер. По умолчанию он отправляется с запросом GET, но почти во всех случаях использование POST запрос, улучшающий взаимодействие с пользователем, поскольку запросы этого типа могут отправлять данные формы в тело запроса, в то время как запросы GET добавляют поля формы к URL-адресу, загромождая адресную строку обозревателя.

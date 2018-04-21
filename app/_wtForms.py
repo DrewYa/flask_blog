@@ -41,7 +41,7 @@ class LogoutForm(FlaskForm):
 class SigninForm(FlaskForm):
 	username = StringField('Имя пользователя', 
 		validators=[DataRequired(message='имя не введено')],
-		description='придумай имя',) #_translations=True)
+		description='имя будет служить ником',) #_translations=True)
 	email = StringField('email', 
 		validators=[Email(message='некорректный email')])
 	password = PasswordField('Пароль', validators=[

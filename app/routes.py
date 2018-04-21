@@ -176,16 +176,18 @@ def login():
 	return render_template('login.html', form=form, data=None) # (2471)
 	# (2471) пока форма не пройдет валидацию, значение переменной будет None
 
-@app.route('/signin', methods=('GET', 'POST'))
+@app.route('/signin', methods=('GET', 'POST')) 
 def signin():
 	form = SigninForm()
 	if form.validate_on_submit():
 		session['username'] = form.username.data
 		session['pas'] = form.password.data 
-		# if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first():
-		if User.query.filter_by(username=form.username.date).filter_by(email=form.email.data).first():
+		# if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first(): логич ИЛИ
+		# if User.query.filter_by(username=form.username.date).filter_by(email=form.email.data).first():		связываются логическим И
+		if User.query.filter( (User.username==form.username.data) | (User.email==form.email.data) )[:]: 	# логич ИЛИ
 			flash("пользователь с таким именем или email уже существует")
 			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
+		
 		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
 		db.session.add(usr)
 		db.session.commit()
