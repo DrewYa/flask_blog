@@ -1,4 +1,4 @@
-from flask_wtf import FlaskForm
+from flask_wtf import FlaskForm,  RecaptchaField
 from wtforms import (StringField, PasswordField, BooleanField,
 	SubmitField)
 from wtforms.validators import (DataRequired,  Length, 
@@ -22,7 +22,7 @@ class PhotoForm(FlaskForm):
  
 class LoginForm(FlaskForm):
 	username = StringField('Имя пользователя', 
-		validators=[DataRequired(message='неправильно')],
+		validators=[DataRequired(message='имя не введено')],
 		description='придумай имя',) #_translations=True)
 	password = PasswordField('Пароль', validators=[
 		Length(min=4, message='не короче 4 символов')])
@@ -40,7 +40,7 @@ class LogoutForm(FlaskForm):
 
 class SigninForm(FlaskForm):
 	username = StringField('Имя пользователя', 
-		validators=[DataRequired(message='неправильно')],
+		validators=[DataRequired(message='имя не введено')],
 		description='придумай имя',) #_translations=True)
 	email = StringField('email', 
 		validators=[Email(message='некорректный email')])
@@ -49,6 +49,11 @@ class SigninForm(FlaskForm):
 	confirm = PasswordField('подтверди пароль', validators=[
 		EqualTo('password', message='пороли не совпадают')])
 	submit = SubmitField('войти')
+
+class RecaptchaForm(FlaskForm):
+	recaptcha = RecaptchaField()
+	submit = SubmitField('подтвердить')
+
 
 # например для строкового поля (лишь часть документации):
 # __init__(self, label=None, validators=None, filters=(), description='', id=None, default=None, widget=None, render_kw=None, _form=None, _name=None, _prefix='', _translations=None, _meta=None)

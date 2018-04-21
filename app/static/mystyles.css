@@ -1,6 +1,6 @@
 
 
-.input-style{
+.mystyle {
 	font-family: "Helvetica";
 
 	border-radius: 5px;
@@ -36,12 +36,95 @@
         text-rendering: auto;
 }
 
-.input-style:focus {
-    border-color: #ff0000;
-    outline: 0;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
-}
-/*border-color: #66afe9;*/
 
-/*  .класс:ховер  */
+
+
+.mystyle2 {
+	font-family: "Helvetica";
+	width: auto;
+	/*line-height: 100px;*/
+	height: 50px;
+	border: 1px solid #ccc;	/* сама рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
+    border-radius: 9px;	/*скругление рамки поля*/
+    padding: 4px 12px;
+}
+
+.mystyle2:focus {
+	padding: 4px 34px;
+	width: 400px ;
+	border: 1px solid #0f0;
+    border-color: #34c734;		/*только цвет рами */
+    box-shadow: inset 1px 1px 12px rgba(0,0,200, 1.0),   0 0 30px #f00; /*дает эффект подсветки поля*/
+    /*	       |  inset - внутри поля               |   снаружи       |   */
+    /*box-shadow: none | <тень> [,<тень>]*  
+    где тень - это 
+	inset <сдвиг по x> <сдвиг по y> <радиус размытия> <растяжение> <цвет>
+ 	цвет подсветки внутренней rgba(0,0,200, 1.0) чем меньше значение альфа-канала, тем больше прозрачность*/
+   
+    outline: 0;
+    /*-webkit-box-shadow: inset 0 1px 1px rgba(0,200,0,.075), 0 0 8px rgba(102,175,233,.6);*/
+    /*box-shadow: inset 0 1px 1px rgba(0,220,0,.075), 0 0 8px rgba(102,175,233,.6);*/
+}
+
+
+
+/*
+active		если элемент активирован (кнопочки, мб еще что-то) или зажат ЛКМ на нем
+focus		выбран (как с помощью tab)
+hover		курсор находится на элемента
+visited		?
+*/
+
+
+
+/* shadow drew */
+.inputFielddre {
+	padding: 6px 4px;	/*по_горизонтали  по_вертикали*/
+	background-color: #f9f9f9; /*цвет поля*/
+	padding: 7px;
+	height: 34px;
+	width: auto;
+	display: block; /*block - типа как тэг <p>; inline - без отступов (как если бы без margine)*/
+    border-radius: 5px;
+    font-size: 12pt;
+    color: #474747;
+}
+.inputFielddre:focus {
+	outline: 0;		/*нужен чтобы дефолтная рамка не окржала форму, когда мы ее выделяем*/
+	box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;
+}
+
+
+
+.shadowOkdre {
+	border: 1px solid #ccc;
+}
+
+.shadowOkdre:focus {
+	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
+	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
+	border-color: #66afe9;    /*как в оригинальном бутстрапе*/
+}
+
+.shadowOkdre:hover {		/*при наведении курсора*/
+	/*border-color: #99c;*/
+	border-color: #66afe9;
+}
+
+
+.shadowErrdre {
+	    border: 1px solid #be7171; /*rgba(170,70,70, 0.77);*/ /*#f49499;*/
+	    /*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc6565;*/
+}
+
+.shadowErrdre:focus {
+	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
+	/*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc5555;
+	border-color: #ce7171;    /*как в оригинальном бутстрапе*/
+
+
+	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
+	border-color: #966579;    /*как в оригинальном бутстрапе*/
+}
+
+/* http://htmlbook.ru/CSS/Box-shadow */

@@ -16,7 +16,11 @@
 
 {% block body_attribs %}
 {{ super() }}
-style="background-color: #f4f1f4; padding-top: 57px;"
+	style="padding-top: 57px;
+	{% block body_style %}
+		background-color: #f4f1f4;
+	{% endblock %}
+	"
 {% endblock %}
 
 {% block navbar %} 

@@ -2,12 +2,17 @@
 
 {% block title %}{{ super() }}page not found{% endblock %}
 
+{% block body_style %}		{# создан мной в base.html #}
+	background-color: black;
+{% endblock %}
+
 {% block body_attribs %}
 {{ super() }}
-style="background-color: black; padding-top: 70px;"
+style="background-color: #fff; padding-top: 70px;"
 {% endblock %}
 
 {% block content %}
+<div class="container">
 	<p style="font-size: x-large; text-align: center; color: #AAA; margin-bottom: 12mm; margin-top: 17mm">
 	Ты заглянул на запрещенную страничку, возможно она принадлежит другому пользователю</p>
 
@@ -16,6 +21,6 @@ style="background-color: black; padding-top: 70px;"
 	<!-- </center> -->
 	<p style="font-size: xx-large; text-align: center; color: #CCC; margin-top: 7mm;">
 	Доступ закрыт</p>
-	 
+</div>
 {% endblock %}
 <!-- min-width: 300px; max-width:128px; -->

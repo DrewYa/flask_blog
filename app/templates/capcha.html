@@ -3,70 +3,20 @@
 
 {% block styles %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
-<title>some name</title>
-<meta name="viewport" content="width=device-width, initial-scale=0">	
-<!-- initial-scale=0 запрещает увеличивать на мобильниках -->
+<link rel="stylesheet" href="{{url_for('static', filename='mystyles.css')}}">
 {% endblock %}
 
 {% block content %}
 	<h1 style="text-align: center;">вход</h1>
-	<div class=container style="color: #474747">
 	<form action="" method="post">
-		{{ form.hidden_tag() }}
+		<!-- {{ form.hidden_tag() }} -->
 		<p>
-			<!-- <div style="color: #575757;">		 -->
-			<!-- цвет будет применен для всех дочерних объектов, если в них нет переопр. для этого атрибута -->
-			{{ form.username.label }}<br>
-			{% if form.username.errors %}
-			{{ form.username( size=32, placeholder="твой псевдоним", class="inputFielddre shadowErrdre") }}
-			{% else %}
-			{{ form.username( size=32, placeholder="твой псевдоним", class="inputFielddre shadowOkdre") }}
-			{% endif %}			
-			<!-- </div> -->
+			{{ form.recaptcha() }}
+		</p>			
 
-			<!-- style="width: auto; display: initial;" -->
-			<!-- {{ form.username.description }}	 -->
-			<!-- display - то, как отобразится поле -->
-			<!-- в классе form-control по умолчанию block, есть еще inline, initial, inherit (наследовать) и др -->
-			<!-- width бутстрап по умолчанию делает 100% сделай auto для задания ширины в соотв. с атрибутом size (в данном случае size=32) -->
-			
-
-			<!-- {# {{ form.username(placeholder='here')}} #} -->
-			<!-- Добавим подсветку формы, если поле невалидно -->
-			
-			{% for error in form.username.errors %}
-			<p style="color: #a73577;">{{ error }}</p>
-			{% endfor %}
-			<!--  -->
-		</p>
-		<p>
-			{{ form.password.label }}<br>
-			{{ form.password(size=23, style="width: auto;", class="form-control") }}
-			<!-- и сюда добавим подсветку -->
-			{% for error in form.password.errors %}
-			<p style="color: #872657;">{{ error }}</p>
-			{% endfor %}
-			<!--  -->
-		</p>
-		<p>
-			{{ form.confirm.label }}<br>
-			{{ form.confirm(size=23, style="width: auto;", class="form-control") }}
-			{% for error in form.confirm.errors %}
-			<p style="color: #872667;">{{ error }}</p>
-			{% endfor %}
-		</p>									
-		<p>	{{ form.submit(class="btn btn-primary") }}	</p>			<!--{# #}-->
+		 <p>	{{ form.submit(class="btn btn-primary") }}	</p>			<!--{# #} -->
 	</form>
 
-
-	{% if data %}
-		<p>ты ввел: {{ data }}</p>
-	{% else %} 
-		<p>ты еще ничего не ввел</p>
-	{% endif %}
-
-	</div> 
 
 	{% with messages = get_flashed_messages() %}
         {% if messages %}

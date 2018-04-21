@@ -63,7 +63,8 @@ def make_shell_context():
 # теперь можно запускать:
 # (venv) $ flask run
 # или для доступа к серву со всхе Ip:
-# flask run --host=0.0.0.0
+# flask run --host=0.0.0.0 --port=9077		или
+# flask run --host 0.0.0.0 --port 9077
 
 # flask команды полагаются на переменную среды FLASK_APP,
 # чтобы знать где расположено приложение Flask 

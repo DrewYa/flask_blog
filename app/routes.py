@@ -143,8 +143,8 @@ from app._models_bd import User, Post
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		session['username'] = form.username.data
-		session['pas'] = form.password.data
+		# session['username'] = form.username.data
+		# session['pas'] = form.password.data
 
 		# usr = User(username=form.username.data, password_hash=form.password.data)
 		# db.session.add(usr)
@@ -159,11 +159,20 @@ def login():
 		# 	flash('в БД такого имени нет')
 		# if User.query.fiter dddddddddddddddddddddddddddddddddddddddddddddddddddddddd
 
-		data = session.get('username', None)
-		flash('твои данные: имя {} и пароль {}'.format(
-			session['username'], session['pas']))
+		# data = session.get('username', None)
+		# flash('твои данные: имя {} и пароль {}'.format(
+			# session['username'], session['pas']))
+
+		if User.query.filter( (User.username == form.username.data) &
+							(User.password_hash == form.password.data) ).first():
+			flash('есть такой пользователь')
+			return render_template('login.html', form=form, data='yes')
+
+
+
+		flash('нет такого пользователя')
 		return render_template('login.html', 
-			form=form, data=session['username'])
+				form=form, data=session['username'])
 	return render_template('login.html', form=form, data=None) # (2471)
 	# (2471) пока форма не пройдет валидацию, значение переменной будет None
 
@@ -173,7 +182,8 @@ def signin():
 	if form.validate_on_submit():
 		session['username'] = form.username.data
 		session['pas'] = form.password.data 
-		if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first():
+		# if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first():
+		if User.query.filter_by(username=form.username.date).filter_by(email=form.email.data).first():
 			flash("пользователь с таким именем или email уже существует")
 			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
 		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
@@ -235,6 +245,12 @@ def bootstrapfaq():
 
 # ---------------------------------------------
 
+@app.route('/emptyjpg')
+def emptyjpg():
+	return render_template(url_for('static', filename='empty.jpg') ) 
+
+# ------------------------------------
+
 from flask import send_from_directory
 @app.route('/download')
 def send_file():
@@ -242,12 +258,30 @@ def send_file():
 	# return send_from_directory(os.path.join(app.root_path, 'static'),
 		# 'drew.jpg')
 
-@app.route('/403_error') 
+@app.route('/403_error')
 def img403():
 	return send_from_directory(
 		os.path.join(app.root_path, 'static'), '403.png')
 # ------------------------------------
 
+from app._wtForms import RecaptchaForm
+
+app.config['RECAPTCHA_USE_SSL'] = False
+app.config['RECAPTCHA_PUBLIC_KEY'] = 'public'	# required
+app.config['RECAPTCHA_PRIVATE_KEY'] = 'private'	# required
+app.config['RECAPTCHA_OPTIONS'] = {'theme': 'white'}
+RECAPTCHA_PARAMETERS = {'hl': 'zh', 'render': 'explicit'}
+
+@app.route('/recaptcha')
+def recaptcha():
+	form = RecaptchaForm() 
+	if form.validate_on_submit():
+		flash('подтверждено')
+		return render_template(url_for('recaptcha'))
+	return render_template('capcha.html', form=form)
+
+# https://stackoverflow.com/questions/31093964/recaptcha-public-key-config-not-set-with-flask-wtforms
+# -----------------------------------
 
 # if __name__ == '__main__':
 	# app.run(host=None, port=None, debug=None, **options)
