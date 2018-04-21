@@ -24,12 +24,14 @@
 {% endblock %}
 
 {% block navbar %} 
+{#
 <!-- navbar-default = light   navbar-inverse = dark -->
 <!-- navbar-fixed-top = закрепить навбар при пролистывании страницы
 но тогда нужно будет в самом начале страницы отступить на высоту навбара,
 а то контент окажется спрятанным за него -->
 <!-- navbar = обычная (незакрепленная навигационная панель) -->
 <!-- если делать закрепленный, то смещать первый эл. на странице на 70px -->
+#}
 <nav class="navbar-fixed-top navbar-inverse " role="navigation">
 	<div class="container">
 		<div class="navbar-header">
@@ -83,6 +85,8 @@
 	{{ moment.lang('ru') }}
 {% endblock %}
 
+
+вне блоков можно спокойно писать любой текст
 
 <!-- другие блоки шаблона base.html в bootstrap:
 

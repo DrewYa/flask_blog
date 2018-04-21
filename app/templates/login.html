@@ -4,9 +4,10 @@
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
-<title>some name</title>
-<meta name="viewport" content="width=device-width, initial-scale=0">	
-<!-- initial-scale=0 запрещает увеличивать на мобильниках -->
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
+{#<!-- name="viewport" нужен чтобы корректно отображалась страница для всех устройст (например чтобы шрифты не были малюсенькими) -->
+<!-- initial-scale=1 устанавливает начальное значение масштаба = 100% (от 0 до 1) -->
+<!-- user-scalable=no запрещает увеличивать на мобильниках --> #}
 {% endblock %}
 
 {% block content %}
@@ -15,52 +16,56 @@
 <div class="row">
 <h1 style="text-align: center;">вход</h1> <br>
 
-<div class="col col-xs-8 col-xs-push-2 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-	<form action="" method="post">
+<div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+	<form action="" method="post" style="max-width:336px">	{# <!-- именно max-width нужно устанавливать, чтобы если экран меньше, элементы автоматически становились меньше, но если экран большой, то элементы буду не больше 350px; в свою очередь дочерним элементам нужно в стиле указать max-width: 100%; чтобы это к ним применялось --> #}
 		{{ form.hidden_tag() }}
 		<p>
-			<!-- <div style="color: #575757;">		 -->
-			<!-- цвет будет применен для всех дочерних объектов, если в них нет переопр. для этого атрибута -->
+			<!--{# цвет будет применен для всех дочерних объектов, если в них нет переопр. для этого атрибута #}-->
 			{{ form.username.label }}<br>
 			{% if form.username.errors %}
-			{{ form.username( size=32, placeholder="твой псевдоним", class="inputFielddre shadowErrdre") }}
+			{{ form.username( size=35, placeholder="твой псевдоним", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.username( size=32, placeholder="твой псевдоним", class="inputFielddre shadowOkdre") }}
+			{{ form.username( size=35, placeholder="твой псевдоним", class="inputFielddre shadowOkdre") }}
 			{% endif %}			
-			<!-- </div> -->
 
-			<!-- style="width: auto; display: initial;" -->
+			{#<!-- style="width: auto; display: initial;" -->
 			<!-- {{ form.username.description }}	 -->
 			<!-- display - то, как отобразится поле -->
 			<!-- в классе form-control по умолчанию block, есть еще inline, initial, inherit (наследовать) и др -->
 			<!-- width бутстрап по умолчанию делает 100% сделай auto для задания ширины в соотв. с атрибутом size (в данном случае size=32) -->
 			
 
-			<!-- {# {{ form.username(placeholder='here')}} #} -->
-			<!-- Добавим подсветку формы, если поле невалидно -->
+			<!--  {{ form.username(placeholder='here')}}  -->
+			<!-- Добавим подсветку формы, если поле невалидно -->#}
 			
 			{% for error in form.username.errors %}
 			<p style="color: #a73577;">{{ error }}</p>
 			{% endfor %}
-			<!--  -->
 		</p>
 		<p>
 			{{ form.password.label }}<br>
-			{{ form.password(size=23, style="width: auto;", class="form-control") }}
-			<!-- и сюда добавим подсветку -->
+			{% if form.password.errors %}
+			{{ form.password(size=23, class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.password(size=23, class="inputFielddre shadowOkdre") }}
+			{% endif %}
+				{#<!-- и сюда добавим подсветку -->#}
 			{% for error in form.password.errors %}
 			<p style="color: #872657;">{{ error }}</p>
 			{% endfor %}
-			<!--  -->
 		</p>
 		<p>
 			{{ form.confirm.label }}<br>
-			{{ form.confirm(size=23, style="width: auto;", class="form-control") }}
+			{% if form.confirm.errors %}
+			{{ form.confirm(size=23, class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.confirm(size=23, class="inputFielddre shadowOkdre") }}
+			{% endif %}
 			{% for error in form.confirm.errors %}
 			<p style="color: #872667;">{{ error }}</p>
 			{% endfor %}
 		</p>									
-		<p>	{{ form.submit(class="btn btn-primary") }}	</p>			<!--{# #}-->
+		<p>	{{ form.submit(class="btn btn-primary btn-block") }}	</p>
 	</form>
 
 
@@ -93,7 +98,7 @@
 </div> <!-- end container -->
 {% endblock %}
 
-<!-- {#
+{#<!-- 
 Элемент HTML <form> используется в качестве контейнера для веб-формы. Атрибут action формы используется для того, чтобы сообщить обозревателю URL-адрес, который должен использоваться при отправке информации, введенной пользователем в форму. Если для действия задана пустая строка, форма передается URL-адресу, находящемуся в данный момент в адресной строке, то есть URL-адресу, который визуализирует форму на странице. Атрибут method указывает метод HTTP-запроса, который должен использоваться при отправке формы на сервер. По умолчанию он отправляется с запросом GET, но почти во всех случаях использование POST запрос, улучшающий взаимодействие с пользователем, поскольку запросы этого типа могут отправлять данные формы в тело запроса, в то время как запросы GET добавляют поля формы к URL-адресу, загромождая адресную строку обозревателя.
 Аргумент шаблона form.hidden_tag() создает скрытое поле, включающее токен, который используется для защиты формы от CSRF атак. 
 Для этого нужен ключ SECRET_KEY в основном приложении, либо
@@ -111,6 +116,4 @@ form.<field_name>.errors
 это будет список (т.к. поля могут иметь несколько валидаторов)
 
 
-
-
-#} -->
+ -->#}

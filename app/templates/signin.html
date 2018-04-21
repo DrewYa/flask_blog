@@ -1,58 +1,68 @@
 {% extends 'base.html' %}
 {% block title %}{{ super() }}{{ title }}{% endblock %}
 
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
+{#<!-- name="viewport" нужен чтобы корректно отображалась страница для всех устройст (например чтобы шрифты не были малюсенькими) -->
+<!-- initial-scale=1 устанавливает начальное значение масштаба = 100% (от 0 до 1) -->
+<!-- user-scalable=no запрещает увеличивать на мобильниках --> #}
+{% endblock %}
+
 {% block ccontent %}
 <div class="row">
 	<h1 style="text-align: center;">регистрация</h1><br>
 
-	<!-- <div class="col col-xs-2 col-sm-3 col-md-4"></div> -->
-
-<!-- 	<div class="col col-xs-8 col-sm-6 col-md-4"> -->
-	<div class="col col-xs-8 col-xs-push-2 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
-	<form action="" method="post" style="width:270px">
+	<div class="col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
+	<form action="" method="post" style="max-width:336px">
 		{{ form.hidden_tag() }}
 		<p>
 			{{ form.username.label }}<br>
 			{{ form.username.description }} <br>
-			{{ form.username(size=32, placeholder="или придумай псевдоним", style="width: auto; display: initial;", class="form-control") }}
-			
-			
-
-			<!-- {# {{ form.username(placeholder='here')}} #} -->
-			<!-- Добавим подсветку формы, если поле невалидно -->
+			{% if form.username.errors %}
+			{{ form.username( size=35, placeholder="или придумай псевдоним", class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.username( size=35, placeholder="или придумай псевдоним", class="inputFielddre shadowOkdre") }}
+			{% endif %}		
 			<br>
 			{% for error in form.username.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
-			<!--  -->
 		</p>
 		<p>
 			{{ form.email.label }}<br>
-			{{ form.email(size=32, placeholder="введи email", style="width: auto; display: initial;", class="form-control") }}
-			{{ form.email.description }}
-			
-
-			<!-- {# {{ form.username(placeholder='here')}} #} -->
-			<!-- Добавим подсветку формы, если поле невалидно -->
+			{% if form.email.errors %}
+			{{ form.email( size=35, placeholder="введи email", class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.email( size=35, placeholder="введи email", class="inputFielddre shadowOkdre") }}
+			{% endif %}	
+			{#   {{ form.email.description }}   #}			
 			<br>
 			{% for error in form.email.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
-			<!--  -->
 		</p>
 		<p>
 			{{ form.password.label }}<br>
-			{{ form.password(size=23, style="width: auto; display: initial;", class="form-control") }}
-			<!-- и сюда добавим подсветку -->
+			{% if form.password.errors %}
+			{{ form.password(size=23, class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.password(size=23, class="inputFielddre shadowOkdre") }}
+			{% endif %}
 			<br>
 			{% for error in form.password.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
-			<!--  -->
 		</p>
 		<p>
 			{{ form.confirm.label }}<br>
-			{{ form.confirm(size=23, style="width: auto; display: initial;", class="form-control") }}<br>
+			{% if form.confirm.errors %}
+			{{ form.confirm(size=23, class="inputFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.confirm(size=23, class="inputFielddre shadowOkdre") }}
+			{% endif %}
+			<br>
 			{% for error in form.confirm.errors %}
 			<span style="color: #990055;">{{ error }}</span>
 			{% endfor %}
@@ -68,7 +78,6 @@
 	{% endif %}
     
 	</div> <!-- end col -->
-	<!-- <div class="col col-xs-2 col-sm-3 col-md-4 "></div> -->
 </div> <!-- end row -->
 
 <div class="row">
@@ -88,7 +97,7 @@
     </div>
 </div> <!-- end row -->
 
-<!-- <div class="row"><div class="col-md-1 col-md-push-11">hdg</div></div> -->
+{#<!-- <div class="row"><div class="col-md-1 col-md-push-11">hdg</div></div>   - прижать к правому краю -->#}
 
 
 {% endblock %} {# <!-- end block ccontent --> #}

@@ -1,6 +1,6 @@
 
 
-.mystyle {
+/*.mystyle {
 	font-family: "Helvetica";
 
 	border-radius: 5px;
@@ -34,14 +34,14 @@
     border-bottom-left-radius: 10px;
 
         text-rendering: auto;
-}
+}*/
 
 
 
 
 .mystyle2 {
 	font-family: "Helvetica";
-	width: auto;
+	max-width: auto;
 	/*line-height: 100px;*/
 	height: 50px;
 	border: 1px solid #ccc;	/* сама рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
@@ -51,7 +51,7 @@
 
 .mystyle2:focus {
 	padding: 4px 34px;
-	width: 400px ;
+	max-width: 400px ;
 	border: 1px solid #0f0;
     border-color: #34c734;		/*только цвет рами */
     box-shadow: inset 1px 1px 12px rgba(0,0,200, 1.0),   0 0 30px #f00; /*дает эффект подсветки поля*/
@@ -83,7 +83,9 @@ visited		?
 	background-color: #f9f9f9; /*цвет поля*/
 	padding: 7px;
 	height: 34px;
-	width: auto;
+	/*max-width: auto;*/	/*именно max-width, а не width, чтобы если экран был меньше, то элемент автоматически уменьшался по ширине*/
+	/*или чтобы он брал значение размера, но если экран меньше, то уменьшался бы (что предпочтительнее), то указываем 100%, а не auto*/
+	max-width: 100%;
 	display: block; /*block - типа как тэг <p>; inline - без отступов (как если бы без margine)*/
     border-radius: 5px;
     font-size: 12pt;
