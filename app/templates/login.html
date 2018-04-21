@@ -10,8 +10,12 @@
 {% endblock %}
 
 {% block content %}
-	<h1 style="text-align: center;">вход</h1>
-	<div class=container style="color: #474747">
+
+<div class=container style="color: #474747">
+<div class="row">
+<h1 style="text-align: center;">вход</h1> <br>
+
+<div class="col col-xs-8 col-xs-push-2 col-sm-6 col-sm-push-3 col-md-4 col-md-push-4">
 	<form action="" method="post">
 		{{ form.hidden_tag() }}
 		<p>
@@ -61,27 +65,32 @@
 
 
 	{% if data %}
-		<p>ты ввел: {{ data }}</p>
+		<p>выполнен вход как {{ data }}</p>
 	{% else %} 
-		<p>ты еще ничего не ввел</p>
+		<p>войди в систему</p>
 	{% endif %}
+</div> <!-- end col -->
+</div> <!-- end row -->
 
-	</div> 
 
+<div class="row">
+	<div class="col-md-8 col-md-push-2  col-sm-10 col-sm-push-1">
 	{% with messages = get_flashed_messages() %}
         {% if messages %}
 	    <div class="alert alert-info">
-		<button type="button" class="close" data-dismiss="alert">X</button>
-	    <ul>
-	    {% for message in messages %}
-	    	<li>{{ message }}</li>
-	    {% endfor %}
-	    </ul>
+			<button type="button" class="close" data-dismiss="alert">X</button>
+	    	<ul>
+	    	{% for message in messages %}
+	    		<li>{{ message }}</li>
+	    	{% endfor %}
+	    	</ul>
 	    </div>
         {% endif %}
     {% endwith %}
+    </div>
+</div> <!-- end row -->
     
-
+</div> <!-- end container -->
 {% endblock %}
 
 <!-- {#

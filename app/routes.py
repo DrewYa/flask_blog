@@ -40,6 +40,8 @@ fix_time = datetime.utcnow()
 
 # import _models_bd as models
 
+# ------------
+from time import sleep
 # --------------------------------
 
 @app.route('/')
@@ -143,38 +145,23 @@ from app._models_bd import User, Post
 def login():
 	form = LoginForm()
 	if form.validate_on_submit():
-		# session['username'] = form.username.data
-		# session['pas'] = form.password.data
-
-		# usr = User(username=form.username.data, password_hash=form.password.data)
-		# db.session.add(usr)
-		# db.session.commit()
-
-		# u = User.query.all()
-		# u = User.query.get(<id>)
-		# u = User.query.filter(User.username == form.username.data).first()
-		# if u:
-		# 	flash('в БД есть твое имя {}'.format(u))
-		# else:
-		# 	flash('в БД такого имени нет')
-		# if User.query.fiter dddddddddddddddddddddddddddddddddddddddddddddddddddddddd
-
-		# data = session.get('username', None)
-		# flash('твои данные: имя {} и пароль {}'.format(
-			# session['username'], session['pas']))
-
-		if User.query.filter( (User.username == form.username.data) &
-							(User.password_hash == form.password.data) ).first():
-			flash('есть такой пользователь')
-			return render_template('login.html', form=form, data='yes')
-
-
-
-		flash('нет такого пользователя')
-		return render_template('login.html', 
-				form=form, data=session['username'])
-	return render_template('login.html', form=form, data=None) # (2471)
-	# (2471) пока форма не пройдет валидацию, значение переменной будет None
+		usr = User.query.filter( (User.username==form.username.data) & 
+				(User.password_hash==form.password.data) )[:1]
+		if usr:
+			session['username'] = form.username.data
+			session['pas'] = form.password.data
+			# session['usr'] = usr 		объекты сериализуются в JSON, но этот объект невозможно сериализовать (ошибка)
+			flash('был выполнен вход в систему')
+			sleep(1)
+			return redirect(url_for('user', name=session.get('username', None) ))
+			# return render_template('login.html', form=form, data='вход выполнен')
+		else:
+			flash('логин или пароль неверны')
+			flash('возможно, такой пользователь не зарегистрирован')
+			return render_template('login.html', 
+				form=form, data=session.get('username', None) )
+	return render_template('login.html', form=form, data=session.get('username', None)) #   V
+	#  пока форма не пройдет валидацию, значение переменной будет None
 
 @app.route('/signin', methods=('GET', 'POST')) 
 def signin():
@@ -187,7 +174,7 @@ def signin():
 		if User.query.filter( (User.username==form.username.data) | (User.email==form.email.data) )[:]: 	# логич ИЛИ
 			flash("пользователь с таким именем или email уже существует")
 			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
-		
+
 		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
 		db.session.add(usr)
 		db.session.commit()
