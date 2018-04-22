@@ -2,10 +2,15 @@ from flask import Flask
 from app._cfg import Config
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate 
+from flask_login import LoginManager
+
+# расширения должны быть созданы и инициализированы сразу после 
+# экземпляра приложения в app/init.py
 
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
+login = LoginManager(app)
 
 migrate = Migrate(app, db)
 

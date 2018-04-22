@@ -1,7 +1,18 @@
-python3
-flask
+python3 3.6.2
+flask v0.12.2
 flask-moment
-flask-bootstrap
-flask-sqlalchemy
+flask-bootstrap	v3.3.7
+flask-sqlalchemy v2.3.2
 flask-migrate
-flask-wtf
+flask-wtf v0.14.2
+flask-login v0.4.1
+
+
+
+
+
+notes:
+
+flask-migrate uses the package "alembic" version 0.9.9
+
+flask-moment is extension on the script moment.js

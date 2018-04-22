@@ -362,3 +362,11 @@ def recaptcha():
 # это безопасно я не знаю
 # при form.validate_on_submit() по крайней мере проверяются
 # валидаторы
+
+
+# 	хеширование паролей
+# from werkzeug.security import generate_password_hash, check_password_hash
+#	 в pas_hash запишется хеш пароля
+# pas_hash = generate_password_hash('myPassword')
+# 	везвращает True или False 
+# check_password_hash(pas_hash, 'myPassword')
