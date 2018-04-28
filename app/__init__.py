@@ -11,6 +11,11 @@ app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 login = LoginManager(app)
+# Flask-Login должен знать, какая вьюшка обрабатывает логины,
+# чтобы при попытке зайти на защищенную стр. пользователь, если
+# он не залогинен, перенаправлялся бы на страницу входа в систему
+login.login_view = 'login'	# см описание в комментах к файлу с моделями БД (#5124)
+# здесь значение 'login' это то же, что и url_for('login')
 
 migrate = Migrate(app, db)
 

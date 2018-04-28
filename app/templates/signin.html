@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}{{ super() }}{{ title }}{% endblock %}
 
 {% block styles %}
 {{ super() }}
@@ -25,7 +24,7 @@
 			{% else %}
 			{{ form.username( size=35, placeholder="или придумай псевдоним", class="inputFielddre shadowOkdre") }}
 			{% endif %}		
-			<br>
+
 			{% for error in form.username.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
@@ -38,7 +37,7 @@
 			{{ form.email( size=35, placeholder="введи email", class="inputFielddre shadowOkdre") }}
 			{% endif %}	
 			{#   {{ form.email.description }}   #}			
-			<br>
+
 			{% for error in form.email.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
@@ -50,7 +49,7 @@
 			{% else %}
 			{{ form.password(size=23, class="inputFielddre shadowOkdre") }}
 			{% endif %}
-			<br>
+			
 			{% for error in form.password.errors %}
 			<span style="color: red;">{{ error }}</span>
 			{% endfor %}
@@ -62,7 +61,7 @@
 			{% else %}
 			{{ form.confirm(size=23, class="inputFielddre shadowOkdre") }}
 			{% endif %}
-			<br>
+			
 			{% for error in form.confirm.errors %}
 			<span style="color: #990055;">{{ error }}</span>
 			{% endfor %}

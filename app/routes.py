@@ -44,6 +44,10 @@ fix_time = datetime.utcnow()
 from time import sleep
 # --------------------------------
 
+from flask_login import login_required
+
+# ------------------------------------------
+
 @app.route('/')
 def index():
 	url_mp = str(app.url_map).replace('<R', '<p>R')
@@ -66,6 +70,7 @@ def favicon():
 
 @app.route('/user/')
 @app.route('/user/<name>')
+@login_required
 def user(name=None):
 	if name == None:
 		if session.get('username'):
@@ -130,70 +135,142 @@ def abrt(id):
 def page_not_found(e):
 	return render_template('404.html'), 404
 
-@app.errorhandler(500)
-def internal_server_error(e):
-	return render_template('500.html'), 500
-
 @app.errorhandler(403)
 def not_permission(e):
 	return render_template('403.html'), 403
 
+@app.errorhandler(500)
+def internal_server_error(e):
+	return render_template('500.html'), 500
+
+# ----------------------------------------------------------
+
 from app import db
 from app._models_bd import User, Post
 
+# @app.route('/login', methods=('GET', 'POST'))			# закоменчен с v5.0
+# def login():
+# 	form = LoginForm()
+# 	if form.validate_on_submit():
+# 		usr = User.query.filter( (User.username==form.username.data) & 
+# 				(User.password_hash==form.password.data) )[:1]
+# 		if usr:
+# 			session['username'] = form.username.data
+# 			session['pas'] = form.password.data
+# 			# session['usr'] = usr 		объекты сериализуются в JSON, но этот объект невозможно сериализовать (ошибка)
+# 			flash('был выполнен вход в систему')
+# 			sleep(1)
+# 			return redirect(url_for('user', name=session.get('username', None) ))
+# 			# return render_template('login.html', form=form, data='вход выполнен')
+# 		else:
+# 			flash('логин или пароль неверны')
+# 			flash('возможно, такой пользователь не зарегистрирован')
+# 			return render_template('login.html', 
+# 				form=form, data=session.get('username', None) )
+# 	return render_template('login.html', form=form, data=session.get('username', None)) #   V
+# 	#  пока форма не пройдет валидацию, значение переменной будет None
+
+from flask_login import login_user, current_user
+
+from werkzeug.urls import url_parse	#5120 
+
+
 @app.route('/login', methods=('GET', 'POST'))
 def login():
+	# current_user может использоваться в любое время для получения 
+	# объекта пользователя. Это омжет быть пользовательский объект из БД
+	# или спец. анонимный пользовательский объект, имеющий свойства
+	# is_authinticate, is_active, is_anonymous
+	if current_user.is_authenticated:
+		return redirect(url_for('about_me'))
 	form = LoginForm()
 	if form.validate_on_submit():
-		usr = User.query.filter( (User.username==form.username.data) & 
-				(User.password_hash==form.password.data) )[:1]
-		if usr:
-			session['username'] = form.username.data
-			session['pas'] = form.password.data
-			# session['usr'] = usr 		объекты сериализуются в JSON, но этот объект невозможно сериализовать (ошибка)
-			flash('был выполнен вход в систему')
-			sleep(1)
-			return redirect(url_for('user', name=session.get('username', None) ))
-			# return render_template('login.html', form=form, data='вход выполнен')
-		else:
-			flash('логин или пароль неверны')
-			flash('возможно, такой пользователь не зарегистрирован')
-			return render_template('login.html', 
-				form=form, data=session.get('username', None) )
-	return render_template('login.html', form=form, data=session.get('username', None)) #   V
-	#  пока форма не пройдет валидацию, значение переменной будет None
+		usr = User.query.filter_by(username=form.username.data).first()
+		if usr is None or not usr.check_password(form.password.data):
+			flash('неправильное имя пользователя или пароль')
+			return redirect(url_for('login'))
+		login_user(usr, remember=form.remember_me.data) 
+		session['username'] = form.username.data						#
+		# в request.args хранится содержимое url строки в формате словаря
+		next_page = request.args.get('next')							#5120 
+		if not next_page or url_parse(next_page).netloc != '':
+			next_page = url_for('user', name=session.get('username'))	#
+		return redirect(next_page)
+	return render_template('login.html', form=form, title='вход') 
+	# ф. login_user зарегистрирует вход пользователя, далее на любых
+	# страницах, к которым перейдет пользователь, будет установлена
+	# переменная current_user для этого пользователя
 
-@app.route('/signin', methods=('GET', 'POST')) 
+
+# @app.route('/signin', methods=('GET', 'POST')) 	# закоменчено с v5.0
+# def signin():
+# 	form = SigninForm()
+# 	if form.validate_on_submit():
+# 		session['username'] = form.username.data
+# 		session['pas'] = form.password.data 
+# 		# if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first(): логич ИЛИ
+# 		# if User.query.filter_by(username=form.username.date).filter_by(email=form.email.data).first():		связываются логическим И
+# 		if User.query.filter( (User.username==form.username.data) | (User.email==form.email.data) )[:]: 	# логич ИЛИ
+# 			flash("пользователь с таким именем или email уже существует")
+# 			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
+
+# 		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
+# 		db.session.add(usr)
+# 		db.session.commit()
+# 		return redirect(url_for('login')) 
+# 	return render_template('signin.html', form=form, msg=None)
+
+
+
+@app.route('/signin', methods=('GET', 'POST'))
 def signin():
+	if current_user.is_authenticated:
+		return redirect(url_for('about_me'))
 	form = SigninForm()
 	if form.validate_on_submit():
-		session['username'] = form.username.data
-		session['pas'] = form.password.data 
-		# if User.query.filter(User.username == form.username.data).first() or User.query.filter(User.email == form.email.data).first(): логич ИЛИ
-		# if User.query.filter_by(username=form.username.date).filter_by(email=form.email.data).first():		связываются логическим И
-		if User.query.filter( (User.username==form.username.data) | (User.email==form.email.data) )[:]: 	# логич ИЛИ
-			flash("пользователь с таким именем или email уже существует")
-			return render_template('signin.html', form=form, msg="используй другие данные для регистрации")
-
-		usr = User(username=form.username.data, password_hash=form.password.data, email=form.email.data)
+		usr = User(username=form.username.data, email=form.email.data)	
+		# здесь теперь не нужно писать проверку на наличие такого имени или майла в БД, 
+		# т.к. мы реализовали методы валидации с помощью wtforms в форме регистрации 
+		usr.set_password(form.password.data)
 		db.session.add(usr)
 		db.session.commit()
-		return redirect(url_for('login')) 
-	return render_template('signin.html', form=form, msg=None)
+		# флеш-сообщение высвятится при первом же вызове get_flashed_messages()
+		# а он будет на следующей стр., т.к. эту стр. мы уже отрендерели
+		flash('регистрация прошла успешно, теперь войди в аккаунт')
+		return redirect(url_for('login'))
+	return render_template('signin.html', form=form, title='регистрация', msg=None)
 
+
+# @app.route('/logout', methods=('GET', 'POST'))		# закоменчен с v5.0
+# def logout():
+# 	form = LogoutForm()
+# 	if form.validate_on_submit():
+# 		session['username'] = None
+# 		session['pas'] = None
+# 		session['email'] = None
+# 		return redirect(url_for('about_me'))
+# 	return render_template('logout.html', form=form, title='выход из аккаунта')
+
+from flask_login import logout_user
 
 @app.route('/logout', methods=('GET', 'POST'))
 def logout():
-	form = LogoutForm()
-	if form.validate_on_submit():
-		session['username'] = None
-		session['pas'] = None
-		session['email'] = None
-		return redirect(url_for('about_me'))
-	return render_template('logout.html', form=form, title='выход из аккаунта')
+	logout_user()
+	return redirect(url_for('index'))
+
+
 
 # total chat
 
+
+
+@app.route('/securitypage')
+@login_required
+def securitypage():
+	return '<h3>Эту страницу можно увидеть только \
+	зарегистрированным пользователям </h3>'
+
+# ----------------------------------------------------
 
 @app.route('/submit_form', methods=('GET', 'POST'))
 def submit_form():
@@ -370,3 +447,57 @@ def recaptcha():
 # pas_hash = generate_password_hash('myPassword')
 # 	везвращает True или False 
 # check_password_hash(pas_hash, 'myPassword')
+
+#5812  ------------------------
+
+# Способ Flask-Login защищает функцию просмотра от анонимных
+# пользователей с помощью декоратора, называемого
+#  @login_required
+# Когда вы добавляете этот декоратор к функции вида под декораторами 
+# @app.route из Flask, функция становится защищенной и не разрешает 
+# доступ к пользователям, которые не аутентифицированы. 
+# Вот как декоратор может быть применен к 
+# функции просмотра индексов приложения:
+
+# from flask_login import login_required
+
+# @app.route('/')
+# @app.route('/index')
+# @login_required
+# def index():
+
+# ---
+
+# Если пользователь переходит, например на /securitypage, обработчик 
+# @login_required   перехватит запрос и ответит перенаправлением на 
+# /securitypage, но он добавит аргумент строки запроса к этому URL-адресу,
+#  сделав полный URL /login?Next = /securitypage
+
+# чтобы переопределить аргумент next см код вьюшки по тэгу #5120
+
+# (!) замечание:
+# если с первого раза не выполнить вход, то в next_page исчезнет
+# страница, на которую незареганный пользователь хотел войти,
+# поэтому нужно что-то придумать, чтобы при попытке неудачного
+# входа она все равно сохранялась
+
+
+# На самом деле существует три возможных случая, которые необходимо 
+# учитывать, чтобы определить, где перенаправить после успешного входа в систему:
+
+# * Если URL-адрес входа не имеет следующего аргумента, пользователь 
+# перенаправляется на индексную страницу.
+# * Если URL-адрес входа включает аргумент next, который установлен 
+# в относительный путь (или, другими словами, URL-адрес без части домена),
+#  тогда пользователь перенаправляется на этот URL-адрес.
+# * Если URL-адрес входа включает аргумент next, который установлен на полный
+#  URL-адрес, который включает имя домена, то пользователь 
+#  перенаправляется на страницу индекса.
+
+# в 3 случае Третий случай заключается в том, чтобы сделать приложение 
+# более безопасным. Злоумышленник может вставить URL-адрес на злоумышленный
+# сайт в аргумент next, поэтому приложение перенаправляет только URL-адрес, 
+# что гарантирует, что перенаправление останется на том же сайте, что и приложение. 
+# Чтобы определить, является ли URL относительным или абсолютным, я анализирую 
+# его с помощью функции url_parse() Werkzeug, а затем проверяю, установлен 
+# ли компонент netloc или нет.

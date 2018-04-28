@@ -2,10 +2,12 @@ from flask_wtf import FlaskForm,  RecaptchaField
 from wtforms import (StringField, PasswordField, BooleanField,
 	SubmitField)
 from wtforms.validators import (DataRequired,  Length, 
-	EqualTo, Email)
+	EqualTo, Email, Optional, ValidationError)
 
 # from wtforms.validators import FileRequired
 from flask_wtf.file import FileField # , FileRequired
+
+from app._models_bd import User
 
 class MyForm(FlaskForm):
 	name = StringField('name', validators=[DataRequired()])
@@ -30,6 +32,9 @@ class LoginForm(FlaskForm):
 		EqualTo('password', message='пороли не совпадают')])
 	submit = SubmitField('войти')
 
+	remember_me = BooleanField(label='запомнить меня',
+		description='ses', default=True, validators=[Optional()] )
+
 # полям можно задавать не только label и список валидаторов,
 # подробнее help(StringField) или help(PasswordField), ...
 # также можно проверить какие опции можно задавать самим валидаторам
@@ -49,6 +54,20 @@ class SigninForm(FlaskForm):
 	confirm = PasswordField('подтверди пароль', validators=[
 		EqualTo('password', message='пороли не совпадают')])
 	submit = SubmitField('войти')
+
+	# когда мы создаем каке либо м., соответсвующие шаблону validate_<имя_поля>,
+	# то wtforms примет их как пользовательские валидаторы и вызывает их в 
+	# дополнение к стандартым валидаторам
+	def validate_username(self, username):		# дописал 2 проверки в v5.1
+		usr = User.query.filter(User.username==username.data).first()
+		if usr is not None:
+			raise ValidationError('Это имя уже занято, используйте другое')
+
+	def validate_email(self, email):
+		usr = User.query.filter(User.email==email.data).first()
+		if usr is not None:
+			raise ValidationError('Этот email уже используется для учетной записи')
+
 
 class RecaptchaForm(FlaskForm):
 	recaptcha = RecaptchaField()

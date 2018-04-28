@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-{% block title %}{{ super() }}{{ title }}{% endblock %}
 
 {% block styles %}
 {{ super() }}
@@ -64,7 +63,10 @@
 			{% for error in form.confirm.errors %}
 			<p style="color: #872667;">{{ error }}</p>
 			{% endfor %}
-		</p>									
+		</p>								
+		<p>			
+			{{ form.remember_me() }} &nbsp;	{{ form.remember_me.label }}
+		</p>	
 		<p>	{{ form.submit(class="btn btn-primary btn-block") }}	</p>
 	</form>
 
@@ -73,6 +75,7 @@
 		<p>выполнен вход как {{ data }}</p>
 	{% else %} 
 		<p>войди в систему</p>
+		<p>еще не зарегистрировался? <a href="{{ url_for('signin') }}">клик</a></p>
 	{% endif %}
 </div> <!-- end col -->
 </div> <!-- end row -->
@@ -94,6 +97,8 @@
     {% endwith %}
     </div>
 </div> <!-- end row -->
+
+
     
 </div> <!-- end container -->
 {% endblock %}

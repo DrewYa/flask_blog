@@ -43,17 +43,35 @@
 		</div>
 		<div class="collapse navbar-collapse " id="navbarCollapse">
 			<ul class="navbar-nav nav">
-				<li class=navbar-item>
+
+				<!-- <li class=navbar-item>
 					<a href="{{ url_for('login') }}" class="nav-link">sign in</a>
-				</li>
-				<li class=navbar-item>
-					<a href="{{ url_for('index') }}" class="nav-link">homepage</a>
-				</li>
-				<li class=navbar-item>
-					<a href="#" class="nav-link">blog</a>
+				</li> -->
+
+				
+				{% if current_user.is_anonymous %}
+				<li>
+					<a href="{{ url_for('login') }}">вход</a>
 				</li>
 				<li>
-					<a href="#">contact</a>
+					<a href="{{ url_for('signin') }}">регистрация</a>
+				</li>			
+				{% else %}
+				<li>
+					<a href="{{ url_for('logout') }}">выход</a>
+				</li>				
+				{% endif %}
+				
+
+
+				<li class=navbar-item>
+					<a href="{{ url_for('index') }}" class="nav-link">моя страничка</a>
+				</li>
+				<li class=navbar-item>
+					<a href="#" class="nav-link">блог</a>
+				</li>
+				<li>
+					<a href="#">контакты</a>
 				</li>
 				<li class=navbar-item>
 					<a href="{{ url_for('about_me') }}" class="nav-link">about me</a>
