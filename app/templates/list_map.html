@@ -1,3 +1,48 @@
-<h1> все url сслыки </h1>
-{{ lst_map|striptags }}
+{% extends 'base.html' %}
 
+
+
+{% block content %}
+<div class="container">
+	<center><h1>Карта сайта</h1></center>
+	<div class="table-responsive col-md-offset-2 col-md-8">
+    <table class="table table-condensed table-hover" style="font-size: 12pt;">       {# тип табл. менять здесь #}
+        <thead>
+            <tr style="background-color: #7ba;">
+                <th>#</th>
+                <th>funcview</th>
+                <th>url</th>
+                <th>link</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for num, viewfunc, url in urlmap %}
+            <tr class="info">
+            	<td>{{ num }}</td>
+                <td>{{ viewfunc }}</td>
+                <td>{{ url }}</td>
+
+                {% if '<' not in url %}
+                <td><a href="{{ url_for(viewfunc) }}"><span class="glyphicon glyphicon-circle-arrow-right" style="color: #799"></span></a></td>
+                {% else %}
+                <td><span class="glyphicon glyphicon-remove-circle" style="height: 20px ;color: #977"></span></td>
+                {% endif %}
+
+            </tr>    
+        {% endfor %}            
+        </tbody>
+    </table>
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+{#
+		{% if ('.' and 'static') not in url %}
+		<li><a href="{{ url_for(viewfunc) }}">{{ url }}</a></li>
+		{% else %}
+		<li>f: {{ viewfunc }}, url: {{ url }}</li>		
+		{% endif %}
+ #}
