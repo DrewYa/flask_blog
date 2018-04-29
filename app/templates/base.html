@@ -39,44 +39,38 @@
 						data-target=".navbar-collapse">
 				<span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
 			</button>
-			<a href="{{ url_for('user') }}" class="navbar-brand" style="font-size: x-large;">RedYax</a>
+			<a href="{{ url_for('index') }}" class="navbar-brand" style="font-size: xx-large;">RedYax</a>
 		</div>
-		<div class="collapse navbar-collapse " id="navbarCollapse">
+		<div class="collapse navbar-collapse " id="navbarCollapse" style="font-size: larger;">
 			<ul class="navbar-nav nav">
-
-				<!-- <li class=navbar-item>
-					<a href="{{ url_for('login') }}" class="nav-link">sign in</a>
-				</li> -->
-
 				
 				{% if current_user.is_anonymous %}
-				<li>
+				<li class="navbar-item">
 					<a href="{{ url_for('login') }}">вход</a>
 				</li>
-				<li>
+				<li class="navbar-item">
 					<a href="{{ url_for('signin') }}">регистрация</a>
 				</li>			
 				{% else %}
-				<li>
+				<li class="navbar-item">
 					<a href="{{ url_for('logout') }}">выход</a>
 				</li>				
-				{% endif %}
-				
+				{% endif %}				
 
-
-				<li class=navbar-item>
-					<a href="{{ url_for('index') }}" class="nav-link">моя страничка</a>
+				<li class="navbar-item">
+					<a href="{{ url_for('user') }}" class="nav-link">моя страничка</a> {# url_for('user', current_user.username) #}
 				</li>
-				<li class=navbar-item>
+				<li class="navbar-item">
 					<a href="#" class="nav-link">блог</a>
 				</li>
-				<li>
+				<li class="navbar-item">
 					<a href="#">контакты</a>
 				</li>
-				<li class=navbar-item>
-					<a href="{{ url_for('about_me') }}" class="nav-link">about me</a>
+				<li class="navbar-item">
+					<a href="{{ url_for('about_me') }}" class="nav-link">о сайте</a>
 				</li>
 			</ul>
+			<!-- <p class="navbar-text navbar-right"> &gt; <a href="#" class="navbar-link">{{ current_user.username }}</a></p>  -->
 		</div>
 	</div>
 </nav>

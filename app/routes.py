@@ -49,38 +49,43 @@ from flask_login import login_required
 # ------------------------------------------
 
 @app.route('/')
-def index():
-	url_mp = str(app.url_map).replace('<R', '<p>R')
-	url_mp = url_mp.replace('->', ' ---- name of function: ')
-	url_mp = url_mp.replace('>,', '</p><br>')
-	return '<h1>full list site url:</h1>\n<p>%s</p>' % url_mp
+def index():	
+	return render_template('index.html')
 	# return (<htmlШаблон>, <кодОтвета>, <словарьЗаголовков>)
-	# или return <объект Response>
+	# или return <объект Response>, чтобы его создать есть ф. 
+	# make_response() 
 
-@app.route('/lst_map') 
+# ----------------------------------
+
+import re
+
+@app.route('/lstmap') 
 def map():
-	return render_template('list_map.html', lst_map=app.url_map)
+	lstmap_links = re.findall(r"[']([a-zA-Z0-9_.-/<>]+)", str(app.url_map))
+	lstmap_func = re.findall(r"> ([a-zA-Z0-9._]+)>", str(app.url_map))
+	lstmap = [ ( i+1, lstmap_func[i], lstmap_links[i] ) for i in range(len(lstmap_func)) ]
+	return render_template('list_map.html', urlmap=lstmap)
 
-@app.route('/favicon.ico')
-def favicon():
-	return send_from_directory(os.path.join(app.root_path, 'static'),
-		'favicon.ico', mimetype='image/vnd.microsoft.icon')
- 
- # ------------------------------------
+# ------------------------------------
 
 @app.route('/user/')
 @app.route('/user/<name>')
 @login_required
 def user(name=None):
-	if name == None:
+	if name is None:
 		if session.get('username'):
-			return 'in session'	+ session.get('username')		
+			return redirect(url_for('user', name=session.get('username')))  		
 		else:
 			return redirect(url_for('login'))
 	if name != session.get('username'):
 		# return redirect(url_for('login'))
-		abort(404)
+		abort(403)
 	return render_template('user.html', name=name)
+
+
+@app.route('/session')
+def session_contents():
+	return '<p style="font-size: 15pt">содержимое session:<br> {}</p>'.format([str(item)+'<br>' for item in session.items()])
 
 @app.route('/aboutme')
 def about_me():
@@ -88,14 +93,11 @@ def about_me():
 	return render_template('aboutMe.html', 
 		current_time=fix_time)	# datetime.utcnow())
 
-@app.route('/present/<name>')
-def present(name):
-	return render_template('base.html')
 
 @app.route('/user_agent')
 def usr_agent():
 	user_agent = request.headers.get('User-Agent')
-	return '<p>your brower is %s</p>' % user_agent
+	return '<p>твой бразурер: %s</p>' % user_agent
 
 @app.route('/make_response')
 def mr():
@@ -121,13 +123,13 @@ def redir2():
 # ф. не передает управление вызвавшей ее ф., а передает его веб-серверу, возбуждая исключение
 @app.route('/abort/<id>') 
 def abrt(id):
-	if id == '2':
+	if id == '404':
 		abort(404) # страница не найдена
-	if id == '3':
+	if id == '500':
 		abort(500) # внутренняя серверная ошибка
-	if id == '4':
+	if id == '403':
 		abort(403) # нет доступа
-	return '<h1>ты ввел %s, попробуй ввести abort/2 и 3 и больше </h1>' % id
+	return '<h1>ты ввел %s, попробуй ввести abort/404 и 403 или 500 </h1>' % id
 
 # как и ф. представления, обработчики ошибок возвращают ответ с 
 # числовым кодом состояния
@@ -262,7 +264,7 @@ def logout():
 
 # total chat
 
-
+# ---------------------------------
 
 @app.route('/securitypage')
 @login_required
@@ -318,16 +320,22 @@ def emptyjpg():
 # ------------------------------------
 
 from flask import send_from_directory
+
+@app.route('/favicon.ico')
+def favicon():
+	return send_from_directory(os.path.join(app.root_path, 'static'),
+		'favicon.ico', mimetype='image/vnd.microsoft.icon')
+ 
+ # ------------------------------------
+
 @app.route('/download')
 def send_file():
 	return send_static_file(os.path.join(app.root_path, 'static'), 'drew.jpg')
-	# return send_from_directory(os.path.join(app.root_path, 'static'),
-		# 'drew.jpg')
+	# return send_from_directory(os.path.join(app.root_path, 'static'), 'drew.jpg')
 
 @app.route('/403_error')
 def img403():
-	return send_from_directory(
-		os.path.join(app.root_path, 'static'), '403.png')
+	return send_from_directory(os.path.join(app.root_path, 'static'), '403.png')
 # ------------------------------------
 
 from app._wtForms import RecaptchaForm
@@ -355,7 +363,7 @@ def recaptcha():
 	# app.run(debug=True)
 	
 	
-
+# ==============================================================
 
 # ф. make_response() принимает 1, 2 или 3 аргумента и возвращает
 # объект Response, который можно возврщатаь функциями представления
@@ -501,3 +509,7 @@ def recaptcha():
 # Чтобы определить, является ли URL относительным или абсолютным, я анализирую 
 # его с помощью функции url_parse() Werkzeug, а затем проверяю, установлен 
 # ли компонент netloc или нет.
+
+
+# видимо фласк логин использует переменные контектста приложения:
+# g - для хранения текущего пользователя (запись из БД)
