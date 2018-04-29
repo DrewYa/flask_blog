@@ -86,7 +86,7 @@ def user(name=None):
 		{'author': user, 'body': 'test post 1'},
 		{'author': user, 'body': 'test post 2'}
 	]	
-	return render_template('user2.html', user=user, posts=posts)
+	return render_template('user.html', user=user, posts=posts)
 
 
 # @app.route('/user/')				# v6.0
