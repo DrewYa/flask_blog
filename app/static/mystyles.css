@@ -92,7 +92,7 @@ visited		?
     color: #474747;
 }
 .inputFielddre:focus {
-	outline: 0;		/*нужен чтобы дефолтная рамка не окржала форму, когда мы ее выделяем*/
+	outline: 0;		/*нужен чтобы дефолтная рамка не окружала форму, когда мы ее выделяем*/
 	box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;
 }
 
@@ -130,3 +130,37 @@ visited		?
 }
 
 /* http://htmlbook.ru/CSS/Box-shadow */
+
+
+/* стили для user.html */
+
+.postdre {
+	outline: 0;	
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 3px;
+	border-color: #999;
+	padding: 10px 15px 0;
+	font-size: larger;
+	margin-bottom: 7px;
+	background-color: #f9f9f9;
+}
+
+.postdre:hover {
+	border-color: #8bb6ae; /*#rrggbbaa  a - alpha-chanel*/
+	box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
+	/*margin-bottom: 7px;*/
+	/*margin-top: 7px;*/
+}
+
+.postdre:focus {		/*для того момента, когда будет форма*/
+	background-color: #e5e5f4;
+}
+
+
+/* для картинок */
+.imgavatardre {
+	max-width: 100%;
+	border-radius: 7px; 
+	box-shadow: 0 0 10px #555;
+}

@@ -18,7 +18,7 @@
 {{ super() }}
 	style="padding-top: 57px;
 	{% block body_style %}
-		background-color: #f4f1f4;
+		background-color: #f4f3f1;
 	{% endblock %}
 	"
 {% endblock %}
@@ -58,7 +58,7 @@
 				{% endif %}				
 
 				<li class="navbar-item">
-					<a href="{{ url_for('user') }}" class="nav-link">моя страничка</a> {# url_for('user', current_user.username) #}
+					<a href="{{ url_for('user') }}" class="nav-link">моя страничка</a> {# url_for('user', current_user.username)   #}
 				</li>
 				<li class="navbar-item">
 					<a href="#" class="nav-link">блог</a>

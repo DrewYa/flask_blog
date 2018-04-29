@@ -68,19 +68,40 @@ def map():
 
 # ------------------------------------
 
-@app.route('/user/')
+@app.route('/user/')				# изменен с v6.0
 @app.route('/user/<name>')
 @login_required
 def user(name=None):
 	if name is None:
 		if session.get('username'):
-			return redirect(url_for('user', name=session.get('username')))  		
+			return redirect(url_for('user', name=session.get('username')))  
 		else:
 			return redirect(url_for('login'))
 	if name != session.get('username'):
 		# return redirect(url_for('login'))
 		abort(403)
-	return render_template('user.html', name=name)
+
+	user = User.query.filter(User.username==name).first_or_404()
+	posts = [
+		{'author': user, 'body': 'test post 1'},
+		{'author': user, 'body': 'test post 2'}
+	]	
+	return render_template('user2.html', user=user, posts=posts)
+
+
+# @app.route('/user/')				# v6.0
+# @app.route('/user/<username>')
+# @login_required
+# def user(username):
+# 	# if username:
+# 	user = User.query.filter(User.username==username).first_or_404()
+# 	posts = [
+# 		{'author': user, 'body': 'test post 1'},
+# 		{'author': user, 'body': 'test post 2'}
+# 	]
+# 	# else:
+# 		# return redirect(url_for('login'))
+# 	return render_template('user.html', user=user, posts=posts)
 
 
 @app.route('/session')
