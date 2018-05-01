@@ -20,7 +20,8 @@ import os
 
 # ---------------------
 
-from app._wtForms import MyForm, LoginForm, LogoutForm, SigninForm
+from app._wtForms import (MyForm, LoginForm, LogoutForm, 
+	SigninForm, EditProfileForm)
 # можно просто писать from ._wtForms import MyForm
 # т.е. без указания названия пакета
 from ._wtForms import PhotoForm
@@ -48,6 +49,14 @@ from flask_login import login_required
 
 # ------------------------------------------
 
+@app.before_request 	# добавлен в v6.1 (#2914)
+def before_request():
+	if current_user.is_authenticated:
+		current_user.last_seen = datetime.utcnow()
+		db.session.commit()
+
+# --------------------------------------------
+
 @app.route('/')
 def index():	
 	return render_template('index.html')
@@ -59,12 +68,12 @@ def index():
 
 import re
 
-@app.route('/lstmap') 
+@app.route('/map') 
 def map():
 	lstmap_links = re.findall(r"[']([a-zA-Z0-9_.-/<>]+)", str(app.url_map))
 	lstmap_func = re.findall(r"> ([a-zA-Z0-9._]+)>", str(app.url_map))
 	lstmap = [ ( i+1, lstmap_func[i], lstmap_links[i] ) for i in range(len(lstmap_func)) ]
-	return render_template('list_map.html', urlmap=lstmap)
+	return render_template('list_map.html', urlmap=lstmap, title='карта сайта')
 
 # ------------------------------------
 
@@ -79,8 +88,8 @@ def user(name=None):
 			return redirect(url_for('login'))
 	if name != session.get('username'):
 		# return redirect(url_for('login'))
-		abort(403)
-
+		# abort(403)		# если раскомментить это поле, то можно будет просматривать странички др. пользователей
+		pass
 	user = User.query.filter(User.username==name).first_or_404()
 	posts = [
 		{'author': user, 'body': 'test post 1'},
@@ -102,6 +111,21 @@ def user(name=None):
 # 	# else:
 # 		# return redirect(url_for('login'))
 # 	return render_template('user.html', user=user, posts=posts)
+
+@app.route('/editprofile', methods=('GET', 'POST'))
+@login_required
+def edit_profile():
+	form = EditProfileForm()
+	if form.validate_on_submit():
+		current_user.username = form.username.data
+		current_user.about_me = form.about_me.data
+		db.session.commit()
+		flash('информация профиля обновлена')
+		return redirect(url_for('edit_profile'))
+	elif request.method == 'GET':
+		form.username.data = current_user.username
+		form.about_me.data = current_user.about_me
+	return render_template('edit_profile.html', form=form, title='редактирование профиля')
 
 
 @app.route('/session')
@@ -353,6 +377,8 @@ def favicon():
 def send_file():
 	return send_static_file(os.path.join(app.root_path, 'static'), 'drew.jpg')
 	# return send_from_directory(os.path.join(app.root_path, 'static'), 'drew.jpg')
+# html тэг а позволяет сделать кнопку для скачивания файла, задав спец атрибут
+# http://htmlbook.ru/HTML/a
 
 @app.route('/403_error')
 def img403():
@@ -534,3 +560,7 @@ def recaptcha():
 
 # видимо фласк логин использует переменные контектста приложения:
 # g - для хранения текущего пользователя (запись из БД)
+
+#2914 ----------
+
+# благодаря этому декоратору, ф. будет выполняться перед каждой вьюшкой

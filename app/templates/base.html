@@ -37,7 +37,7 @@
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" 
 						data-target=".navbar-collapse">
-				<span class="glyphicon glyphicon-menu-hamburger" style="color: white"></span>
+				<span class="glyphicon glyphicon-menu-hamburger" style="color: #ddd"></span>
 			</button>
 			<a href="{{ url_for('index') }}" class="navbar-brand" style="font-size: xx-large;">RedYax</a>
 		</div>
@@ -54,12 +54,18 @@
 				{% else %}
 				<li class="navbar-item">
 					<a href="{{ url_for('logout') }}">выход</a>
-				</li>				
-				{% endif %}				
+				</li>								
 
 				<li class="navbar-item">
-					<a href="{{ url_for('user') }}" class="nav-link">моя страничка</a> {# url_for('user', current_user.username)   #}
+					<a href="{{ url_for('user') }}" class="nav-link" style="display: inline-grid;">моя страничка</a>      {# url_for('user', current_user.username)   #}
 				</li>
+				<li class="navbar-item">
+					<a href="{{ url_for('edit_profile') }}" type="button" class="">
+						<span class="glyphicon glyphicon-pencil" style=""></span>
+					</a>				
+				</li>
+				{% endif %}
+				
 				<li class="navbar-item">
 					<a href="#" class="nav-link">блог</a>
 				</li>
@@ -170,3 +176,55 @@ datetime и соостветсвуют часовому поясу UTC
         {% endif %}
         {% endwith %}
  #} -->
+
+
+{#
+bootstrap v3.3.7 dropdown
+
+https://itchief.ru/lessons/bootstrap-3/98-bootstrap-3-dropdown-lists
+#}
+
+
+ <!-- 
+ фавикон не обязательно должен быть формата .ico
+ если это Png, а не ico тотип: image/png  для гиф:  image/gif 
+ <link rel="shortcut icon" href="/images/favicon.png" type="image/png"> -->
+
+
+ <!-- ==================================== -->
+<!-- выпадающие списки
+
+
+ 				<li>
+				  	<a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
+        		  		Меню
+        		  		<span class="caret"></span>
+        		  	</a>
+        		  	<ul class="navbar-item dropdown-menu">
+        		  		<li><a href="{{ url_for('user') }}" class="nav-link" style="display: inline-grid;">моя страничка</a></li>
+        		  		<li class="divider"></li>    	{# разделитель разделов подменю #}
+        		  		<li><a href="{{ url_for('edit_profile') }}" type="button" class="">редактировать профиль
+								<span class="glyphicon glyphicon-pencil" style="margin-left: 7px"></span></a>
+
+						</li>
+        		  	</ul>
+
+				</li>
+
+			</ul> {# разделил #}
+			<ul class="navbar-nav nav">
+
+  				<li class="dropdown"> 
+        		  <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
+        		    Меню
+        		    <span class="caret"></span>
+        		  </a>
+        		  <ul class="navbar-item dropdown-menu">
+        		    <li><a href="#">Текст подпункта</a></li>
+        		    <li><a href="#">Текст подпункта</a></li>
+        		    <li class="divider"></li>
+        		    <li><a href="#">Текст подпункта</a></li>
+        		  </ul>
+        		</li>
+
+        		 -->

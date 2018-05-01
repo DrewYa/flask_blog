@@ -23,7 +23,7 @@
                 <td>{{ url }}</td>
 
                 {% if '<' not in url %}
-                <td><a href="{{ url_for(viewfunc) }}"><span class="glyphicon glyphicon-circle-arrow-right" style="color: #799"></span></a></td>
+                <td><a href="{{ url_for(viewfunc) }}"><span class="glyphicon glyphicon-circle-arrow-right" style="color: #799; font-size: 19px"></span></a></td>
                 {% else %}
                 <td><span class="glyphicon glyphicon-remove-circle" style="color: #977"></span></td>
                 {% endif %}

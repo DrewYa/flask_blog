@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm,  RecaptchaField
 from wtforms import (StringField, PasswordField, BooleanField,
-	SubmitField)
+	SubmitField, TextAreaField)
 from wtforms.validators import (DataRequired,  Length, 
 	EqualTo, Email, Optional, ValidationError)
 
@@ -53,7 +53,7 @@ class SigninForm(FlaskForm):
 		Length(min=4, message='не короче 4 символов')])
 	confirm = PasswordField('подтверди пароль', validators=[
 		EqualTo('password', message='пороли не совпадают')])
-	submit = SubmitField('войти')
+	submit = SubmitField('зарегистрироваться')
 
 	# когда мы создаем каке либо м., соответсвующие шаблону validate_<имя_поля>,
 	# то wtforms примет их как пользовательские валидаторы и вызывает их в 
@@ -67,6 +67,22 @@ class SigninForm(FlaskForm):
 		usr = User.query.filter(User.email==email.data).first()
 		if usr is not None:
 			raise ValidationError('Этот email уже используется для учетной записи')
+
+class EditProfileForm(FlaskForm):
+	username = StringField('Имя пользователя', validators=[DataRequired(message='имя не введено')],
+		description='здесь можно ввести новый псевдоним')
+	about_me = TextAreaField('Немного обо мне', validators=[
+		Length(min=0, max=240, message='не больше 240 символов')],
+		description='мои увлечения, чем занимюсь, интересности')
+	submit = SubmitField('сохранить')
+	# avatar
+	# username
+	# username
+	# password
+	# confirm
+	# current_password
+	
+
 
 
 class RecaptchaForm(FlaskForm):

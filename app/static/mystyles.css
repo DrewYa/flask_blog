@@ -1,4 +1,173 @@
+/*
+active		если элемент активирован (кнопочки, мб еще что-то) или зажат ЛКМ на нем
+focus		выбран (как с помощью tab)
+hover		курсор находится на элемента
+visited		?
+*/
 
+/* http://htmlbook.ru/CSS/Box-shadow */
+
+.mystyle2 {
+	font-family: "Helvetica";
+	max-width: auto;
+	/*line-height: 100px;*/
+	height: 50px;
+	border: 1px solid #ccc;	/* сама рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
+    border-radius: 9px;	/*скругление рамки поля*/
+    padding: 4px 12px;
+}
+
+.mystyle2:focus {
+	padding: 4px 34px;
+	max-width: 400px ;
+	border: 1px solid #0f0;
+    border-color: #34c734;		/*только цвет рами */
+    box-shadow: inset 1px 1px 12px rgba(0,0,200, 1.0),   0 0 30px #f00; /*дает эффект подсветки поля*/
+    /*	       |  inset - внутри поля               |   снаружи       |   */
+    /*box-shadow: none | <тень> [,<тень>]*  
+    где тень - это 
+	inset <сдвиг по x> <сдвиг по y> <радиус размытия> <растяжение> <цвет>
+ 	цвет подсветки внутренней rgba(0,0,200, 1.0) чем меньше значение альфа-канала, тем больше прозрачность*/
+   
+    outline: 0;
+    /*-webkit-box-shadow: inset 0 1px 1px rgba(0,200,0,.075), 0 0 8px rgba(102,175,233,.6);*/
+    /*box-shadow: inset 0 1px 1px rgba(0,220,0,.075), 0 0 8px rgba(102,175,233,.6);*/
+}
+
+
+/* shadow drew */
+.inputFielddre {
+	padding: 6px 4px;	/*по_горизонтали  по_вертикали*/
+	background-color: #f9f9f9; /*цвет поля*/
+	padding: 7px;
+	height: 34px;
+	/*max-width: auto;*/	/*именно max-width, а не width, чтобы если экран был меньше, то элемент автоматически уменьшался по ширине*/
+	/*или чтобы он брал значение размера, но если экран меньше, то уменьшался бы (что предпочтительнее), то указываем 100%, а не auto*/
+	max-width: 100%;
+	display: block; /*block - типа как тэг <p>; inline - без отступов (как если бы без margine)*/
+    border-radius: 5px;
+    font-size: 12pt;
+    color: #474747;
+}
+.inputFielddre:focus {
+	outline: 0;		/*нужен чтобы дефолтная рамка не окружала форму, когда мы ее выделяем*/
+	box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;
+}
+
+
+.inputAreaFielddre {
+	padding: 6px 9px;	
+	background-color: #f9f9f9; 
+	height: auto;
+	max-width: 100%;
+	display: block; 
+	border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 12pt;
+    color: #474747;
+    text-align: left;
+}
+.inputAreaFielddre:hover {
+	border-color: #5bab96;
+}
+.inputAreaFielddre:focus {
+	outline: 0;		
+	border-color: #5bab96;
+	box-shadow: inset 0 0px 7px rgba(66, 165, 163, 0.47),   0 0 12px #279482a3;    /*#rrggbbaa*/	
+}
+
+
+.shadowOkdre {
+	border: 1px solid #ccc;
+}
+.shadowOkdre:focus {
+	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
+	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
+	border-color: #66afe9;    /*как в оригинальном бутстрапе*/
+}
+.shadowOkdre:hover {		/*при наведении курсора*/
+	/*border-color: #99c;*/
+	border-color: #66afe9;
+}
+
+
+.shadowErrdre {
+	    border: 1px solid #be7171; /*rgba(170,70,70, 0.77);*/ /*#f49499;*/
+	    /*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc6565;*/
+}
+.shadowErrdre:focus {
+	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
+	/*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc5555;
+	border-color: #ce7171;    /*как в оригинальном бутстрапе*/
+
+	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
+	border-color: #966579;    /*как в оригинальном бутстрапе*/
+}
+
+
+/* стили для user.html */
+.postdre {
+	outline: 0;	
+	border-style: solid;
+	border-radius: 10px;
+	border-width: 3px;
+	border-color: #999;
+	padding: 10px 15px 0;
+	font-size: larger;
+	margin-bottom: 7px;
+	background-color: #f9f9f9;
+}
+.postdre:hover {
+	border-color: #8bb6ae; /*#rrggbbaa  a - alpha-chanel*/
+	box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
+	/*margin-bottom: 7px;*/
+	/*margin-top: 7px;*/
+}
+.postdre:focus {		/*для того момента, когда будет форма*/
+	background-color: #e5e5f4;
+}
+
+
+.userInfodre {
+	outline: 0;	
+	border-style: solid;
+	border-radius: 12px;
+	border-width: 2px;
+	border-color: #ccc;
+	padding: 10px 15px 0;
+	font-size: larger;
+	/*margin-bottom: 7px;*/
+	background-color: #f6ebd8;
+}
+
+
+/* для картинок */
+.imgavatardre {
+	max-width: 100%;
+	border-radius: 7px; 
+	box-shadow: 0 0 10px #555;
+}
+
+/*for button edit profile*/
+.editprofile {
+	padding: 7px 9px;
+	border: 1px solid #c9d1d1;
+   	border-radius: 7px;
+   	font-size: medium;
+   	background-color: transparent;
+   	color: #b7b9b9;       /*#7bcca0; acb0b0;*/
+   	outline: 0;
+}
+.editprofile:hover {
+	/*background-color: #73b1c2;  #73a2c2*/
+	color: #6b98b3;
+	border-color: #7ba3cc;
+	cursor: pointer;
+	text-decoration: none; /*чтобы убрать подчеркивание*/
+}
+
+
+/*======================================================*/
 
 /*.mystyle {
 	font-family: "Helvetica";
@@ -37,130 +206,4 @@
 }*/
 
 
-
-
-.mystyle2 {
-	font-family: "Helvetica";
-	max-width: auto;
-	/*line-height: 100px;*/
-	height: 50px;
-	border: 1px solid #ccc;	/* сама рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
-    border-radius: 9px;	/*скругление рамки поля*/
-    padding: 4px 12px;
-}
-
-.mystyle2:focus {
-	padding: 4px 34px;
-	max-width: 400px ;
-	border: 1px solid #0f0;
-    border-color: #34c734;		/*только цвет рами */
-    box-shadow: inset 1px 1px 12px rgba(0,0,200, 1.0),   0 0 30px #f00; /*дает эффект подсветки поля*/
-    /*	       |  inset - внутри поля               |   снаружи       |   */
-    /*box-shadow: none | <тень> [,<тень>]*  
-    где тень - это 
-	inset <сдвиг по x> <сдвиг по y> <радиус размытия> <растяжение> <цвет>
- 	цвет подсветки внутренней rgba(0,0,200, 1.0) чем меньше значение альфа-канала, тем больше прозрачность*/
-   
-    outline: 0;
-    /*-webkit-box-shadow: inset 0 1px 1px rgba(0,200,0,.075), 0 0 8px rgba(102,175,233,.6);*/
-    /*box-shadow: inset 0 1px 1px rgba(0,220,0,.075), 0 0 8px rgba(102,175,233,.6);*/
-}
-
-
-
-/*
-active		если элемент активирован (кнопочки, мб еще что-то) или зажат ЛКМ на нем
-focus		выбран (как с помощью tab)
-hover		курсор находится на элемента
-visited		?
-*/
-
-
-
-/* shadow drew */
-.inputFielddre {
-	padding: 6px 4px;	/*по_горизонтали  по_вертикали*/
-	background-color: #f9f9f9; /*цвет поля*/
-	padding: 7px;
-	height: 34px;
-	/*max-width: auto;*/	/*именно max-width, а не width, чтобы если экран был меньше, то элемент автоматически уменьшался по ширине*/
-	/*или чтобы он брал значение размера, но если экран меньше, то уменьшался бы (что предпочтительнее), то указываем 100%, а не auto*/
-	max-width: 100%;
-	display: block; /*block - типа как тэг <p>; inline - без отступов (как если бы без margine)*/
-    border-radius: 5px;
-    font-size: 12pt;
-    color: #474747;
-}
-.inputFielddre:focus {
-	outline: 0;		/*нужен чтобы дефолтная рамка не окружала форму, когда мы ее выделяем*/
-	box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;
-}
-
-
-
-.shadowOkdre {
-	border: 1px solid #ccc;
-}
-
-.shadowOkdre:focus {
-	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
-	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
-	border-color: #66afe9;    /*как в оригинальном бутстрапе*/
-}
-
-.shadowOkdre:hover {		/*при наведении курсора*/
-	/*border-color: #99c;*/
-	border-color: #66afe9;
-}
-
-
-.shadowErrdre {
-	    border: 1px solid #be7171; /*rgba(170,70,70, 0.77);*/ /*#f49499;*/
-	    /*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc6565;*/
-}
-
-.shadowErrdre:focus {
-	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
-	/*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc5555;
-	border-color: #ce7171;    /*как в оригинальном бутстрапе*/
-
-
-	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
-	border-color: #966579;    /*как в оригинальном бутстрапе*/
-}
-
-/* http://htmlbook.ru/CSS/Box-shadow */
-
-
-/* стили для user.html */
-
-.postdre {
-	outline: 0;	
-	border-style: solid;
-	border-radius: 10px;
-	border-width: 3px;
-	border-color: #999;
-	padding: 10px 15px 0;
-	font-size: larger;
-	margin-bottom: 7px;
-	background-color: #f9f9f9;
-}
-
-.postdre:hover {
-	border-color: #8bb6ae; /*#rrggbbaa  a - alpha-chanel*/
-	box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
-	/*margin-bottom: 7px;*/
-	/*margin-top: 7px;*/
-}
-
-.postdre:focus {		/*для того момента, когда будет форма*/
-	background-color: #e5e5f4;
-}
-
-
-/* для картинок */
-.imgavatardre {
-	max-width: 100%;
-	border-radius: 7px; 
-	box-shadow: 0 0 10px #555;
-}
+/*  изучить https://html5book.ru/svoystva-object-fit-i-object-position/  

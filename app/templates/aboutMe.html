@@ -3,6 +3,7 @@
 {% block title %}{{ super() }}about me{% endblock %}
 
 {% block content %}
+<div class="container">
 	<h3 style="text-align: center">step by step</h3>
 	<p>
 		{{ moment.lang('ru') }}
@@ -19,104 +20,12 @@
 	</div>
 	{% endfor %}
 
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
-<p>Drew</p>
+
+	{% for i in range(57) %}
+	<p>Drew</p>
+	{% endfor %}
+</div>
+
+{% include '_pageNavigation.html' %}
+<div id="toEndPage"></div>
 {% endblock %}

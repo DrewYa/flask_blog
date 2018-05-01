@@ -1,37 +1,93 @@
 {% extends "base.html" %}
 
-{% block title %}{{ super() }}user: {{ user.username }}{% endblock %} 
+{% block title %}{{ super() }}пользователь: {{ user.username }}{% endblock %} 
 
+
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
 {% block styles %}
 {{ super() }}
 <link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
+<style>
+	.imgavatardre {
+		max-width: 100%;
+		border-radius: 7px; 
+		box-shadow: 0 0 10px #555;
+	}
 
+	.postdre {
+		outline: 0;	
+		border-style: solid;
+		border-radius: 10px;
+		border-width: 3px;
+		border-color: #999;
+		padding: 10px 15px 0;
+		font-size: larger;
+		margin-bottom: 7px;
+		background-color: #f9f9f9;
+	}
+
+	.postdre:hover {
+		border-color: #8bb6ae; /*#rrggbbaa  a - alpha-chanel*/
+		box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
+	}
+
+	.postdre:focus {		/*для того момента, когда будет форма*/
+		background-color: #e5e5f4;
+	}
+
+	.editprofile {
+		padding: 7px 9px;
+		border: 1px solid #c9d1d1;
+    	border-radius: 7px;
+    	font-size: medium;
+    	background-color: transparent;
+    	color: #b7b9b9;      
+    	outline: 0;
+	}
+	.editprofile:hover {
+		color: #6b98b3;
+		border-color: #7ba3cc;
+		cursor: pointer;
+		text-decoration: none; /*чтобы убрать подчеркивание*/
+	}
+</style>
 {% endblock %}
 
 {% block content %}
 <div class="container" style="margin-top: 30px;">
 	<center>
-		<img class="imgavatardre" src="{{ user.avatar(270) }}">
-		<h1 style="margin-bottom: 30px;">добро пожаловать домой, {{ user.username }} :)</h1>
+		<img class="imgavatardre" src="{{ user.avatar(270) }}" alt="(avatar)">
+
+		{% if user.username == current_user.username %}
+
+		<p style="margin-top: 12px">
+			<a class="editprofile btn-sm" role="button" href="{{ url_for('edit_profile') }}">
+				редактировать<span class="glyphicon glyphicon-pencil" style="margin-left: 9px"></span>
+			</a>
+		</p>	<!-- без р будет отображаться сбоку от аватара -->
+
+		<h1 style="margin-bottom: 17px; margin-top: 9px">добро пожаловать домой, {{ user.username }} :)</h1>
+		{% else %}
+		<h1 style="margin-bottom: 17px;">добро пожаловать на страничку {{ user.username }} :)</h1>
+		{% endif %}
+
+		{% if user.about_me or user.last_seen %}
+		<div class="userInfodre" style="margin-bottom: 12px">
+			{% if user.about_me %}<p style="font-size: medium;">{{ user.about_me }}</p>{% endif %}
+			{#<!-- {% if user.last_seen %}<p>последний раз заходил: {{ user.last_seen }}</p>{% endif %} -->#}
+			{{ moment.lang('ru') }}
+			{% if user.last_seen %}
+				<p style="font-size: medium;">последний раз заходил: {{ moment(user.last_seen).format('LLLL') }} ({{ moment(user.last_seen).fromNow(refresh=True) }})</p>
+			{% endif %}
+		</div>
+		{% endif %}
+
 	</center>
 	<div class="row"> {# class "no-gutters" only for bootstrap v4.x#}
 		<div class="col-md-push-1 col-md-10">
 			{% if posts %}
 			{% for post in posts %}
-
-				<div class="postdre">
-				{#<!--  	<table class="table" style="font-size: 12pt;">
-						<tr valign="buttom">
-							<td><img src="{{ post.author.avatar(40) }}" style="margin-right: 5px"></td>
-							<td><h3>{{ post.author.username }} пишет:<br></h3></td>		 
-						</tr>
-					</table>	 --> #}
-
-					<h3><img src="{{ post.author.avatar(40) }}" style="margin-right: 7px; border-radius: 5px;">
-							{{ post.author.username }} пишет:</h3>
-					<p>{{ post.body }}</p>
-				</div>
+				{% include '_post.html' %}
 			{% endfor %}
 			{% else %}
 				<div class="postdre">
@@ -41,4 +97,9 @@
 		</div>
 	</div>
 </div>
+
+{% include '_pageNavigation.html' %}
+
+<div id="toEndPage" style="margin-bottom: 30px"></div>
+
 {% endblock %}

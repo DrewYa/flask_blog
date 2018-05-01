@@ -12,7 +12,7 @@ def load_user(id):
 	return User.query.get(int(id))
 # current_user имеет 4 обязательных свойства  (#2391)
 
-from hashlib import md5		# для сервиса gravatar
+from hashlib import md5		# для сервиса gravatars
 
 class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +21,8 @@ class User(UserMixin, db.Model):
 	password_hash = db.Column(db.String(128))
 	# __tablename__ = 'user' 	# (4)
 	post = db.relationship('Post', backref='author', lazy='dynamic') # (1)
+	about_me = db.Column(db.String(240)) # v6.1
+	last_seen = db.Column(db.DateTime, default=datetime.utcnow) #v6.1
 
 	def __repr__(self): 
 		return '<User {} |id: {} |email: {}>'.format(

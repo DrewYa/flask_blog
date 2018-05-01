@@ -1,85 +1,262 @@
 {% extends 'base.html' %}
 
+
+{% block body_attribs %}
+  style="padding-top: 50px; background-color: #f4f3f1;"
+{% endblock %}
+
+
 {% block content %}
 
-
-<div class="container">
-    <!-- Таблица стилей CSS -->
-    <style type="text/css">
-    h2{
-        margin: 0;
-        color: #666;
+<!-- Таблица стилей CSS -->
+<style type="text/css">
+h2{
+        margin: 0px;
+        color: #999;
         padding-top: 90px;
         font-size: 52px;
         font-family: "trebuchet ms", sans-serif;
-    }
-    .item{
+}
+.item{
         background: #333;
         text-align: center;
-        height: 300px !important;
-    }
-    .carousel{
-        margin-top: 20px;
-    }
-    </style>
+        height: 450px !important;   /*сделать 400, 430, 470 рх*/
+        /*max-height: 500px;*/
+        /*height: 100%;*/
+        /*min-height: 450px;*/
+        align-content: center;
+        vertical-align: middle;
+}
 
-    <!-- Карусель -->
-    <div id="myCarousel" class="carousel slide" data-interval="7000" data-ride="carousel">
-      <!-- Индикаторы для карусели -->
-      <ol class="carousel-indicators">
-        <!-- Перейти к 0 слайду карусели с помощью соответствующего индекса data-slide-to="0" -->
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <!-- Перейти к 1 слайду карусели с помощью соответствующего индекса data-slide-to="1" -->
+.carousel{
+        margin-top: 0px;
+}
+
+.pos {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        /*z-index: 2;*/
+}
+
+
+/*  с "вк разработчикам" https://vk.com/dev  */
+
+/*область на странице, выделяемая под карусель*/
+.dev_main_featured .dev_main_featured_banner {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    z-index: 2;
+    background: rgba(38,44,51,.5);
+}
+
+/*относительно div'а с этим классом располагаются все элементы в карусельке */
+.dev_main_featured_banners_anim_helper {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    white-space: nowrap;
+}
+
+/*кнопки внизу посередине слайдера для переключения на конкретный слайд*/
+.dev_main_featured_banners_buttons {
+    position: absolute;
+    bottom: 24px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    z-index: 2;
+}
+
+
+/*блок под слайды*/
+.dev_main_featured .dev_main_featured_banners_bg, .dev_main_featured .dev_main_featured_banners_bg_item {
+    z-index: 1;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+/*собственно слайды*/
+.dev_main_featured .dev_main_featured_banners_bg_item {
+    opacity: 0;
+    filter: alpha(opacity=0);
+    -o-transition: opacity 750ms cubic-bezier(0.4, 0, 0.4, 1);
+    transition: opacity 750ms cubic-bezier(0.4, 0, 0.4, 1);
+    background-repeat: no-repeat;
+    background-position: 50%;
+    background-size: cover!important;
+}
+/*собственно слайды*/
+.red_banners_bg_streaming_api {
+    background-image: url(/images/dev/banners/streaming_api.jpg);
+}
+
+/*переключение слайдов для левой и правой кнопки одинаково, единственное отличие: 
+для правой кнопки:    right: 0px;   для левой кнопки: left: 0px;  \
+этот класс дается элементу div, также у этого элемента есть атрибут onclick
+которому присваивается js-скрипт, при нажатии на этот эл. выполняется скрипт
+переключающий слайды (но можно сделать и чисто на css) */
+.dev_main_featured_banners_arrow {    
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    z-index: 3;
+    min-width: 100px;
+    width: 25%;
+    opacity: 0.5;
+    -o-transition: opacity 200ms ease;
+    transition: opacity 200ms ease;
+    cursor: pointer;
+}
+
+.dev_main_featured_banners_arrow_icon {  /*глификон переключения слайдов (находится внутри div'а с классом div_main_featured_banners_arrow )*/
+    position: absolute;
+    top: 50%;
+    margin-top: -40px;
+    width: 80px;
+    height: 80px;
+    background: url(data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.or…%20%20%20%20%20%20%20%20%3C%2Fg%3E%0A%20%20%20%20%3C%2Fg%3E%0A%3C%2Fsvg%3E) no-repeat 50%;
+    left: 10px;
+}
+</style>
+
+
+<div class="pos">
+<!-- Карусель -->
+<div id="myCarousel" class="carousel slide" data-interval="12000" data-ride="carousel">
+    <ol class="carousel-indicators">        <!-- Индикаторы для карусели -->                
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>        <!-- Перейти к 0 слайду с помощью соотв индекса data-slide-to="0" -->
         <li data-target="#myCarousel" data-slide-to="1"></li>
-        <!-- Перейти к 2 слайду карусели с помощью соответствующего индекса data-slide-to="2" -->
         <li data-target="#myCarousel" data-slide-to="2"></li>
-      </ol>
-      <!-- Слайды карусели -->
-      <div class="carousel-inner">
-        <!-- Слайды создаются с помощью контейнера с классом item, внутри которого помещается содержимое слайда -->
-        <div class="active item">
-          <h2>Слайд №1</h2>
-          <div class="carousel-caption">
-            <h3>Заголовок 1 слайда</h3>
-            <p>Текст (описание) 1 слайда...</p>
-          </div>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+        <li data-target="#myCarousel" data-slide-to="4"></li>
+    </ol>
+    
+    <div class="carousel-inner">        <!-- Слайды карусели -->            
+        <div class="item">    <!-- Слайды создаются с помощью контейнера с классом item, внутри которого помещается содержимое слайда -->
+            <!-- <h2>Слайд №1</h2> -->
+            <img src="{{ url_for('static', filename='main_1_.png') }}">
+            <div class="carousel-caption">
+                <h3>Приветствуем на RedYax! </h3>
+                <p style="font-size: medium;">Сайт находится еще в разработке и со временем 
+                будут добавлены новые интересные функции, надеюсь тебе понравится </p>
+            </div>
         </div>
         <!-- Слайд №2 -->
-        <div class="item">
-          <h2>Слайд 2</h2>
-          <div class="carousel-caption">
-            <h3>Заголовок 2 слайда</h3>
-            <p>Текст второго слайда, описание или что-то вроде того</p>
-          </div>
+        <div class="item" >
+            <h2>Слайд 2</h2>
+            <div class="carousel-caption">
+                <h3>Фичи</h3>
+                <p style="font-size: medium;">Пока что реализованы профили пользователей, возможность 
+                писать посты в свой блог, а также просматривать блоги других пользователей</p>
+            </div>
         </div>
         <!-- Слайд №3 -->
-        <div class="item">
-{#          <h2>Слайд 3</h2>#}
-          <img src="static/500.jpg">
-
-          <div class="carousel-caption">
-               {# style="opacity: 0.8; background-color: #1e1aff"
-                можно задать цвет и прозрачность с помощью rgba палитры:    #}
-            <h3><span class="label label-info" style="background-color: rgba(125,125,125,0.5);">
-              Метка 3 слайда
-            </span></h3>
-            <h3><span class="label label-info" style="background-color: rgba(5,5,5,0.7);">
-              Как всегда очень важный текст
-            </span></h3>
-          </div>
-
+        <div class="active item" >
+            <!-- <h2>Слайд 3</h2> -->         
+              <img style="min-height: 100%; width: 100%;" src="{{ url_for('static', filename='500.jpg') }}">                      
+            <div class="carousel-caption">
+                <p style="font-size: medium; background-color: #4447; border-radius: 7px" class="label-info" >
+                Есть еще пара функций, которые пока тестируются или 
+                используются только разработчиками, некоторые из них будут добавлены позже, а пока удачного серфинга!
+                </p>
+                <h3><span class="label label-info" style="background-color: #7777">
+                    Метка 3 слайда
+                </span></h3>
+            </div>                
         </div>
-      </div>
-      <!-- Навигация для карусели -->
-      <!-- Кнопка, осуществляющая переход на предыдущий слайд с помощью атрибута data-slide="prev" -->
-      <a class="carousel-control left" href="#myCarousel" data-slide="prev">
+        <!-- слайд 4 -->
+        <div class="item">
+            <h2>Слайд 2</h2>
+            <div class="carousel-caption">
+                <h3>Заголовок 2 слайда</h3>
+                <p>Текст второго слайда, описание или что-то вроде того</p>
+            </div>
+        </div>
+        <!-- слайд 5 -->
+        <div class="item">
+            <h2>Слайд 2</h2>
+            <div class="carousel-caption">
+                <h3>Заголовок 2 слайда</h3>
+                <p>Текст второго слайда, описание или что-то вроде того</p>
+            </div>
+        </div>            
+    </div><!-- конец слайдов карусели -->
+    
+    <!-- Навигация для карусели -->
+    <!-- Кнопка перехода на предыдущий слайд с помощью атрибута data-slide="prev" -->
+    <a class="carousel-control left" href="#myCarousel" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left"></span>
-      </a>
-      <!-- Кнопка, осуществляющая переход на следующий слайд с помощью атрибута data-slide="next" -->
-      <a class="carousel-control right" href="#myCarousel" data-slide="next">
+    </a>
+    <!-- Кнопка перехода на следующий слайд с помощью атрибута data-slide="next" -->
+    <a class="carousel-control right" href="#myCarousel" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right"></span>
-      </a>
-    </div>
+    </a>
+</div>
+</div>
+
+
+<div class="container">
+
+
+
+
 
 </div>
 {% endblock %}
+
+
+
+
+{#  гайды по созданию красивой карусельки
+https://webformyself.com/kak-sozdat-karusel-ispolzuya-tolko-html-i-css/
+
+<div style="font-size: 30px;">              <!-- стандартный размер -->
+  <h1 style="font-size: 100%"> Hello </h1>
+  <h2 style="font-size: 84%">favorite</h2>
+  <h3 style="font-size: 65%">follower</h3>
+  <p style="font-size: 47%">some text for you</p>
+</div>
+<div style="font-size: 50px;">      <!-- вот так текст наиболее хорошо читается и не слишком большой -->
+  <h1 style="font-size: 100%"> Hello </h1>
+  <h2 style="font-size: 84%">favorite</h2>
+  <h3 style="font-size: 65%">follower</h3>
+  <p style="font-size: 47%">some text for you</p>
+</div>
+<div style="font-size: 70px;">              <!-- подойдет для всяких постреров -->
+  <h1 style="font-size: 100%"> Hello </h1>
+  <h2 style="font-size: 84%">favorite</h2>
+  <h3 style="font-size: 65%">follower</h3>
+  <p style="font-size: 47%">some text for you</p>
+</div>
+
+https://webformyself.com/kak-sozdat-karusel-ispolzuya-tolko-html-i-css/
+http://bootstraptema.ru/stuff/snippets_bootstrap/sliders/28-2
+
+
+
+overflow: hidden;
+
+
+display: block;
+floag: left
+
+
+
+text-decoration: none
+
+
+height: 52px!important;
+line-height: 50px!important;
+
+  #}

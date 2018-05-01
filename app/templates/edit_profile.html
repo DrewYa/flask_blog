@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
+{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+	<h1 style="text-align: center;">редактирование профиля {{ current_user.username }}</h1><br>
+
+	<div class="col-sm-8 col-sm-push-2 ">
+	<center>
+	<form action="" method="post" style="max-width:536px">
+		{{ form.hidden_tag() }}
+		<p >
+			{{ form.username.label }}<br>
+			{% if form.username.errors %}
+			{{ form.username( size=35, placeholder="новый псевдоним", style="text-align: center", class="inputAreaFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.username( size=35, placeholder="новый псевдоним", style="text-align: center", class="inputAreaFielddre") }}
+			{% endif %}	
+			{% for error in form.username.errors %}
+			<p style="color: #a73577;">{{ error }}</p>
+			{% endfor %}
+		</p>
+		<br>
+		<p style="text-align: center;"> <!-- если вручную сужать и расширять, поле уедет вправо без text-align -->
+			{{ form.about_me.label }}<br>
+			<!-- {{ form.about_me.description }} <br> -->
+			{% if form.about_me.errors %}
+			{{ form.about_me( cols=67, rows=5, placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre shadowErrdre") }}
+			{% else %}
+			{{ form.about_me( cols=67, rows=5, placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre") }}
+			{% endif %}		
+			<br>
+			{% for error in form.about_me.errors %}
+			<span style="color: #a73577;">{{ error }}</span>
+			{% endfor %}
+		</p>
+									
+		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	{#<!-- btn-block будте броать ширину родител. html-тэга -->#}
+	</form>
+    </center>
+	</div> <!-- end col -->
+</div> <!-- end row -->
+
+<div class="row">
+	<div class="col-md-8 col-md-push-2  col-sm-10 col-sm-push-1">
+	{% with messages = get_flashed_messages() %}
+        {% if messages %}
+	    <div class="alert alert-info">
+			<button type="button" class="close" data-dismiss="alert">X</button>
+	    	<ul>
+	    	{% for message in messages %}
+	    		<li style="font-size: medium;">{{ message }}</li>
+	    	{% endfor %}
+	    	</ul>
+	    </div>
+        {% endif %}
+    {% endwith %}
+    </div>
+</div> <!-- end row -->
+</div> <!-- end container -->
+{% endblock %}
+
+
+{#
+для StringField указание размера происходит с помощью size=< number >
+для TextAreaField с помощью cols=< number >, rows=< number >
+
+, placeholder="немного о себе", class="inputFielddre shadowErrdre"
+, placeholder="немного о себе", class="inputFielddre shadowOkdre"
+#}
