@@ -176,19 +176,6 @@ def abrt(id):
 		abort(403) # нет доступа
 	return '<h1>ты ввел %s, попробуй ввести abort/404 и 403 или 500 </h1>' % id
 
-# как и ф. представления, обработчики ошибок возвращают ответ с 
-# числовым кодом состояния
-@app.errorhandler(404)
-def page_not_found(e):
-	return render_template('404.html'), 404
-
-@app.errorhandler(403)
-def not_permission(e):
-	return render_template('403.html'), 403
-
-@app.errorhandler(500)
-def internal_server_error(e):
-	return render_template('500.html'), 500
 
 # ----------------------------------------------------------
 
@@ -379,6 +366,7 @@ def send_file():
 	# return send_from_directory(os.path.join(app.root_path, 'static'), 'drew.jpg')
 # html тэг а позволяет сделать кнопку для скачивания файла, задав спец атрибут
 # http://htmlbook.ru/HTML/a
+# как обслуживать статические файлы  https://code-examples.net/ru/q/13b0ba6
 
 @app.route('/403_error')
 def img403():

@@ -26,7 +26,7 @@ migrate = Migrate(app, db)
 # из пакета app (так назвается папка в которой находится пакет)
 # импортирует модуль routes
 # (пакет определяется каталогом и скриптом __init__.py)
-from app import routes, _models_bd
+from app import routes, _models_bd, errors
 
 # чтобы приложение запустилось с желаемыми параметрами:
 # app.run(host='0.0.0.0', port=9079, debug=False)
