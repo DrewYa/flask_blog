@@ -47,7 +47,7 @@ if not app.debug:
 	if not os.path.exists('logs'):		#(2)
 		os.mkdir('logs')
 	file_handler = RotatingFileHandler('logs/flask_blog.log',
-		maxBytes=10240, backupCount=10)
+		maxBytes=20480, backupCount=10)
 	file_handler.setFormatter(logging.Formatter(
 		'\n{}\n%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]\n{}\n'.format(
 			' -'*25, ' -'*25)))

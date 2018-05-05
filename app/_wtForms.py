@@ -28,10 +28,9 @@ class LoginForm(FlaskForm):
 		description='придумай имя',) #_translations=True)
 	password = PasswordField('Пароль', validators=[
 		Length(min=4, message='не короче 4 символов')])
-	confirm = PasswordField('подтверди пароль', validators=[
-		EqualTo('password', message='пороли не совпадают')])
+	# confirm = PasswordField('подтверди пароль', validators=[		# убран с v6.4
+	# 	EqualTo('password', message='пороли не совпадают')])
 	submit = SubmitField('войти')
-
 	remember_me = BooleanField(label='запомнить меня',
 		description='ses', default=True, validators=[Optional()] )
 
@@ -77,11 +76,19 @@ class EditProfileForm(FlaskForm):
 	submit = SubmitField('сохранить')
 	# avatar
 	# username
-	# username
 	# password
 	# confirm
 	# current_password
 	
+	def __init__(self, original_username, *args, **kwargs):
+		super(EditProfileForm, self).__init__(*args, **kwargs)
+		self.original_username = original_username
+
+	def validate_username(self, username):
+		if username.data != self.original_username:
+			usr = User.query.filter(User.username==self.username.data).first()
+			if usr is not None:	# if user:
+				raise ValidationError('Это имя уже занято')
 
 
 

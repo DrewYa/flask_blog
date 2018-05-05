@@ -7,11 +7,15 @@
 {% endblock %}
 
 {% block title %}
-	{% if title %}
-	RedYax - {{ title }}
-	{% else %}
-	RedYax
+	{% if title %} RedYax - {{ title }}
+	{% else %} RedYax
 	{% endif %}
+{% endblock %}
+
+{% block styles %}
+	{{ super() }}
+	<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 {% endblock %}
 
 {% block body_attribs %}
@@ -83,8 +87,9 @@
 {% endblock %} <!-- navbar -->
 
 {% block content %}
-<div class="container">
+<div class="container" style="color: #393939">
 	{% block ccontent %}
+
 	<div class="row row-">
 		<div class="col-6">
 			column1
@@ -93,8 +98,10 @@
 			column2
 		</div>
 	</div>
+
 	{% endblock %}
 </div>
+<div id="toEndPage" style="margin-bottom: 30px"></div>
 {% endblock %}	<!-- content -->
 
 {% block scripts %}
@@ -228,3 +235,10 @@ https://itchief.ru/lessons/bootstrap-3/98-bootstrap-3-dropdown-lists
         		</li>
 
         		 -->
+
+{#<!--  ======================================================
+
+в блоке  styles:
+name="viewport" нужен чтобы корректно отображалась страница для всех устройст (например чтобы шрифты не были малюсенькими) -->
+<!-- initial-scale=1 устанавливает начальное значение масштаба = 100% (от 0 до 1) -->
+<!-- user-scalable=no запрещает увеличивать на мобильниках --> #}

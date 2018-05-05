@@ -1,31 +1,63 @@
 {% extends "base.html" %}
 
-{% block title %}{{ super() }}about me{% endblock %}
+{% block styles %}
+{{ super() }}
+<style>
+	.fontdre { font-size: 40px	}
+	.fontdre h1 { font-size: 100% }
+	.fontdre h2 { font-size: 84% }
+	.fontdre h3 { font-size: 65% }
+	.fontdre p { font-size: 47% }
+	.fontdre p a { font-size: 107% }
+	.fontdre a { font-size: 49% }
+</style>
+{% endblock %}
 
-{% block content %}
-<div class="container">
-	<h3 style="text-align: center">step by step</h3>
+{% block ccontent %}
+<div class="fontdre row">
+<div class="col-md-offset-1 col-md-10">
+	<h2 style="text-align: center; margin-bottom: 23px">step by step</h2>
 	<p>
-		{{ moment.lang('ru') }}
-		Time: {{ moment(current_time).format('LLL') }} <br>
-		that was {{ moment(current_time).fromNow(refresh=True) }} <br>
-		последний перезапуск сервера:
-		 {{ moment(current_time).fromNow(refresh=True) }}
+		Последний перезапуск сервера:
+		{{ moment(time_start).format('LLL') }}
+		({{ moment(time_start).fromNow(refresh=True) }})
 	</p>
-
+	<p>		
+		Время: {{ moment(current_time).format('LLL') }} 
+		(было {{ moment(current_time).fromNow(refresh=True) }}) <br>
+	</p>
+	<p style=" margin: 23px 0; padding: ">
+		<span style="margin-right: 12px">
+		Отзывы и предложения пиши сюда: 
+		</span>
+		<a href="mailto:siteredyax@gmail.com" style="text-decoration: none">siteRedYax@gmail.com</a>
+	</p>	
+	
 	{% for message in get_flashed_messages() %}
-	<div class="alert alert-info">
+	<div class="alert alert-info fontdre">
 		<button type="button" class="close" data-dismiss="alert">X</button>
-		{{ message }}
+		<p>{{ message }}</p>
 	</div>
 	{% endfor %}
 
+{#<!-- 
+<div class="visible-lg">lg (от 1200рх и больше)</div>
+<div class="visible-md">md (от 992рх до 1200)</div>
+<div class="visible-sm">sm (от 768рх до 992)</div>
+<div class="visible-xs">xs (576рх даже меньше до 768)</div>
+ -->#}
 
 	{% for i in range(57) %}
-	<p>Drew</p>
+	<p>Drew {{ i+1 }}</p>
 	{% endfor %}
-</div>
+</div>	<!-- end col -->
+</div>	<!-- end row -->
 
-{% include '_pageNavigation.html' %}
-<div id="toEndPage"></div>
+<div class="visible-xs visible-sm">
+	{% include '_pageNavigation.html' %}
+</div>  {#<!-- sx sm  0 - 768 -->#}
+<div class="visible-md visible-lg">
+	{% include '_pageNavigation_mdlg.html' %}
+</div>  {#<!-- md lg  768 - inifnity -->#}
+
 {% endblock %}

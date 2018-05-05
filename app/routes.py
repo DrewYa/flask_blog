@@ -115,8 +115,9 @@ def user(name=None):
 @app.route('/editprofile', methods=('GET', 'POST'))
 @login_required
 def edit_profile():
-	form = EditProfileForm()
+	form = EditProfileForm(current_user.username) # с v6.4 передаем имя текущего пользователя
 	if form.validate_on_submit():
+		session['username'] = form.username.data
 		current_user.username = form.username.data
 		current_user.about_me = form.about_me.data
 		db.session.commit()
@@ -136,13 +137,13 @@ def session_contents():
 def about_me():
 	flash('можешь оставить свое сообщение в форме, когда я ее сделаю :)')
 	return render_template('aboutMe.html', 
-		current_time=fix_time)	# datetime.utcnow())
+		current_time=datetime.utcnow(), time_start=fix_time, title='о сайте')
 
 
 @app.route('/user_agent')
 def usr_agent():
 	user_agent = request.headers.get('User-Agent')
-	return '<p>твой бразурер: %s</p>' % user_agent
+	return '<h1>твой бразурер: %s</h1>' % user_agent
 
 @app.route('/make_response')
 def mr():
@@ -301,8 +302,8 @@ def logout():
 @app.route('/securitypage')
 @login_required
 def securitypage():
-	return '<h3>Эту страницу можно увидеть только \
-	зарегистрированным пользователям </h3>'
+	return '<h1>Эту страницу можно увидеть только \
+	зарегистрированным пользователям </h1>'
 
 # ----------------------------------------------------
 
@@ -310,9 +311,8 @@ def securitypage():
 def submit_form():
 	form = MyForm()
 	if form.validate_on_submit():
-		return redirect(url_for(submit_redir))
-	return render_template('submit_form.html', 
-		form=form, title='вход')
+		return redirect(url_for('submit_redir'))
+	return render_template('submit_form.html', form=form, title='вход')
 
 @app.route('/submit_redir')
 def submit_redir():

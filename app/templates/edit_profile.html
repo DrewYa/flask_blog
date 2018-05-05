@@ -1,13 +1,7 @@
 {% extends 'base.html' %}
 
-{% block styles %}
-{{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
-<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">	
-{% endblock %}
+{% block ccontent %}
 
-{% block content %}
-<div class="container">
 <div class="row">
 	<h1 style="text-align: center;">редактирование профиля {{ current_user.username }}</h1><br>
 
@@ -41,7 +35,7 @@
 			{% endfor %}
 		</p>
 									
-		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	{#<!-- btn-block будте броать ширину родител. html-тэга -->#}
+		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	{#<!-- btn-block будет броать ширину родител. html-тэга -->#}
 	</form>
     </center>
 	</div> <!-- end col -->
@@ -63,14 +57,14 @@
     {% endwith %}
     </div>
 </div> <!-- end row -->
-</div> <!-- end container -->
+
 {% endblock %}
 
 
-{#
+{#<!-- 
 для StringField указание размера происходит с помощью size=< number >
 для TextAreaField с помощью cols=< number >, rows=< number >
 
 , placeholder="немного о себе", class="inputFielddre shadowErrdre"
 , placeholder="немного о себе", class="inputFielddre shadowOkdre"
-#}
+ -->#}

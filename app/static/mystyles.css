@@ -1,19 +1,20 @@
 /*
-active		если элемент активирован (кнопочки, мб еще что-то) или зажат ЛКМ на нем
+active		если элемент активирован (для кнопок, мб еще чего-то) или на нем зажат ЛКМ 
 focus		выбран (как с помощью tab)
-hover		курсор находится на элемента
+hover		курсор находится на элемента 
 visited		?
 */
 
 /* http://htmlbook.ru/CSS/Box-shadow */
+/* https://html5book.ru/svoystva-object-fit-i-object-position/  */
 
+/*вроде нигде не исп*/
 .mystyle2 {
 	font-family: "Helvetica";
 	max-width: auto;
-	/*line-height: 100px;*/
 	height: 50px;
-	border: 1px solid #ccc;	/* сама рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
-    border-radius: 9px;	/*скругление рамки поля*/
+	border: 1px solid #ccc;	/* рамка, тип линии и цвет; без нее поле будет как будто вдавленным */
+    border-radius: 9px;	
     padding: 4px 12px;
 }
 
@@ -21,30 +22,28 @@ visited		?
 	padding: 4px 34px;
 	max-width: 400px ;
 	border: 1px solid #0f0;
-    border-color: #34c734;		/*только цвет рами */
+    border-color: #34c734;	
     box-shadow: inset 1px 1px 12px rgba(0,0,200, 1.0),   0 0 30px #f00; /*дает эффект подсветки поля*/
     /*	       |  inset - внутри поля               |   снаружи       |   */
     /*box-shadow: none | <тень> [,<тень>]*  
     где тень - это 
 	inset <сдвиг по x> <сдвиг по y> <радиус размытия> <растяжение> <цвет>
  	цвет подсветки внутренней rgba(0,0,200, 1.0) чем меньше значение альфа-канала, тем больше прозрачность*/
-   
     outline: 0;
-    /*-webkit-box-shadow: inset 0 1px 1px rgba(0,200,0,.075), 0 0 8px rgba(102,175,233,.6);*/
-    /*box-shadow: inset 0 1px 1px rgba(0,220,0,.075), 0 0 8px rgba(102,175,233,.6);*/
 }
+
 
 
 /* shadow drew */
 .inputFielddre {
-	padding: 6px 4px;	/*по_горизонтали  по_вертикали*/
+	padding: 6px 4px;	/* up_and_down left_and_right  |or|  up right down left */
 	background-color: #f9f9f9; /*цвет поля*/
 	padding: 7px;
 	height: 34px;
-	/*max-width: auto;*/	/*именно max-width, а не width, чтобы если экран был меньше, то элемент автоматически уменьшался по ширине*/
-	/*или чтобы он брал значение размера, но если экран меньше, то уменьшался бы (что предпочтительнее), то указываем 100%, а не auto*/
+	/*именно max-width, а не width, при маленьком экране эл. возьмет ширину родител. эл.
+	/*но если экран меньше, то уменьшится автоматически*/
 	max-width: 100%;
-	display: block; /*block - типа как тэг <p>; inline - без отступов (как если бы без margine)*/
+	display: block; /*block - типа как тэг <p>; inline - без отступов в строку*/
     border-radius: 5px;
     font-size: 12pt;
     color: #474747;
@@ -73,7 +72,7 @@ visited		?
 .inputAreaFielddre:focus {
 	outline: 0;		
 	border-color: #5bab96;
-	box-shadow: inset 0 0px 7px rgba(66, 165, 163, 0.47),   0 0 12px #279482a3;    /*#rrggbbaa*/	
+	box-shadow: inset 0 0px 7px rgba(66, 165, 163, 0.47),   0 0 12px rgba(39,148,130, 0.47); /*#rrggbbaa don't work mobile*/	
 }
 
 
@@ -81,12 +80,9 @@ visited		?
 	border: 1px solid #ccc;
 }
 .shadowOkdre:focus {
-	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
-	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
-	border-color: #66afe9;    /*как в оригинальном бутстрапе*/
+	border-color: #66afe9;    /*like original bootstrap*/
 }
-.shadowOkdre:hover {		/*при наведении курсора*/
-	/*border-color: #99c;*/
+.shadowOkdre:hover {
 	border-color: #66afe9;
 }
 
@@ -96,16 +92,12 @@ visited		?
 	    /*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc6565;*/
 }
 .shadowErrdre:focus {
-	/*здесь через запятую указали 2 подсветки - внутреннюю и внешнюю*/
-	/*box-shadow: inset 0 0px 3px rgba(185,50,50, 0.77),   0 0 9px #bc5555;
-	border-color: #ce7171;    /*как в оригинальном бутстрапе*/
-
 	/*box-shadow: inset 0 0px 7px rgba(100,190,240, 0.77),   0 0 21px #66a7e9;		*/
 	border-color: #966579;    /*как в оригинальном бутстрапе*/
 }
 
 
-/* стили для user.html */
+/* styles for (user.html) */
 .postdre {
 	outline: 0;	
 	border-style: solid;
@@ -118,7 +110,7 @@ visited		?
 	background-color: #f9f9f9;
 }
 .postdre:hover {
-	border-color: #8bb6ae; /*#rrggbbaa  a - alpha-chanel*/
+	border-color: #8bb6ae; 
 	box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
 	/*margin-bottom: 7px;*/
 	/*margin-top: 7px;*/
@@ -127,7 +119,7 @@ visited		?
 	background-color: #e5e5f4;
 }
 
-
+/* for (user.html) */
 .userInfodre {
 	outline: 0;	
 	border-style: solid;
@@ -136,26 +128,25 @@ visited		?
 	border-color: #ccc;
 	padding: 10px 15px 0;
 	font-size: larger;
-	/*margin-bottom: 7px;*/
 	background-color: #f6ebd8;
 }
 
 
-/* для картинок */
+/* for avatar imgage (user.html) */
 .imgavatardre {
 	max-width: 100%;
 	border-radius: 7px; 
 	box-shadow: 0 0 10px #555;
 }
 
-/*for button edit profile*/
+/*for button edit profile on (user.html)*/
 .editprofile {
 	padding: 7px 9px;
 	border: 1px solid #c9d1d1;
    	border-radius: 7px;
    	font-size: medium;
    	background-color: transparent;
-   	color: #b7b9b9;       /*#7bcca0; acb0b0;*/
+   	color: #b7b9b9; 
    	outline: 0;
 }
 .editprofile:hover {
@@ -167,43 +158,39 @@ visited		?
 }
 
 
-/*======================================================*/
+/* buttons scroll across the page */
+/*xs and sm*/
+.rscrolldre {
+    font-size: 20px;
+    position: relative;
+    float: right;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    color: rgba(82, 140, 132, 0.5);
+    background-color: transparent;
+    border: 3px solid transparent;
+}
+.rscrolldre:hover { color: rgba(82, 140, 132, 0.67); }
+.rscrolldre:focus { color: rgba(82, 140, 132, 0.77); outline: 0;}
+.rscrUpdre { padding: 15px 19px 12px 19px; }
+.rscrDowndre { padding: 15px 19px 12px 19px; }
 
-/*.mystyle {
-	font-family: "Helvetica";
-
-	border-radius: 5px;
-	border-radius
-	height: 40px;
-	padding: 3px 12px;
-
-	border: 1px solid #ccc;
-    border-top-color: rgb(204, 204, 204);
-    border-top-style: solid;
-    border-top-width: 1px;
-    border-right-color: rgb(204, 204, 204);
-    border-right-style: solid;
-    border-right-width: 1px;
-    border-bottom-color: rgb(204, 204, 204);
-    border-bottom-style: solid;
-    border-bottom-width: 1px;
-    border-left-color: rgb(204, 204, 204);
-    border-left-style: solid;
-    border-left-width: 1px;
-    border-image-source: initial;
-    border-image-slice: initial;
-    border-image-width: initial;
-    border-image-outset: initial;
-    border-image-repeat: initial;
-
-    border-radius: 10px;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-    border-bottom-left-radius: 10px;
-
-        text-rendering: auto;
-}*/
-
-
-/*  изучить https://html5book.ru/svoystva-object-fit-i-object-position/  
+/*md and lg*/
+.lscrolldre {
+    font-size: 20px;
+    position: relative;
+    float: left;
+    margin-left: 19px;
+    margin-bottom: 0px;
+    color: rgba(82, 140, 132, 0.27);
+    background-color: transparent;
+    border: 3px solid transparent;
+    border-radius: 50px;
+}
+.lscrolldre:hover { 
+    color: rgba(82, 140, 132, 0.67);
+    background-color: rgba(32, 90, 100, 0.07);
+}
+.lscrolldre:focus { color: rgba(82, 140, 132, 0.77); outline: 0; }
+.lscrUpdre { padding: 15px 19px 12px 19px; }
+.lscrDowndre { padding: 15px 19px 12px 19px; }

@@ -2,29 +2,28 @@
 
 
 {% block body_attribs %}
-  style="padding-top: 50px; background-color: #f4f3f1;"
+  style="padding-top: 50px; background-color: #111;"  <!-- #f4f3f1;" -->
 {% endblock %}
 
-
-{% block content %}
-
+{% block styles %}
+{{ super() }}
 <!-- Таблица стилей CSS -->
 <style type="text/css">
-h2{
+h2 {
         margin: 0px;
         color: #999;
         padding-top: 90px;
         font-size: 52px;
         font-family: "trebuchet ms", sans-serif;
 }
-.item{
+.item {
         background: #000;
         text-align: center;
         height: 450px !important;   /*сделать 400, 430, 470 рх*/
         align-content: center;
         vertical-align: middle;
 }
-.carousel{
+.carousel {
         margin-top: 0px;
 }
 
@@ -49,9 +48,10 @@ h2{
   margin: auto ;   /*таким макаром я выровнял картинки посередине, даже если ее ширина будет меньше*/
   /*z-index: 2;*/
 }
-
 </style>
+{% endblock %}
 
+{% block content %}
 
 <div class="pos">
 <!-- Карусель -->
