@@ -1,5 +1,5 @@
 from flask import Flask 
-from app._cfg import Config
+from app._cfg import ConfigWithErrorToGmail
 from flask_sqlalchemy import SQLAlchemy 
 from flask_migrate import Migrate 
 from flask_login import LoginManager
@@ -8,7 +8,7 @@ from flask_login import LoginManager
 # экземпляра приложения в app/init.py
 
 app = Flask(__name__)
-app.config.from_object(Config)
+app.config.from_object(ConfigWithErrorToGmail)
 db = SQLAlchemy(app)
 login = LoginManager(app)
 # Flask-Login должен знать, какая вьюшка обрабатывает логины,

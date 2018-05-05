@@ -17,6 +17,29 @@ class Config():
 class ConfigWithDebug(Config):
 	DEBUG = True
 
+class ConfigWithErrorToGmail(Config):		#2041
+	MAIL_SERVER = os.environ.get('MAIL_SERVER') or 'smtp.googlemail.com'
+	MAIL_PORT = int(os.environ.get('MAIL_PORT') or 587)  # 465, 25, 587
+	MAIL_USE_TLS = True # os.environ.get('MAIL_USE_TLS') is not None 
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME') # or <мой ящик на gmail> 
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') # or <мой пароль от ящика на gmial> 
+	ADMINS = os.environ.get('TO_MAILS').split(' ') 
+	# в cmd нужно будет устанавливать из-под вирт окр, примерно так:
+	# (venv) $ set TO_MAILS=ex1@example.com ex2@example.com ex3@example.com 
+	# т.е. просто через пробел (даже без кавычек)
+	#	 (!) нужно разрешить отправлять с ненадежных приложений:
+	# https://support.google.com/accounts/answer/6010255?hl=en
+	# для гугл-почты без авторизации сообщения не будут отправляться
+
+class ConfigWithErrorToEmail(Config):
+	MAIL_SERVER = os.environ.get('MAIL_SERVER')     or 'smtp.mail.ru' # smtp.list.ru / smtp.bk.ru / smtp.inbox.ru
+	MAIL_PORT = int(os.environ.get('MAIL_PORT')     or 465) # 465, 25, 587
+	MAIL_USE_TLS = True # os.environ.get('MAIL_USE_TLS') is not None   # True - флаг вкл зашифр. соединения
+	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # необязательное
+	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # необязательное
+	ADMINS = os.environ.get('TO_MAILS').split(' ')  # список из адресов, - на все эти адреса будут приходить отчеты
+
+
 
 
 # позже можно добавлять другие параметры конфигурации в этот класс
@@ -71,3 +94,43 @@ class ConfigWithDebug(Config):
 
 # (2) указываем путь к БД, и ее имя (в нашем случае app.db)
 # (3) отключаем сигнализирование об изменениям в БД
+
+# ====================================
+
+#2041
+
+# SMTP - протокол передачи электронной почти в сетях TCP/IP
+# с 2008 есть ESMTP (Extended). Сейчас под SMTP обычно понимают
+# и его расширения
+
+# SMTP используется для отправки сообщения,
+# а POP или IMAP - для получения
+# изначально SMTP не требовала аутентификации, и эту возможность
+# добавили только в расширениях
+# Порты для безопасной передачи: 25 (стандартный), 587
+# для неащищенной передачи: 2525
+# другие: 465 (mail.ru с шифрованием)
+# 	Для mail.ru 	https://help.mail.ru/mail-help/mailer/popsmtp
+# сервер исходящей корреспонденции – smtp.mail.ru; 
+# имя юзера – полное название зарегистрированного в сервисе адреса электронной почты; 
+# пароль – парль для входа в ящик; 
+# порт при выборе протокола шифрования SSL/TLS – 465 
+# 	Для yandex.com 
+# сервер исходящей корреспонденции smtp.yandex.ru 
+# для порта указывается значение 465, но в настройках защиты устанавливается исключительно TLS
+# остальное - аналогично
+# 	gmail
+# адрес сервера: smtp.gmail.com; 
+# логин: адрес электронной почты; 
+# пароль: ваш пароль Gmail; 
+# порт (TLS): 587; 	 порт (SSL): 465; 
+# требуется Gmail SMTP TLS/SSL: да. 
+# (!) В дополнение к этим настройкам SMTP Gmail (ipb 3.4.6) вы должны 
+# разрешить почтовому клиенту получать/загружать почту из аккаунта Gmail.
+
+# http://fb.ru/article/258458/smtp-server-dlya-rassyilki-kak-nastroit-smtp-server
+
+# (!) нужно разрешить отправлять с ненадежных приложений:
+# https://support.google.com/accounts/answer/6010255?hl=en
+# настройки для разных серверов:
+# https://www.epochta.ru/help/mailer/09_smtp.htm

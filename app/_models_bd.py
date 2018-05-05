@@ -37,6 +37,7 @@ class User(UserMixin, db.Model):
 	def avatar(self, size):
 		digest = md5(self.email.lower().encode('utf-8')).hexdigest()
 		return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size) #9234
+		# вовсе не обязательно использовать майл для создания md5 - хэша #1901
 
 
 
@@ -467,3 +468,19 @@ class Post(db.Model):
 
 # быстрый дайджест по библиотеке hashlib
 # http://pythonlearn.ru/без-рубрики/shifrovanie-strok-s-pomoshhyu-modulya-hashlib-python/
+
+# ------------------------------------------------------------------------------------
+#1901
+
+# любая строка, не обязательно email пригодна для хэширование
+# и вставки в ссылку для формирования граватара
+
+# import hashlib as h
+# h4 = h.md5(b'hi, Drew!')
+# h4.hexdigest()
+# '8c81b0c826b4fad2bb3288b61b0840d1'
+
+# (кстати, для этого хеша получается очень приятный аватар, глянь:
+# https://www.gravatar.com/avatar/8c81b0c826b4fad2bb3288b61b0840d1?d=identicon&s=256
+# сделать возможность сменить аватар и тип аватара (рисунок, робот, ...)
+# )
