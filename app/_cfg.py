@@ -23,10 +23,10 @@ class ConfigWithErrorToGmail(Config):		#2041
 	MAIL_USE_TLS = True # os.environ.get('MAIL_USE_TLS') is not None 
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME') # or <мой ящик на gmail> 
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') # or <мой пароль от ящика на gmial> 
-	ADMINS = os.environ.get('TO_MAILS').split(' ') 
+	ADMINS = os.environ.get('TO_MAILS').split(',') 
 	# в cmd нужно будет устанавливать из-под вирт окр, примерно так:
 	# (venv) $ set TO_MAILS=ex1@example.com ex2@example.com ex3@example.com 
-	# т.е. просто через пробел (даже без кавычек)
+	# т.е. просто через запятую (без кавычек и пробелов)
 	#	 (!) нужно разрешить отправлять с ненадежных приложений:
 	# https://support.google.com/accounts/answer/6010255?hl=en
 	# для гугл-почты без авторизации сообщения не будут отправляться
@@ -37,7 +37,7 @@ class ConfigWithErrorToEmail(Config):
 	MAIL_USE_TLS = True # os.environ.get('MAIL_USE_TLS') is not None   # True - флаг вкл зашифр. соединения
 	MAIL_USERNAME = os.environ.get('MAIL_USERNAME')  # необязательное
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')  # необязательное
-	ADMINS = os.environ.get('TO_MAILS').split(' ')  # список из адресов, - на все эти адреса будут приходить отчеты
+	ADMINS = os.environ.get('TO_MAILS').split(',')  # список из адресов, - на все эти адреса будут приходить отчеты
 
 
 
