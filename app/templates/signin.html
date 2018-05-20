@@ -11,9 +11,9 @@
 			{{ form.username.label }}<br>
 			{{ form.username.description }} <br>
 			{% if form.username.errors %}
-			{{ form.username( size=35, placeholder="или придумай псевдоним", class="inputFielddre shadowErrdre") }}
+			{{ form.username( size=35, tabindex="1", placeholder="или придумай псевдоним", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.username( size=35, placeholder="или придумай псевдоним", class="inputFielddre shadowOkdre") }}
+			{{ form.username( size=35, tabindex="1", placeholder="или придумай псевдоним", class="inputFielddre shadowOkdre") }}
 			{% endif %}		
 
 			{% for error in form.username.errors %}
@@ -23,9 +23,9 @@
 		<p>
 			{{ form.email.label }}<br>
 			{% if form.email.errors %}
-			{{ form.email( size=35, placeholder="введи email", class="inputFielddre shadowErrdre") }}
+			{{ form.email( size=35, tabindex="2", placeholder="введи email", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.email( size=35, placeholder="введи email", class="inputFielddre shadowOkdre") }}
+			{{ form.email( size=35, tabindex="2", placeholder="введи email", class="inputFielddre shadowOkdre") }}
 			{% endif %}	
 			{#   {{ form.email.description }}   #}			
 
@@ -36,9 +36,9 @@
 		<p>
 			{{ form.password.label }}<br>
 			{% if form.password.errors %}
-			{{ form.password(size=23, class="inputFielddre shadowErrdre") }}
+			{{ form.password(size=23, tabindex="3", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.password(size=23, class="inputFielddre shadowOkdre") }}
+			{{ form.password(size=23, tabindex="3", class="inputFielddre shadowOkdre") }}
 			{% endif %}
 			
 			{% for error in form.password.errors %}
@@ -48,16 +48,16 @@
 		<p>
 			{{ form.confirm.label }}<br>
 			{% if form.confirm.errors %}
-			{{ form.confirm(size=23, class="inputFielddre shadowErrdre") }}
+			{{ form.confirm(size=23, tabindex="4", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.confirm(size=23, class="inputFielddre shadowOkdre") }}
+			{{ form.confirm(size=23, tabindex="4", class="inputFielddre shadowOkdre") }}
 			{% endif %}
 			
 			{% for error in form.confirm.errors %}
 			<span style="color: #990055;">{{ error }}</span>
 			{% endfor %}
 		</p>									
-		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	<!--{# btn-block будте броать ширину родител. html-тэга #}-->
+		<p>	{{ form.submit(class="btn btn-primary btn-block", tabindex="5",) }} </p>	<!--{# btn-block будте броать ширину родител. html-тэга #}-->
 	</form>
 	
 

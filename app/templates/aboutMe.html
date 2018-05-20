@@ -10,21 +10,46 @@
 	.fontdre p { font-size: 47% }
 	.fontdre p a { font-size: 107% }
 	.fontdre a { font-size: 49% }
+
+	.fontdresm { font-size: 45px	}
+	.fontdresm h1 { font-size: 100% }
+	.fontdresm h2 { font-size: 84% }
+	.fontdresm h3 { font-size: 65% }
+	.fontdresm p { font-size: 37% }
+	.fontdresm p a { font-size: 107% }
+	.fontdresm a { font-size: 37% }
+
+	.fontdreob { font-size: 15px; color: #121212;}
+	.fontdreob h1 { font-size: 246% }
+	.fontdreob h2 { font-size: 207% }
+	.fontdreob h3 { font-size: 160% }
+	.fontdreob p { font-size: 100% }
+	.fontdreob p a { font-size: 107% }
+	.fontdreob a { font-size: 100% }
+
+	.sf {    /* secretfont */
+		font-size: 0.01%; 
+		margin: 0px;
+		padding: 0px;
+		color: transparent;
+	/*Про шрифты*/
+		/*https://html5book.ru/css-shrifty/*/
+	}
 </style>
 {% endblock %}
 
 {% block ccontent %}
-<div class="fontdre row">
+<div class="fontdresm row">
 <div class="col-md-offset-1 col-md-10">
-	<h2 style="text-align: center; margin-bottom: 23px">step by step</h2>
+	<h1 style="text-align: center; margin-bottom: 23px">step by step</h1>
 	<p>
 		Последний перезапуск сервера:
 		{{ moment(time_start).format('LLL') }}
-		({{ moment(time_start).fromNow(refresh=True) }})
+		(<span style="white-space: nowrap">{{ moment(time_start).fromNow(refresh=True) }}</span>)
 	</p>
 	<p>		
 		Время: {{ moment(current_time).format('LLL') }} 
-		(было {{ moment(current_time).fromNow(refresh=True) }}) <br>
+		(было <span style="white-space: nowrap">{{ moment(current_time).fromNow(refresh=True) }}</span>) 
 	</p>
 	<p style=" margin: 23px 0; padding: ">
 		<span style="margin-right: 12px">
@@ -34,7 +59,7 @@
 	</p>	
 	
 	{% for message in get_flashed_messages() %}
-	<div class="alert alert-info fontdre">
+	<div class="alert alert-info fontdresm">
 		<button type="button" class="close" data-dismiss="alert">X</button>
 		<p>{{ message }}</p>
 	</div>
@@ -47,17 +72,74 @@
 <div class="visible-xs">xs (576рх даже меньше до 768)</div>
  -->#}
 
-	{% for i in range(57) %}
-	<p>Drew {{ i+1 }}</p>
+	{% for i in range(21) %}
+	<p>Drew<span class="sf">, hi boy!</span> {{ i+1 }} </p>
+	{% endfor %}
+	{% for i in range(21, 57) %}
+	<p>Drew {{ i+1 }} </p>
 	{% endfor %}
 </div>	<!-- end col -->
 </div>	<!-- end row -->
 
-<div class="visible-xs visible-sm">
-	{% include '_pageNavigation.html' %}
-</div>  {#<!-- sx sm  0 - 768 -->#}
-<div class="visible-md visible-lg">
-	{% include '_pageNavigation_mdlg.html' %}
-</div>  {#<!-- md lg  768 - inifnity -->#}
+unmodified font
+<h1>This is h1 font size</h1>
+<h2>Is h2 font size</h2>
+<h3>Now h3 font size</h3>
+<h4>h4 don't set up</h4>
+<p>This is paragraph, tag p</p>
+==================
+<div class="fontdre">
+fontdre
+<h1>This is h1 font size</h1>
+<h2>Is h2 font size</h2>
+<h3>Now h3 font size</h3>
+<h4>h4 don't set up</h4>
+<p>This is paragraph, tag p И русский текст для сравнения</p>
+</div>
+================
+<div class="fontdresm">
+fontdresm
+<h1>This is h1 font size</h1>
+<h2>Is h2 font size</h2>
+<h3>Now h3 font size</h3>
+<h4>h4 don't set up</h4>
+<p>This is paragraph, tag p И русский текст для сравнения</p>
+</div>
+======================
+<div class="fontdreob">
+fontdreob
+<h1>This is h1 font size</h1>
+<h2>Is h2 font size</h2>
+<h3>Now h3 font size</h3>
+<h4>h4 don't set up</h4>
+<p>This is paragraph, tag p И русский текст для сравнения</p>
+</div>
 
+
+<h3>&#8381;&#9998;&#9787;&#9786;&#64;&infin;&#8251;&#10148;</h3>
+
+<div id="scrollBtns"> {# <!-- блок отобразится, если высота контента на странице больше высоты браузера в 2.5 раза --> #}
+	<div class="visible-xs visible-sm">
+		{% include '_pageNavigation.html' %}
+	</div>  {#<!-- sx sm  0 - 768 -->#}
+	<div class="visible-md visible-lg">
+		{% include '_pageNavigation_mdlg.html' %}
+	</div>  {#<!-- md lg  768 - infinity -->#}
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<!-- <script src="{{ url_for('static', filename="ShowScrollBtn.js") }}"></script> -->
+	<script>
+	function ShowScrollBtn() {
+		if (document.documentElement.scrollHeight > document.documentElement.clientHeight*2.5) 
+		{ document.getElementById("scrollBtns").style.display = "block"; }
+		else { document.getElementById("scrollBtns").style.display = "none"; }
+		console.log('done!');
+	}
+
+	window.onload = ShowScrollBtn; 		// можно так: <body onload="ShowScrollBtn();">
+	</script>
 {% endblock %}

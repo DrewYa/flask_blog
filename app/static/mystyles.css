@@ -1,5 +1,5 @@
 /*
-active		если элемент активирован (для кнопок, мб еще чего-то) или на нем зажат ЛКМ 
+active		если элемент активирован (для ссылок, кнопок; активирован, когда нажимаем на нее)
 focus		выбран (как с помощью tab)
 hover		курсор находится на элемента 
 visited		?
@@ -32,6 +32,25 @@ visited		?
     outline: 0;
 }
 
+
+/* выделение текста */
+.txtSeldre::selection { background-color: #62d99c; color: #eee; }
+body::selection { background-color: #62d99c; color: #eee; }
+
+.txtSelect::selection {	background: #ffb7b7; }
+
+.txtSelectGray {}
+.txtSelectGray::selection { background: gray; color: red; }
+
+.txtSelectBlue::selection { background: #a8d1ff; }
+
+.txtSelectYellow::selection { background: transparent; color: #ff7; } /* ff7 fff2a8 */
+.txtSelectYellow::-moz-selection { background: transparent; color: #ff7; }
+
+.txtSelectWhite::selection { background-color: #fff2a8; color: gray; }
+
+.txtSelectRY::selection { background-color: rgba(1,1,1, 0.07); color: red; }
+.txtSelectRY::-moz-selection { background-color: rgba(1,1,1, 0.07); color: red; }
 
 
 /* shadow drew */
@@ -169,6 +188,8 @@ visited		?
     color: rgba(82, 140, 132, 0.5);
     background-color: transparent;
     border: 3px solid transparent;
+    cursor: pointer;
+    /*z-index: 9999;  поверх всех эл (на всякий случай)*/
 }
 .rscrolldre:hover { color: rgba(82, 140, 132, 0.67); }
 .rscrolldre:focus { color: rgba(82, 140, 132, 0.77); outline: 0;}

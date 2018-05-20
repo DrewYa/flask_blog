@@ -20,11 +20,8 @@
 
 {% block body_attribs %}
 {{ super() }}
-	style="padding-top: 57px;
-	{% block body_style %}
-		background-color: #f4f3f1;
-	{% endblock %}
-	"
+	style="padding-top: 57px; {% block body_style %} background-color: #f4f3f1;	{% endblock %} "
+	class="txtSeldre"
 {% endblock %}
 
 {% block navbar %} 
@@ -43,41 +40,41 @@
 						data-target=".navbar-collapse">
 				<span class="glyphicon glyphicon-menu-hamburger" style="color: #ddd"></span>
 			</button>
-			<a href="{{ url_for('index') }}" class="navbar-brand" style="font-size: xx-large;">RedYax</a>
+			<a href="{{ url_for('index') }}" class="navbar-brand txtSelectRY" style="font-size: xx-large;">RedYax</a>
 		</div>
 		<div class="collapse navbar-collapse " id="navbarCollapse" style="font-size: larger;">
 			<ul class="navbar-nav nav">
 				
 				{% if current_user.is_anonymous %}
 				<li class="navbar-item">
-					<a href="{{ url_for('login') }}">вход</a>
+					<a class="txtSelectYellow" href="{{ url_for('login') }}">вход</a>
 				</li>
 				<li class="navbar-item">
-					<a href="{{ url_for('signin') }}">регистрация</a>
+					<a class="txtSelectYellow" href="{{ url_for('signin') }}">регистрация</a>
 				</li>			
 				{% else %}
 				<li class="navbar-item">
-					<a href="{{ url_for('logout') }}">выход</a>
+					<a class="txtSelectYellow" href="{{ url_for('logout') }}">выход</a>
 				</li>								
 
 				<li class="navbar-item">
-					<a href="{{ url_for('user') }}" class="nav-link" style="display: inline-grid;">моя страничка</a>      {# url_for('user', current_user.username)   #}
+					<a class="nav-link txtSelectYellow" href="{{ url_for('user') }}" style="display: inline-grid;">моя страничка</a>      {# url_for('user', current_user.username)   #}
 				</li>
 				<li class="navbar-item">
-					<a href="{{ url_for('edit_profile') }}" type="button" class="">
+					<a class="txtSelectYellow" href="{{ url_for('edit_profile') }}" type="button">
 						<span class="glyphicon glyphicon-pencil" style=""></span>
 					</a>				
 				</li>
 				{% endif %}
 				
 				<li class="navbar-item">
-					<a href="#" class="nav-link">блог</a>
+					<a class="txtSelectYellow" href="#" class="nav-link">блог</a>
 				</li>
 				<li class="navbar-item">
-					<a href="#">контакты</a>
+					<a class="txtSelectYellow" href="#">контакты</a>
 				</li>
 				<li class="navbar-item">
-					<a href="{{ url_for('about_me') }}" class="nav-link">о сайте</a>
+					<a class="txtSelectYellow" href="{{ url_for('about_me') }}" class="nav-link">о сайте</a>
 				</li>
 			</ul>
 			<!-- <p class="navbar-text navbar-right"> &gt; <a href="#" class="navbar-link">{{ current_user.username }}</a></p>  -->

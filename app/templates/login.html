@@ -10,9 +10,9 @@
 		<p>
 			{{ form.username.label }}<br>
 			{% if form.username.errors %}
-			{{ form.username( size=35, placeholder="твой псевдоним", class="inputFielddre shadowErrdre") }}
+			{{ form.username( size=35, tabindex="1", placeholder="твой псевдоним", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.username( size=35, placeholder="твой псевдоним", class="inputFielddre shadowOkdre") }}
+			{{ form.username( size=35, tabindex="1", placeholder="твой псевдоним", class="inputFielddre shadowOkdre") }}
 			{% endif %}			
 
 			{#<!-- style="width: auto; display: initial;" -->
@@ -29,9 +29,9 @@
 		<p>
 			{{ form.password.label }}<br>
 			{% if form.password.errors %}
-			{{ form.password(size=23, class="inputFielddre shadowErrdre") }}
+			{{ form.password(size=23, tabindex="2", class="inputFielddre shadowErrdre") }}
 			{% else %}
-			{{ form.password(size=23, class="inputFielddre shadowOkdre") }}
+			{{ form.password(size=23, tabindex="2", class="inputFielddre shadowOkdre") }}
 			{% endif %}
 				
 			{% for error in form.password.errors %}
@@ -50,9 +50,9 @@
 			{% endfor %}
 		</p>	 -->	убран с v6.4 #}					
 		<p>			
-			{{ form.remember_me() }} &nbsp;	{{ form.remember_me.label }}
+			{{ form.remember_me(tabindex="3") }} &nbsp;	{{ form.remember_me.label }}
 		</p>	
-		<p>	{{ form.submit(class="btn btn-primary btn-block") }}	</p>
+		<p>	{{ form.submit(class="btn btn-primary btn-block", tabindex="4",) }}	</p>
 	</form>
 
 
@@ -104,4 +104,6 @@ form.<field_name>.errors
 это будет список (т.к. поля могут иметь несколько валидаторов)
 
 
+по тэгу input (оказывается очень много возможностей)
+http://htmlbook.ru/html/INPUT
  -->#}

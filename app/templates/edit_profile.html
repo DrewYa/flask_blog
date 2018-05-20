@@ -21,15 +21,16 @@
 			{% endfor %}
 		</p>
 		<br>
-		<p style="text-align: center;"> <!-- если вручную сужать и расширять, поле уедет вправо без text-align -->
+		<p style="text-align: center; margin-bottom: 7px;"> <!-- если вручную сужать и расширять, поле уедет вправо без text-align -->
 			{{ form.about_me.label }}<br>
 			<!-- {{ form.about_me.description }} <br> -->
 			{% if form.about_me.errors %}
-			{{ form.about_me( cols=67, rows=5, placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre shadowErrdre") }}
+			{{ form.about_me( cols=67, rows=5, oninput="CheckLen()", placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre shadowErrdre", style="min-width: 112px; min-height: 34px") }}
 			{% else %}
-			{{ form.about_me( cols=67, rows=5, placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre") }}
+			{{ form.about_me( cols=67, rows=5, oninput="CheckLen()", placeholder="мои увлечения, чем занимаюсь, интесные факты, ...",  class="inputAreaFielddre", style="min-width: 112px; min-height: 34px") }}
 			{% endif %}		
-			<br>
+		</p><p style="margin-bottom: 12px">
+			<span id="check240"></span>
 			{% for error in form.about_me.errors %}
 			<span style="color: #a73577;">{{ error }}</span>
 			{% endfor %}
@@ -58,6 +59,18 @@
     </div>
 </div> <!-- end row -->
 
+
+{% endblock %}
+
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+	function CheckLen() {
+		var len = document.getElementById('about_me').value.length;
+		document.getElementById('check240').innerHTML = 'символов введено ' + len + ' из 238 возможных';
+	}
+</script>
 {% endblock %}
 
 
