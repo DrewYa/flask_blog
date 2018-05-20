@@ -123,7 +123,7 @@ body::selection { background-color: #62d99c; color: #eee; }
 	border-radius: 10px;
 	border-width: 3px;
 	border-color: #999;
-	padding: 10px 15px 0;
+	padding: 0 15px 7px;
 	font-size: larger;
 	margin-bottom: 7px;
 	background-color: #f9f9f9;
@@ -142,7 +142,7 @@ body::selection { background-color: #62d99c; color: #eee; }
 .userInfodre {
 	outline: 0;	
 	border-style: solid;
-	border-radius: 12px;
+	border-radius: 4px;
 	border-width: 2px;
 	border-color: #ccc;
 	padding: 10px 15px 0;

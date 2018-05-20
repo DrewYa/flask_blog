@@ -77,8 +77,11 @@ def map():
 
 # ------------------------------------
 
-@app.route('/user/')				# изменен с v6.0
-@app.route('/user/<name>')
+from app._wtForms import PostForm
+from app._models_bd import Post
+
+@app.route('/user/', methods=('GET', 'POST'))				# изменен с v6.0
+@app.route('/user/<name>', methods=('GET', 'POST'))	# , methods=('GET', 'POST')
 @login_required
 def user(name=None):
 	if name is None:
@@ -91,11 +94,22 @@ def user(name=None):
 		# abort(403)		# если раскомментить это поле, то можно будет просматривать странички др. пользователей
 		pass
 	user = User.query.filter(User.username==name).first_or_404()
-	posts = [
-		{'author': user, 'body': 'test post 1'},
-		{'author': user, 'body': 'test post 2'}
-	]	
-	return render_template('user.html', user=user, posts=posts)
+
+	form = PostForm()
+	if form.validate_on_submit():
+		post = Post(body=form.post.data, author=current_user)
+		db.session.add(post)  # для удаления поста db.session.delete(post)
+		db.session.commit()
+		# flash('пост размещен')
+		return redirect(url_for('user', name=session.get('username')))
+
+	posts = user.post.order_by( Post.timestamp.desc() )[:]
+
+	# posts = [
+	# 	{'author': user, 'body': 'test post 1'},
+	# 	{'author': user, 'body': 'test post 2'}
+	# ]	
+	return render_template('user.html', user=user, posts=posts, form=form) # posts=posts.item # form=form
 
 
 # @app.route('/user/')				# v6.0
@@ -136,8 +150,9 @@ def session_contents():
 @app.route('/aboutme')
 def about_me():
 	flash('можешь оставить свое сообщение в форме, когда я ее сделаю :)')
+	usr = User.query.get(1)
 	return render_template('aboutMe.html', 
-		current_time=datetime.utcnow(), time_start=fix_time, title='о сайте')
+		current_time=datetime.utcnow(), time_start=fix_time, title='о сайте', author=usr.username)
 
 
 @app.route('/user_agent')

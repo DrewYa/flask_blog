@@ -90,6 +90,11 @@ class EditProfileForm(FlaskForm):
 			if usr is not None:	# if user:
 				raise ValidationError('Это имя уже занято')
 
+class PostForm(FlaskForm):
+	post = TextAreaField('Напиши что-нибудь', validators=[
+		Length(min=1, max=140, message='допустимо от 1 до 140 символов')],
+		description='Я хочу сказать, что ...')
+	submit = SubmitField('запостить')
 
 
 class RecaptchaForm(FlaskForm):

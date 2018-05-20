@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}{{ super() }}пользователь: {{ user.username }}{% endblock %} 
+{% block title %}{{ super() }}пользователь: {{ user.username }}{% endblock %}
 
 {% block ccontent %}
 <center>
@@ -20,7 +20,7 @@
 	{% endif %}
 
 	{% if user.about_me or user.last_seen %}
-	<div class="userInfodre" style="margin-bottom: 12px">
+	<div class="userInfodre col-md-push-1 col-md-10" style="margin-bottom: 12px">
 		{% if user.about_me %}<p style="font-size: medium;">{{ user.about_me }}</p>{% endif %}
 		{#<!-- {% if user.last_seen %}<p>последний раз заходил: {{ user.last_seen }}</p>{% endif %} -->#}
 		{{ moment.lang('ru') }}
@@ -31,26 +31,48 @@
 	{% endif %}
 </center>
 
-<div class="row"> {# class "no-gutters" only for bootstrap v4.x#}
+<div class="row">   {# class "no-gutters" only for bootstrap v4.x#}
 	<div class="col-md-push-1 col-md-10">
+
+		{% if user.username == current_user.username %}						
+			{% include '_make_post.html' %}
+		{% endif %}
+
 		{% if posts %}
 		{% for post in posts %}
 			{% include '_post.html' %}
 		{% endfor %}
 		{% else %}
 			<div class="postdre">
-				<p>не написано еще ни одного поста :(</p>
+				<p style="padding-top: 12px">не написано еще ни одного поста :(</p>
 			</div>
 		{% endif %}
 	</div>
 </div> <!-- end row -->
 
 
-<div class="visible-xs visible-sm">
-	{% include '_pageNavigation.html' %}
-</div>
-<div class="visible-md visible-lg">
-	{% include '_pageNavigation_mdlg.html' %}
+<div id="scrollBtns"> {# <!-- блок отобразится, если высота контента на странице больше высоты браузера в 2.5 раза --> #}
+	<div class="visible-xs visible-sm">
+		{% include '_pageNavigation.html' %}
+	</div>  {#<!-- sx sm  0 - 768 -->#}
+	<div class="visible-md visible-lg">
+		{% include '_pageNavigation_mdlg.html' %}
+	</div>  {#<!-- md lg  768 - infinity -->#}
 </div>
 
+{% endblock %}
+
+{% block scripts %}
+	{{ super() }}
+	<!-- <script src="{{ url_for('static', filename="ShowScrollBtn.js") }}"></script> -->
+	<script>
+	function ShowScrollBtn() {
+		if (document.documentElement.scrollHeight > document.documentElement.clientHeight*2.5) 
+		{ document.getElementById("scrollBtns").style.display = "block"; }
+		else { document.getElementById("scrollBtns").style.display = "none"; }
+		console.log('done!');
+	}
+
+	window.onload = ShowScrollBtn; 		// можно так: <body onload="ShowScrollBtn();">
+	</script>
 {% endblock %}

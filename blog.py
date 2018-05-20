@@ -3,7 +3,7 @@
 from app import app
 
 from app import db
-from app._models_bd import User, Post
+from app._models_bd import User, Post, followers
 
 # создадим контекст оболочки, который добавит экземпляр 
 # приложения и модели БД (и вообще любые модули, функции, атрибуты)
@@ -14,7 +14,7 @@ from app._models_bd import User, Post
 # возвращаемой сущность, через которое она будет доступна в оболочке
 @app.shell_context_processor
 def make_shell_context():
-	return {'db': db, 'User': User, 'Post': Post}
+	return {'db': db, 'User': User, 'Post': Post, 'followers':followers}
 
 # результат:
 

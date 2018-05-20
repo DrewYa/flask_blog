@@ -14,6 +14,13 @@ def load_user(id):
 
 from hashlib import md5		# для сервиса gravatars
 
+
+followers = db.Table('followers', # (v7.0 ch8)	#1479 
+	db.Column('follower_id', db.Integer, db.ForeignKey('user.id')), # подписки
+	db.Column('followed_id' ,db.Integer, db.ForeignKey('user.id'))	# подписчики
+)
+
+
 class User(UserMixin, db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(64), index=True, unique=True)
@@ -23,6 +30,14 @@ class User(UserMixin, db.Model):
 	post = db.relationship('Post', backref='author', lazy='dynamic') # (1)
 	about_me = db.Column(db.String(240)) # v6.1
 	last_seen = db.Column(db.DateTime, default=datetime.utcnow) #v6.1
+	# для этого отношения можно сказать, что пользователь левой 
+	# стороны подписан на пользователя правой    #1487
+	followed = db.relationship( #v7.0 (ch8)
+		'User', secondary=followers,
+		primaryjoin=(followers.c.follower_id == id),  #1489
+		secondaryjoin=(followers.c.followed_id == id),
+		backref=db.backref('followers', lazy='dynamic'),
+		lazy='dynamic'	)
 
 	def __repr__(self): 
 		return '<User {} |id: {} |email: {}>'.format(
@@ -39,6 +54,19 @@ class User(UserMixin, db.Model):
 		return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size) #9234
 		# вовсе не обязательно использовать майл для создания md5 - хэша #1901
 
+	def follow(self, usr):	# (v7.0)		#2861
+		if not self.is_following(usr):
+			self.followed.append(usr)
+
+	def unfollow(self, usr):
+		if self.is_following(usr):
+			self.followed.remove(usr)
+
+	def is_following(self, usr):
+		return self.followed.filter(followers.c.followed_id == usr.id).count() > 0 # true of false
+
+	# добавить м. возвращающий список подписчиков
+	# добавить м. возвращающий список подписок
 
 
 class Post(db.Model):
@@ -52,8 +80,8 @@ class Post(db.Model):
 	# User в этот (Post) класс будет добавлено поле author
 
 	def __repr__(self):
-		return '<Post {}|user_id: {} |data: {}>'.format(
-			self.body, self.user_id, self.timestamp)
+		return '<Post id {}|user_id: {} |data: {} |body {}>'.format(
+			self.id, self.user_id, self.timestamp, self.body)
 
 
 # ===============================================
@@ -484,3 +512,56 @@ class Post(db.Model):
 # https://www.gravatar.com/avatar/8c81b0c826b4fad2bb3288b61b0840d1?d=identicon&s=256
 # сделать возможность сменить аватар и тип аватара (рисунок, робот, ...)
 # )
+
+# ----------------------------------------------------------------------
+#1479
+
+# это таблица реализующая отношение один-ко-многим для поля id таблицы user 
+# связывая один и тот же объект (одну и ту же таблицу через референтную таблицу).
+# Такой тип отношений называется самореферентным.
+# Здесь мы не таблицу в качестве модели. Поскольку это вспомогательная, не 
+# имеющая данных, отличных от внешних ключей, то мы сделали ее без
+# соответствующей модели.
+
+# ----------------------------------------------------------------------
+#1489
+
+# followers.c.follower_id  атрибут "с" - это атрибут таблиц sqlalchemy,
+# которые не определены как модели. Для этих таблиц столбцы отображаются
+# как субатрибуты этого атрибута "с"
+
+# ----------------------------------------------------------------
+#1487
+
+# 'User' — это правая сторона связи (левая сторона — это родительский класс). 
+# 	Поскольку это самореферентное отношение, я должен использовать тот же класс с обеих сторон.
+# secondary кофигурирует таблицу ассоциаций, которая используется для этой связи, 
+# 	которую я определил прямо над этим классом.
+# primaryjoin указывает условие, которое связывает объект левой стороны (follower user) 
+# 	с таблицей ассоциаций. Условием объединения для левой стороны связи является 
+# 	идентификатор пользователя, соответствующий полю follower_id таблицы ассоциаций. 
+# 	Выражение followers.c.follower_id ссылается на столбец follower_id таблицы ассоциаций.
+# secondaryjoin определяет условие, которое связывает объект правой стороны (followed user) 
+# 	с таблицей ассоциаций. Это условие похоже на primaryjoin, с той лишь разницей, что 
+# 	теперь я использую follow_id, который является другим внешним ключом в таблице ассоциаций.
+# backref определяет, как эта связь будет доступна из правой части объекта. 
+# 	С левой стороны отношения пользователи называются followed, поэтому с правой стороны 
+# 	я буду использовать имя followers, чтобы представить всех пользователей левой стороны, 
+# 	которые связаны с целевым пользователем в правой части. Дополнительный lazy аргумент 
+# 	указывает режим выполнения этого запроса. Режим dynamic настройки запроса не позволяет 
+# 	запускаться до тех пор, пока не будет выполнен конкретный запрос, что также связано с тем, 
+# 	как установлено отношения «один ко многим».
+# lazy похож на параметр с тем же именем в backref, но этот относится к левой, а не к правой стороне.
+
+# ---------------------------------------------------------------
+#2861
+
+# для того, чтобы новая таблица автоматически импортировалась, когда запускаем flask shell
+# нужно добавить ее импорт в файле запуска приложения (blog.py)
+
+# Drew = User.query.get(1)
+# dron = User.query.get(15)
+# list(Drew.followed)	# подписки
+# list(Drew.followers)	# подписчики
+# Drew.followed.filter(followers.c.followed_id == dron.id).count() > 0   # true of false
+# Drew.followed.filter(followers.c.followed_id == dron.id).all()

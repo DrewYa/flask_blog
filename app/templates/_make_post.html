@@ -1,0 +1,31 @@
+<div >
+<center>
+	<form action="" method="post" style="max-width:536px">
+		{{ form.hidden_tag() }}
+		<p style="text-align: center; margin-bottom: 7px;"> 
+			{{ form.post.label }}<br>
+			<!-- {{ form.post.description }} <br> -->
+			{% if form.post.errors %}
+			{{ form.post( cols=67, rows=3, oninput="CheckLen140()", placeholder="я хочу сказать, что ...",  class="inputAreaFielddre shadowErrdre", style="min-width: 112px; min-height: 34px") }}
+			{% else %}
+			{{ form.post( cols=67, rows=3, oninput="CheckLen140()", placeholder="я хочу сказать, что ...",  class="inputAreaFielddre", style="min-width: 112px; min-height: 34px") }}
+			{% endif %}		
+		</p><p style="margin-bottom: 12px">
+			<span id="check140"></span>
+			{% for error in form.post.errors %}
+			<span style="color: #a73577;">{{ error }}</span>
+			{% endfor %}
+		</p>		
+		<p>	{{ form.submit(class="btn btn-primary btn-block") }} </p>	
+	</form>
+</center>
+</div>
+
+
+<script type="text/javascript">
+	function CheckLen140() {
+		var len = document.getElementById('post').value.length;
+		document.getElementById('check140').innerHTML = 'символов введено ' + len + ' из 140 возможных';
+	}
+</script>
+
