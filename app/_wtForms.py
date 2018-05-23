@@ -67,12 +67,17 @@ class SigninForm(FlaskForm):
 		if usr is not None:
 			raise ValidationError('Этот email уже используется для учетной записи')
 
+# from uuid import uuid4
+
 class EditProfileForm(FlaskForm):
 	username = StringField('Имя пользователя', validators=[DataRequired(message='имя не введено')],
 		description='здесь можно ввести новый псевдоним')
 	about_me = TextAreaField('Немного обо мне', validators=[
 		Length(min=0, max=240, message='не больше 240 символов')],
 		description='мои увлечения, чем занимюсь, интересности')
+	# avatar_random = uuid4().hex
+	# avatar_random = StringField('генерация нового аватара', description="введи любые символы для генерации аватара",
+	# 	validators=[Optional(), Length(min=12, message="минимум 12 любых символов")])
 	submit = SubmitField('сохранить')
 	# avatar
 	# username
@@ -154,3 +159,29 @@ class RecaptchaForm(FlaskForm):
 # Email(message=...)
 # EqualTo(fieldName=<field>, message=...)
 # FileRequired(message=...)
+
+# =================================
+
+# как работать с валидатором FormSelect
+
+# делаем поле опциональным (необязательным), это будет форма выбора
+# из нескольких предложенных вариантов
+# class FormChoice():
+# 	myfield = SelectField('myfield', validators=[Optional()])
+# 	submit = SubmitField()
+# 	можно задавать варианты выбора прямо в классе:
+# 	choices = (('', ''), ('1', "first variable"), ('2', "second")) 
+
+# или сделать во вьюшке. делаем:
+# form = myform(csrf_enabled=False)
+#     form.myfield.choices = (('', ''), ('apples', 'apples'), ('pears', 'pears'))
+
+# if not form.validate():
+#       return search_with_no_parameters()
+# else:
+#       return search_with_parameters(form) 
+
+# --------
+
+# есть еще:
+# form.is_submited()

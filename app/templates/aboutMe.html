@@ -58,12 +58,7 @@
 		<a href="mailto:siteredyax@gmail.com" style="text-decoration: none">siteRedYax@gmail.com</a>
 	</p>	
 	
-	{% for message in get_flashed_messages() %}
-	<div class="alert alert-info fontdresm">
-		<button type="button" class="close" data-dismiss="alert">X</button>
-		<p>{{ message }}</p>
-	</div>
-	{% endfor %}
+	{% include '_flash_messages.html' %}
 
 	<p>Пока что можно заглянуть на <a style="text-decoration: none" href="{{ url_for('user') }}{{ author }}">мою страничку</a> или создать собственную</p>
 {#<!-- 

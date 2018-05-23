@@ -1,7 +1,13 @@
-<div class="postdre">
-	<h3><img src="{{ post.author.avatar(40) }}" style="margin-right: 7px; border-radius: 5px;">
-			{{ post.author.username }} пишет:</h3>
-	<p>{{ post.body }}</p>
+<div class="postdre" id="post{{ post.id }}">
+	<div>
+		<h4><img src="{{ post.author.avatar(40) }}" style="margin-right: 7px; border-radius: 5px;">
+				{{ post.author.username }} пишет:
+		<span style="font-size: small;">{{ moment(post.timestamp).format("LLL") }}</span>
+		</h4>
+	</div>
+	<div style="word-wrap: break-word; display: inline">
+		<p>{{ post.body }}</p>
+	</div>
 </div>
 {#<!--  	
 <table class="table" style="font-size: 12pt;">

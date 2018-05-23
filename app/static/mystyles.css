@@ -32,6 +32,21 @@ visited		?
     outline: 0;
 }
 
+/* размер текста (относительный) */
+.fontdreob { font-size: 15px; color: #121212;}
+.fontdreob h1 { font-size: 246% }
+.fontdreob h2 { font-size: 207% }
+.fontdreob h3 { font-size: 160% }
+.fontdreob p { font-size: 100% }
+.fontdreob p a { font-size: 107% }
+.fontdreob a { font-size: 100% }
+
+.sf {    /* secretfont */
+	font-size: 0.01%; 
+	margin: 0px;
+	padding: 0px;
+	color: transparent;
+}
 
 /* выделение текста */
 .txtSeldre::selection { background-color: #62d99c; color: #eee; }
@@ -128,6 +143,7 @@ body::selection { background-color: #62d99c; color: #eee; }
 	margin-bottom: 7px;
 	background-color: #f9f9f9;
 }
+
 .postdre:hover {
 	border-color: #8bb6ae; 
 	box-shadow: inset 0 0,  0 0 10px rgba(0,100,100, 0.47);
@@ -136,6 +152,12 @@ body::selection { background-color: #62d99c; color: #eee; }
 }
 .postdre:focus {		/*для того момента, когда будет форма*/
 	background-color: #e5e5f4;
+}
+/* отображение даты в постах */
+.postdre span {
+	color: #999;
+	float: right; 
+	display: inline;  
 }
 
 /* for (user.html) */

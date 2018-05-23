@@ -136,11 +136,27 @@ def edit_profile():
 		current_user.about_me = form.about_me.data
 		db.session.commit()
 		flash('информация профиля обновлена')
-		return redirect(url_for('edit_profile'))
+		return redirect(url_for('user'))
 	elif request.method == 'GET':
 		form.username.data = current_user.username
 		form.about_me.data = current_user.about_me
 	return render_template('edit_profile.html', form=form, title='редактирование профиля')
+
+# @app.route('/editpost', methods=('GET', 'POST'))
+# @login_required
+# def edit_post():
+# 	form = PostForm()
+# 	# сделать получение id поста из заголовка
+# 	if post.user_id == current_user.id:
+# 		post = Post.query.get()
+# 		# если пост принадлежит текущему польователю, то позволить ему редактировать
+# 		# иначе отослать код 403 (нет доступа)
+# 	if form.validate_on_submit():
+# 		pass
+# 	elif request.method == 'GET':
+# 		# form.post = 
+# 		pass
+# 	return render_template('edit_post.html', form=form,)	# создать
 
 
 @app.route('/session')
@@ -567,3 +583,13 @@ def recaptcha():
 #2914 ----------
 
 # благодаря этому декоратору, ф. будет выполняться перед каждой вьюшкой
+
+# --------------------------------------
+
+# валидация формы
+# вместо или в дополнение к form.validate_on_submit() можно использовать
+# if form.validate() или if not form.validate() ...
+# это позволит выполнить какой-либо код, если валидация всей формы
+# не пройдена, например если 3 раза не пройдена валидация, то добавить рекапчу
+
+# ------------------------------------
