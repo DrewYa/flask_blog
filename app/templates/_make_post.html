@@ -3,7 +3,7 @@
 	<form action="" method="post" style="max-width:536px">
 		{{ form.hidden_tag() }}
 		<p style="text-align: center; margin-bottom: 7px;"> 
-			{{ form.post.label }}<br>
+{#			{{ form.post.label }}<br>	#}
 			<!-- {{ form.post.description }} <br> -->
 			{% if form.post.errors %}
 			{{ form.post( cols=67, rows=3, oninput="CheckLen140()", placeholder="я хочу сказать, что ...",  class="inputAreaFielddre shadowErrdre", style="min-width: 112px; min-height: 34px") }}

@@ -49,8 +49,13 @@ visited		?
 }
 
 /* выделение текста */
-.txtSeldre::selection { background-color: #62d99c; color: #eee; }
-body::selection { background-color: #62d99c; color: #eee; }
+
+/* чтобы нельзя было выделить */
+.no-select { user-select: none; }
+.no-select::selection { background-color: transparent; }
+
+/*.txtSeldre::selection { background-color: #62d99c; color: #eee; }*/
+/*body::selection * { background-color: #62d99c; color: #eee; }*/
 
 .txtSelect::selection {	background: #ffb7b7; }
 

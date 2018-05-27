@@ -16,11 +16,25 @@
 	{{ super() }}
 	<link rel="stylesheet" href="{{ url_for('static', filename='mystyles.css') }}">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<style>
+		body { background-image: url("{{ url_for('static', filename="background-small_light_7.png") }}") }
+		*::selection { background-color: transparent; color: #377;}
+		.postdre p::selection { background: #faffa7; color: maroon }
+	</style>
 {% endblock %}
 
 {% block body_attribs %}
 {{ super() }}
-	style="padding-top: 57px; {% block body_style %} background-color: #f4f3f1;	{% endblock %} "
+	style="padding-top: 57px; 
+		{% block body_style %} 
+			{# 
+			если нужно будет поменять фон на цвет, то пишем здесь, 
+			но лучше прописать в блоке стилей, особенно если нужно поменять на др. картинку
+			body { bacground: ...} 
+			или body { bacground-image: url('...') }
+			т.к. цвет фона приоритетнее картинки фона, а если
+			#}
+		{% endblock %} "
 	class="txtSeldre"
 {% endblock %}
 
@@ -62,19 +76,19 @@
 				</li>
 				<li class="navbar-item">
 					<a class="txtSelectYellow" href="{{ url_for('edit_profile') }}" type="button">
-						<span class="glyphicon glyphicon-pencil" style=""></span>
+						<span class="glyphicon glyphicon-pencil" style="" title="редактировать профиль"></span>
 					</a>				
 				</li>
-				{% endif %}
-				
 				<li class="navbar-item">
 					<a class="txtSelectYellow" href="#" class="nav-link">блог</a>
 				</li>
 				<li class="navbar-item">
 					<a class="txtSelectYellow" href="#">контакты</a>
 				</li>
+				{% endif %}
+
 				<li class="navbar-item">
-					<a class="txtSelectYellow" href="{{ url_for('about_me') }}" class="nav-link">о сайте</a>
+					<a class="txtSelectYellow" href="{{ url_for('about_me') }}" class="nav-link"  style="float: right;">о сайте</a>
 				</li>
 			</ul>
 			<!-- <p class="navbar-text navbar-right"> &gt; <a href="#" class="navbar-link">{{ current_user.username }}</a></p>  -->
@@ -238,4 +252,24 @@ https://itchief.ru/lessons/bootstrap-3/98-bootstrap-3-dropdown-lists
 в блоке  styles:
 name="viewport" нужен чтобы корректно отображалась страница для всех устройст (например чтобы шрифты не были малюсенькими) -->
 <!-- initial-scale=1 устанавливает начальное значение масштаба = 100% (от 0 до 1) -->
-<!-- user-scalable=no запрещает увеличивать на мобильниках --> #}
+<!-- user-scalable=no запрещает увеличивать на мобильниках --> 
+
+=============================================================
+
+https://webref.ru/css/user-select
+
+user-select: auto | none | text | all | contain
+мало где поддерживается
+позволяет задать правило при выделении
+
+auto	Для редактируемых элементов значение принимается contain. Если у родителя значение user-select установлено как all, то для элемента оно тоже будет all. Если у родителя значение user-select установлено как none, то для элемента оно тоже будет none. Во всех остальных случаях принимается значение text.
+none	Пользователю запрещено выделять элемент.
+text 	Пользователь может выделить текст в элементе.
+all		Позволяет выделить текст внутри элемента, включая дочерние элементы.
+contain Позволяет выделять текст, но только внутри границ элемента. (поддерживается только в IE)
+
+
+::selection
+этот псевдокласс позволяет задать 
+background и color - цвета для выделяемого элемента
+#}
