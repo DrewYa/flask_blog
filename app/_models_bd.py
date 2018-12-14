@@ -38,6 +38,7 @@ class User(UserMixin, db.Model):
 		secondaryjoin=(followers.c.followed_id == id),
 		backref=db.backref('followers', lazy='dynamic'),
 		lazy='dynamic'	)
+	# language = ...
 
 	def __repr__(self): 
 		return '<User {} |id: {} |email: {}>'.format(
@@ -78,6 +79,7 @@ class Post(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id')) # (3)
 	# благодаря полю post и параметру backref в нем в классе
 	# User в этот (Post) класс будет добавлено поле author
+	language = db.Column(db.String(5))
 
 	def __repr__(self):
 		return '<Post id {}|user_id: {} |data: {} |body {}>'.format(
@@ -140,7 +142,8 @@ class Post(db.Model):
 # поле сообщений (постов), которое инициализируется db.relationship
 # Это не фактическое поле базы данных, а высокоуровневое представлени
 # о взаимоотношениях между users и posts. Поэтому оно НЕ находится
-# в диаграмме БД, которую мы нарисовали (на сайте в бразуере)
+# в диаграмме БД, которую мы нарисовали 
+# (на сайте http://ondras.zarovi.cz/sql/demo/)
 # Для отношений один-ко-многим db.relationship обычно определяется
 # на стороне "один" и исп. как удобный способ оплучить доступ 
 # ко "многим".
@@ -463,6 +466,11 @@ class Post(db.Model):
 # is_anonymous: 	свойство, которое вернет False для обычных пользователей, и True, если пользователь анонимный.
 # get_id(): 	метод, который возвращает уникальный идентификатор пользователя в виде строки (unicode, если используется Python 2).
 #  см ниже (#5246) в комментах
+
+# можно легко реализовать все четыре, но поскольку реализации довольно общие, Flask-Login 
+# предоставляет mixin класс UserMixin, который включает в себя общие реализации,
+# которые подходят для большинства классов пользовательских моделей. 
+# Нужно только добавить класс mixin в соотв. модель: class User(flask_login.UserMixin, db.Model)
 
 # ---------------------------------------------------------------
 

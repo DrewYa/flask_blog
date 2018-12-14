@@ -47,13 +47,21 @@ from time import sleep
 
 from flask_login import login_required
 
+# --------------------
+from flask_babel import get_locale
 # ------------------------------------------
+from guess_language import guess_language
+# -------------------------
+from flask import jsonify
+from app.translate import translate
+# ---------------------------
 
 @app.before_request 	# добавлен в v6.1 (#2914)
 def before_request():
 	if current_user.is_authenticated:
 		current_user.last_seen = datetime.utcnow()
 		db.session.commit()
+	g.locale = str(get_locale())
 
 # --------------------------------------------
 
@@ -76,10 +84,29 @@ def map():
 	return render_template('list_map.html', urlmap=lstmap, title='карта сайта')
 
 # ------------------------------------
+@app.route('/hook', methods=['POST', 'GET'])
+def hook():
+	return jsonify({'text': translate(request.form['text'])})
+# ----------------------------------
+
+@app.route('/translate', methods=['POST', 'GET'])		#2810
+@login_required
+def translate_text():
+	return jsonify({'text': translate(request.form['text'],
+									request.form['source_lang'],
+									request.form['destination_lang'])})
+
+# Например, если клиент хочет перевести строку привет, мир! на английский язык, 
+# ответ от этого запроса будет иметь следующие полезные данные:
+# { "text": "hello, world!" }
+# -------------------------------------
 
 from app._wtForms import PostForm
 from app._models_bd import Post
 
+# в этой вьюшке ошибка, из-за которой при входе, закрытии и открытии браузера
+# при нажатии на "моя страничка" пользователь перенаправляется на страницу "о сайте"
+# лучше воспользоваться одним из методов .is_authenticated или .is_active
 @app.route('/user/', methods=('GET', 'POST'))				# изменен с v6.0
 @app.route('/user/<name>', methods=('GET', 'POST'))	# , methods=('GET', 'POST')
 @login_required
@@ -97,14 +124,16 @@ def user(name=None):
 
 	form = PostForm()
 	if form.validate_on_submit():
-		post = Post(body=form.post.data, author=current_user)
+		language = guess_language(form.post.data, hints=['ru', 'en', 'fr', 'uk'])
+		if language == 'UNKNOWN' or len(language) > 5:
+			language = ''
+		post = Post(body=form.post.data, author=current_user, language=language)
 		db.session.add(post)  # для удаления поста db.session.delete(post)
 		db.session.commit()
 		# flash('пост размещен')
 		return redirect(url_for('user', name=session.get('username')))
 
 	posts = user.post.order_by( Post.timestamp.desc() )[:]
-
 	# posts = [
 	# 	{'author': user, 'body': 'test post 1'},
 	# 	{'author': user, 'body': 'test post 2'}
@@ -268,6 +297,12 @@ def login():
 	# переменная current_user для этого пользователя
 
 
+@app.route('/is_active')
+def is_active():
+	return 'current_user.is_active={}<br>.is_authenticated={}<br>.is_anonymous={}'.format(
+			current_user.is_active, current_user.is_authenticated, current_user.is_anonymous)
+
+
 # @app.route('/signin', methods=('GET', 'POST')) 	# закоменчено с v5.0
 # def signin():
 # 	form = SigninForm()
@@ -285,7 +320,6 @@ def login():
 # 		db.session.commit()
 # 		return redirect(url_for('login')) 
 # 	return render_template('signin.html', form=form, msg=None)
-
 
 
 @app.route('/signin', methods=('GET', 'POST'))
@@ -593,3 +627,15 @@ def recaptcha():
 # не пройдена, например если 3 раза не пройдена валидация, то добавить рекапчу
 
 # ------------------------------------
+#2810
+
+# Здесь мы обращаемся к request.form - словарю со всеми данными,
+# раньше мы с ним не встречались, т.к. flask-wtf делал все за нас 
+# здесь же по сути лишь данные
+
+# Вызывается функция translate() из предыдущего раздела и с ней передаются 
+# три аргумента непосредственно из данных, которые были отправлены с запросом. 
+# Результат включается в словарь с одним единственным ключом под именем text, 
+# а словарь передается как аргумент функции jsonify() Flask, которая 
+# преобразует словарь в форматированную полезную нагрузку JSON. Возвращаемое 
+# значение из jsonify() — это ответ HTTP, который будет отправлен обратно клиенту.

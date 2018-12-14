@@ -5,6 +5,8 @@ from app import app
 from app import db
 from app._models_bd import User, Post, followers
 
+from app import cli
+
 # создадим контекст оболочки, который добавит экземпляр 
 # приложения и модели БД (и вообще любые модули, функции, атрибуты)
 # в сеанс оболочки (если запускать из-под командной строки ):

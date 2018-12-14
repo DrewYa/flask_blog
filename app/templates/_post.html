@@ -1,12 +1,24 @@
 <div class="postdre" id="post{{ post.id }}">
 	<div>
-		<h4><img src="{{ post.author.avatar(40) }}" style="margin-right: 7px; border-radius: 5px;">
-				{{ post.author.username }} пишет:
 		<span style="font-size: small;">{{ moment(post.timestamp).format("LLL") }}</span>
+		<h4 style="margin-bottom: 5px">
+			<img src="{{ post.author.avatar(40) }}" style="margin: 0 7px 7px 0; border-radius: 5px;">
+				{{ post.author.username }}&nbsp;пишет:
+			{% if post.language and post.language != g.locale %}
+			<a style="border-radius: 7px; padding: 5px 9px;	outline: 0;	border: 1px solid #abe;	background: transparent;text-decoration: none;	color: #79b; margin-left: 2%; font-size: small;" 
+				id="btntranslate{{ post.id }}" href="javascript:translate('#posttext{{ post.id }}',
+																		'#translation{{ post.id }}',
+																		'en',
+																		'{{ g.locale }}',
+																		'#btntranslate{{ post.id }}')"
+				style="float: right; font-size: small; margin-right: 5px">Перевести</a>    {# тут должно быть {{ _('Перевести') }} #}
+			{% endif %}
 		</h4>
 	</div>
-	<div style="word-wrap: break-word; display: inline">
-		<p>{{ post.body }}</p>
+	<div style="word-wrap: break-word; display: inline; clear: both">
+		<p id="posttext{{ post.id }}">{{ post.body }}</p>
+		<p id="translation{{ post.id }}" style="color: #7c07a9">
+		</p>
 	</div>
 </div>
 {#<!--  	

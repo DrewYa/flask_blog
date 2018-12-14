@@ -47,7 +47,7 @@
 <!-- navbar = обычная (незакрепленная навигационная панель) -->
 <!-- если делать закрепленный, то смещать первый эл. на странице на 70px -->
 #}
-<nav class="navbar-fixed-top navbar-inverse " role="navigation">
+<nav class="navbar-fixed-top navbar-inverse " style="background-color: #270447" role="navigation">
 	<div class="container">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" 
@@ -57,7 +57,7 @@
 			<a href="{{ url_for('index') }}" class="navbar-brand txtSelectRY" style="font-size: xx-large;">RedYax</a>
 		</div>
 		<div class="collapse navbar-collapse " id="navbarCollapse" style="font-size: larger;">
-			<ul class="navbar-nav nav">
+			<ul class="navbar-nav nav navbar-right">  {# navbar-right - прижать к правой странице #}
 				
 				{% if current_user.is_anonymous %}
 				<li class="navbar-item">
@@ -118,9 +118,26 @@
 {% block scripts %}
 	{{ super() }}
 	{{ moment.include_moment() }}
-	{{ moment.lang('ru') }}
-{% endblock %}
+	{{ moment.lang(g.locale) }}
 
+	<script type="text/javascript">
+	function translate(sourceElem, destElem, sourceLang, destLang, btn){
+		sourceLang = sourceLang || 'en';
+		destLang = destLang || 'ru';
+		$(destElem).html('<img src="{{ url_for('static', filename='loading.gif') }}">');
+		$.post('/translate', {
+			text: $(sourceElem).text(),
+			source_lang: sourceLang,
+			destination_lang: destLang
+		}).done(function (response){			// success callback function
+			$(destElem).text(response['text']);
+			$(btn).detach()
+		}).fail(function (){					// error callback function
+			$(destElem).text('извините, не удалось перевести текст')
+		});
+	}
+	</script>
+{% endblock %}
 
 вне блоков можно спокойно писать любой текст
 
@@ -272,4 +289,23 @@ contain Позволяет выделять текст, но только вну
 ::selection
 этот псевдокласс позволяет задать 
 background и color - цвета для выделяемого элемента
+
+=================================================
+
+background (картинка, прокручивание фона, размеры, заполнение, ...)
+http://www.internet-technologies.ru/articles/fon-v-css-pamyatka-dlya-nachinayuschih.html
+
+==========================================================
+
+AJAX
+<script type="text/javascript">
+$.post(<url>, <data>).done(function response(){
+	// тело ф. обратного вызова
+	// сработает, если будет получен ответ от сервера
+}).fail(function fail(){
+	// тело ф. обратного вызова
+	// сработает, если ответ не будет получен
+})
+</script>
+
 #}

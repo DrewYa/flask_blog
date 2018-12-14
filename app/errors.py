@@ -22,6 +22,8 @@ def internal_server_error(e):
 	return render_template('500.html'), 500
 
 
+# это должно быть в __init__.py
+
 import logging	# (1, 2, 3)
 from logging.handlers import SMTPHandler # (1)
 from logging.handlers import RotatingFileHandler # (2)
@@ -44,15 +46,20 @@ if not app.debug:
 		app.logger.addHandler(mail_handler)
 	# fromaddr - будет таким, если мы не залогинились
 
-	if not os.path.exists('logs'):		#(2)
-		os.mkdir('logs')
-	file_handler = RotatingFileHandler('logs/flask_blog.log',
-		maxBytes=20480, backupCount=10)
-	file_handler.setFormatter(logging.Formatter(
-		'\n{}\n%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]\n{}\n'.format(
-			' -'*25, ' -'*25)))
-	file_handler.setLevel(logging.INFO)
-	app.logger.addHandler (file_handler)
+	if app.config['LOG_TO_STDOUT']:					# add for heroku
+		stream_handler = logging.StreamHandler()	#
+		stream_handler.setLevel(logging.INFO)		#
+		app.logger.addHandler(stream_handler)		#
+	else:
+		if not os.path.exists('logs'):		#(2)
+			os.mkdir('logs')
+		file_handler = RotatingFileHandler('logs/flask_blog.log',
+			maxBytes=20480, backupCount=10)
+		file_handler.setFormatter(logging.Formatter(
+			'\n{}\n%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]\n{}\n'.format(
+				' -'*25, ' -'*25)))
+		file_handler.setLevel(logging.INFO)
+		app.logger.addHandler (file_handler)
 
 	app.logger.setLevel(logging.INFO) 	#(3)
 	app.logger.info('flask_blog startup')

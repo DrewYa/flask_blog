@@ -13,6 +13,11 @@ class Config():
 	SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
 		'sqlite:///' + os.path.join(basedir, 'app.db')	# (2)
 	SQLALCHEMY_TRACK_MODIFICATIONS = False # (3)
+	# BOOTSTRAP_SERVE_LOCAL = True	# по умолч false, если true, 
+									# то загрузка bootstrap-файлов будет из папки расширения flask-bootstrap
+									# https://pythonhosted.org/Flask-Bootstrap/configuration.html
+	LANGUAGES = ['ru', 'en'] #1923 (в __init__.py)
+	TRANSLATOR_KEY = os.environ.get('TRANSLATOR_KEY') or 'trnsl.1.1.20171211T110426Z.39c9b36336d4f44c.0d7fc60250361f7997ab985cfef8904ee5fc6d99'
 
 class ConfigWithDebug(Config):
 	DEBUG = True
@@ -25,6 +30,7 @@ class ConfigWithErrorToGmail(Config):		#2041
 	MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') # or <мой пароль от ящика на gmial> 
 	admins = os.environ.get('TO_MAILS')
 	ADMINS = admins.split(',') if admins is not None else None
+	LOG_TO_STDOUT = os.environ.get('LOG_TO_STDOUT')
 	# в cmd нужно будет устанавливать из-под вирт окр, примерно так:
 	# (venv) $ set TO_MAILS=ex1@example.com,ex2@example.com,ex3@example.com 
 	# т.е. просто через запятую (без кавычек и пробелов)
